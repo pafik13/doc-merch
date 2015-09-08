@@ -9,3 +9,7 @@
 /composer.phar
 /vendor/
 /web/bundles/
+
+doc-merch.sublime-project
+doc-merch.sublime-workspace
+*.bak
