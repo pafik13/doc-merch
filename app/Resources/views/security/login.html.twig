@@ -15,12 +15,12 @@
 
 	<div class="container">
 
-		<form class="form-signin" action="/login_check" method="post">
+		<form class="form-signin" action={{ path('login_check') }} method="post">
 			{% if error %}
 				<div class="alert alert-danger form-control" role="alert">
 				  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
 				  <span class="sr-only">Error:</span>
-				  Enter a valid email address
+				  Некорректные данные
 				</div>
 			{% endif %}
 
