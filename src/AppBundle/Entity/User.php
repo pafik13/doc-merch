@@ -5,7 +5,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @ORM\Table(name="tbl_users")
+ * @ORM\Table(name="users")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\UserRepository")
  */
 class User implements UserInterface, \Serializable
@@ -21,9 +21,9 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(type="string", length=25, unique=true)
      */
     private $username;
-
+	
     /**
-     * @ORM\Column(name="email", type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $email;
 
@@ -37,14 +37,29 @@ class User implements UserInterface, \Serializable
      */
     private $role;
 
+    /**
+     * @ORM\Column(type="string", length=50)
+     */
+    private $fullname;
+
+    /**
+     * @ORM\Column(type="integer", length=1)
+     */
+    private $gender;
+
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $birthday;
+
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $job;
+
     public function getUsername()
     {
         return $this->username;
-    }
-
-    public function getEmail()
-    {
-        return $this->email;
     }
 
     public function getSalt()
@@ -59,7 +74,7 @@ class User implements UserInterface, \Serializable
 
     public function getRoles()
     {
-		$roles_list = ['ROLE_USER', 'ROLE_EXECUTOR', 'ROLE_MANAGER', 'ROLE_ADMIN'];
+		$roles_list = ['ROLE_USER', 'ROLE_PRESENTER', 'ROLE_MANAGER', 'ROLE_ADMIN'];
         return array($roles_list[$this->role]);
     }
 
@@ -115,6 +130,19 @@ class User implements UserInterface, \Serializable
     }
 
     /**
+     * Set password
+     *
+     * @param string $password
+     * @return User
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
      * Set email
      *
      * @param string $email
@@ -128,15 +156,127 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * Set password
+     * Get email
      *
-     * @param string $password
+     * @return string 
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Set role
+     *
+     * @param integer $role
      * @return User
      */
-    public function setPassword($password)
+    public function setRole($role)
     {
-        $this->password = $password;
+        $this->role = $role;
 
         return $this;
+    }
+
+    /**
+     * Get role
+     *
+     * @return integer 
+     */
+    public function getRole()
+    {
+        return $this->role;
+    }
+
+    /**
+     * Set fullname
+     *
+     * @param string $fullname
+     * @return Staff
+     */
+    public function setFullname($fullname)
+    {
+        $this->fullname = $fullname;
+
+        return $this;
+    }
+
+    /**
+     * Get fullname
+     *
+     * @return string 
+     */
+    public function getFullname()
+    {
+        return $this->fullname;
+    }
+
+    /**
+     * Set gender
+     *
+     * @param boolean $gender
+     * @return Staff
+     */
+    public function setGender($gender)
+    {
+        $this->gender = $gender;
+
+        return $this;
+    }
+
+    /**
+     * Get gender
+     *
+     * @return boolean 
+     */
+    public function getGender()
+    {
+        return $this->gender;
+    }
+
+    /**
+     * Set birthday
+     *
+     * @param \DateTime $birthday
+     * @return Staff
+     */
+    public function setBirthday($birthday)
+    {
+        $this->birthday = $birthday;
+
+        return $this;
+    }
+
+    /**
+     * Get birthday
+     *
+     * @return \DateTime 
+     */
+    public function getBirthday()
+    {
+        return $this->birthday;
+    }
+
+    /**
+     * Set job
+     *
+     * @param string $job
+     * @return Staff
+     */
+    public function setJob($job)
+    {
+        $this->job = $job;
+
+        return $this;
+    }
+
+    /**
+     * Get job
+     *
+     * @return string 
+     */
+    public function getJob()
+    {
+        return $this->job;
     }
 }

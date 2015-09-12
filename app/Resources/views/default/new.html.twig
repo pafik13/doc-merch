@@ -1,8 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} Сводная информация {% endblock %}
+{% block title %} Добавить представителя {% endblock %}
 
-{% set page = 1 %}
+{% set page = 2 %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -32,14 +32,15 @@
 {% block body %}
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header"> Сводная информация </h1>
+            <h1 class="page-header"> Добавить нового представителя </h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
     <!-- /.row -->
     <div class="row">
         <div class="col-lg-12">
-            <div> ЗДЕСЬ СКОРО БУДЕТ МНОГО ИНФОРМАЦИИ </div>
+			{{ form(form) }}
+			<a class="button" href="{{ path('presenters') }}">Вернуться назад</a>
         </div>
         <!-- /.col-lg-12 -->
     </div>

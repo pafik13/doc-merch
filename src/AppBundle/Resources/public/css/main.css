@@ -352,3 +352,32 @@ table.dataTable thead .sorting:after {
 .panel-yellow a:hover {
     color: #df8a13;
 }
+
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+th {color: #333;}
+td, th {
+	border: 1px solid #e7e7e7;
+	padding: 10px;
+	font-size: 15px;
+}
+.button, .row button {display: block; margin: 20px auto; text-align: center; border: 1px solid; width: 250px; color: #337ab7; text-decoration: none !important; font-size: 18px; padding: 10px; cursor: pointer; background: #fff; box-sizing: content-box;}
+.button:hover, .row button:hover {background: #337ab7; color: #fff;}
+.row input[type="text"], .row input[type="email"] {
+	display: block;
+	margin: 5px;
+	font-size: 14px;
+	padding: 6px 12px;
+	width: 450px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+select {
+	margin: 5px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	padding: 2px;
+}
+select:focus {outline: 0;}

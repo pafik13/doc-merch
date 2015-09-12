@@ -1,8 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} Сводная информация {% endblock %}
+{% block title %} Представители {% endblock %}
 
-{% set page = 1 %}
+{% set page = 2 %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -32,14 +32,24 @@
 {% block body %}
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header"> Сводная информация </h1>
+            <h1 class="page-header"> Список представителей </h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
     <!-- /.row -->
     <div class="row">
         <div class="col-lg-12">
-            <div> ЗДЕСЬ СКОРО БУДЕТ МНОГО ИНФОРМАЦИИ </div>
+            <table><tbody>
+				<tr><th>Имя пользователя</th><th>Полное имя (ФИО)</th><th>E-mail</th><th>Пол</th><th>Дата рождения</th><th>Место работы</th><th>Действия</th></tr>
+				{% if not entities == null %}
+				{% for user in entities %}
+					<tr><td>{{ user.username }}</td><td>{{ user.fullname == NULL ? 'Не указано' : user.fullname }}</td><td>{{ user.email }}</td><td>{% if user.gender == 1 %}Женский{% elseif user.gender == 0 %}Мужской{% else %}Не указан{% endif %}</td><td>{{ user.birthday == NULL ? 'Не указана' : user.birthday|date("d/m/Y") }}</td><td>{{ user.job == NULL ? 'Не указано' : user.job }}</td><td><a href="presenters/{{ user.id }}">Редактировать</a></td></tr>
+				{% endfor %}
+				{% else %}
+					<tr><td colspan="7" style="text-align: center;">В базе нет ни одного представителя. Вы можете добавить их, нажав на кнопку "Создать представителя" ниже.</td></tr>
+				{% endif %}
+			</tbody></table>
+			<a class="button" href="presenters/add">Добавить представителя</a>
         </div>
         <!-- /.col-lg-12 -->
     </div>
