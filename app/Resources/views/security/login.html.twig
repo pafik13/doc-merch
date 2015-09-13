@@ -6,30 +6,30 @@
 	{{ parent() }}
 
     {% stylesheets '@AppBundle/Resources/public/css/login.css' filter='cssrewrite' %}
-        <link rel="stylesheet" href="{{ asset_url }}" />
+        <link rel="stylesheet" href="{{ asset_url }}">
     {% endstylesheets %}
 {% endblock %}
 
 {% block body %}
-	<div id="fullscreen_bg" class="fullscreen_bg"/>
+	<div id="fullscreen_bg" class="fullscreen_bg">
+		<div class="container">
 
-	<div class="container">
+			<form class="form-signin" action={{ path('login_check') }} method="post">
+				{% if error %}
+					<div class="alert alert-danger form-control" role="alert">
+					  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+					  <span class="sr-only">Error:</span>
+					  Некорректные данные
+					</div>
+				{% endif %}
 
-		<form class="form-signin" action={{ path('login_check') }} method="post">
-			{% if error %}
-				<div class="alert alert-danger form-control" role="alert">
-				  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-				  <span class="sr-only">Error:</span>
-				  Некорректные данные
-				</div>
-			{% endif %}
+				<input id="email" name="_email" type="text" class="form-control" placeholder="Почта" required="" autofocus="">
+				<input id="password" name="_password" type="password" class="form-control" placeholder="Пароль" required="">
+				<button class="btn btn-lg btn-primary btn-block" type="submit">
+					Войти
+				</button>
+			</form>
 
-			<input id="email" name="_email" type="text" class="form-control" placeholder="Почта" required="" autofocus="">
-			<input id="password" name="_password" type="password" class="form-control" placeholder="Пароль" required="">
-			<button class="btn btn-lg btn-primary btn-block" type="submit">
-				Войти
-			</button>
-		</form>
-
+		</div>
 	</div>
 {% endblock %}

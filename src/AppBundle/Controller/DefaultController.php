@@ -216,7 +216,7 @@ class DefaultController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('presenters_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Удалить представителя'))
+            ->add('submit', 'submit', array('label' => 'Удалить представителя', 'attr' => array('class' => 'btn btn-default btn-lg btn-block')))
             ->getForm()
         ;
     }
