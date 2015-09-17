@@ -1,0 +1,45 @@
+{% extends 'nav.html.twig' %}
+
+{% block title %}Представители{% endblock %}
+
+{% set page = 'presenters' %}
+
+{% import "presenter/table.html.twig" as table %}
+{% block main %}
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header"> Список представителей </h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">Мои представители</div>
+				<div class="panel-body">
+					<div class="table-responsive">
+						{{ table.list(my, "В базе нет ни одного вашего представителя. Вы можете добавить своего представителя, нажав на кнопку \"Добавить представителя\" ниже.") }}
+					</div>
+					<a class="btn btn-default btn-lg btn-block" href="presenters/add">Добавить представителя</a>
+				</div>
+			</div>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+	<!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">Другие представители</div>
+				<div class="panel-body">
+					<div class="table-responsive">
+						{{ table.list(other, "В базе нет представителей других менеджеров.") }}
+					</div>
+				</div>
+			</div>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+	<!-- /.row -->
+{% endblock %}

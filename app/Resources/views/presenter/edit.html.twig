@@ -1,8 +1,8 @@
-{% extends 'default.html.twig' %}
+{% extends 'nav.html.twig' %}
 
 {% block title %}Редактировать представителя{% endblock %}
 
-{% set page = 2 %}
+{% set page = 'presenters' %}
 
 {% block main %}
 	{% form_theme edit_form with 'bootstrap_3_layout.html.twig' %}
@@ -29,7 +29,7 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
-                <div class="panel-heading">Удалить представителя</div>
+                <div class="panel-heading">Удаление представителя</div>
 				<div class="panel-body">
 					<p>Будьте внимательны: данное действие необратимо.</p>
 					{{ form(delete_form) }}

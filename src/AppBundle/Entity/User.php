@@ -2,7 +2,9 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
+use AppBundle\Entity\Role;
 
 /**
  * @ORM\Table(name="users")
@@ -19,16 +21,25 @@ class User implements UserInterface, \Serializable
 
     /**
      * @ORM\Column(type="string", length=25, unique=true)
+	 * @Assert\NotBlank(
+     *     message = "У любого пользователя обязательно должен быть логин."
+	 * )
      */
     private $username;
 	
     /**
      * @ORM\Column(type="string", length=255, unique=true)
+	 * @Assert\Email(
+     *     message = "E-mail адрес указан некорректно."
+	 * )
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=64)
+	 * @Assert\NotBlank(
+     *     message = "У любого пользователя обязательно должен быть пароль."
+	 * )
      */
     private $password;
 
@@ -39,23 +50,39 @@ class User implements UserInterface, \Serializable
 
     /**
      * @ORM\Column(type="string", length=50)
+	 * @Assert\Regex(
+     *     pattern = "/^\D+(\s\D+){2}/",
+	 *     message = "Данное поле должно соответсвовать шаблону: Фамилия Имя Отчество"
+	 * )
      */
     private $fullname;
 
     /**
-     * @ORM\Column(type="integer", length=1)
+     * @ORM\Column(type="string", length=1)
+	 * @Assert\Choice(
+	 *     choices = {NULL, "m", "f"},
+	 *     message = "Выберите пол"
+	 * )
      */
     private $gender;
 
     /**
      * @ORM\Column(type="date")
+	 * @Assert\Date(
+	 *     message = "Если вы хотите указать дату, то вы должны указать её полностью."
+	 * )
      */
     private $birthday;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private $job;
+    private $district;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $manager;
 
     public function getUsername()
     {
@@ -74,8 +101,8 @@ class User implements UserInterface, \Serializable
 
     public function getRoles()
     {
-		$roles_list = ['ROLE_USER', 'ROLE_PRESENTER', 'ROLE_MANAGER', 'ROLE_ADMIN'];
-        return array($roles_list[$this->role]);
+		$role = new Role();
+        return array($role->getKey($this->role));
     }
 
     public function eraseCredentials()
@@ -130,19 +157,6 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * Set password
-     *
-     * @param string $password
-     * @return User
-     */
-    public function setPassword($password)
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
-    /**
      * Set email
      *
      * @param string $email
@@ -163,6 +177,19 @@ class User implements UserInterface, \Serializable
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+     * Set password
+     *
+     * @param string $password
+     * @return User
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+
+        return $this;
     }
 
     /**
@@ -192,7 +219,7 @@ class User implements UserInterface, \Serializable
      * Set fullname
      *
      * @param string $fullname
-     * @return Staff
+     * @return User
      */
     public function setFullname($fullname)
     {
@@ -214,8 +241,8 @@ class User implements UserInterface, \Serializable
     /**
      * Set gender
      *
-     * @param boolean $gender
-     * @return Staff
+     * @param string $gender
+     * @return User
      */
     public function setGender($gender)
     {
@@ -227,7 +254,7 @@ class User implements UserInterface, \Serializable
     /**
      * Get gender
      *
-     * @return boolean 
+     * @return string 
      */
     public function getGender()
     {
@@ -238,7 +265,7 @@ class User implements UserInterface, \Serializable
      * Set birthday
      *
      * @param \DateTime $birthday
-     * @return Staff
+     * @return User
      */
     public function setBirthday($birthday)
     {
@@ -258,25 +285,48 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * Set job
+     * Set district
      *
-     * @param string $job
-     * @return Staff
+     * @param string $district
+     * @return User
      */
-    public function setJob($job)
+    public function setDistrict($district)
     {
-        $this->job = $job;
+        $this->district = $district;
 
         return $this;
     }
 
     /**
-     * Get job
+     * Get district
      *
      * @return string 
      */
-    public function getJob()
+    public function getDistrict()
     {
-        return $this->job;
+        return $this->district;
+    }
+
+    /**
+     * Set manager
+     *
+     * @param integer $manager
+     * @return User
+     */
+    public function setManager($manager)
+    {
+        $this->manager = $manager;
+
+        return $this;
+    }
+
+    /**
+     * Get manager
+     *
+     * @return integer
+     */
+    public function getManager()
+    {
+        return $this->manager;
     }
 }
