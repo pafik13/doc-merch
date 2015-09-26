@@ -20,10 +20,7 @@ class User implements UserInterface, \Serializable
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=25, unique=true)
-	 * @Assert\NotBlank(
-     *     message = "У любого пользователя обязательно должен быть логин."
-	 * )
+     * @ORM\Column(type="string", length=150, unique=true)
      */
     private $username;
 	
@@ -36,26 +33,44 @@ class User implements UserInterface, \Serializable
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=64)
-	 * @Assert\NotBlank(
-     *     message = "У любого пользователя обязательно должен быть пароль."
-	 * )
+     * @ORM\Column(type="string", length=12)
      */
     private $password;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", length=1)
      */
     private $role;
 
     /**
      * @ORM\Column(type="string", length=50)
 	 * @Assert\Regex(
-     *     pattern = "/^\D+(\s\D+){2}/",
-	 *     message = "Данное поле должно соответсвовать шаблону: Фамилия Имя Отчество"
-	 * )
+     *     pattern = "/^\S+/",
+     *     message = "Данное поле должно содержать одно слово - фамилию представителя."
+     * )
+	 * @Assert\NotBlank(message = "У представителя обязательно должна быть указана фамилия.")
      */
-    private $fullname;
+    private $surname;
+
+    /**
+     * @ORM\Column(type="string", length=50)
+	 * @Assert\Regex(
+     *     pattern = "/^\S+/",
+     *     message = "Данное поле должно содержать одно слово - имя представителя."
+     * )
+	 * @Assert\NotBlank(message = "У представителя обязательно должно быть указано имя.")
+     */
+    private $name;
+
+    /**
+     * @ORM\Column(type="string", length=50)
+	 * @Assert\Regex(
+     *     pattern = "/^\S+/",
+     *     message = "Данное поле должно содержать одно слово - отчество представителя."
+     * )
+	 * @Assert\NotBlank(message = "У представителя обязательно должно быть указано отчество.")
+     */
+    private $patronymic;
 
     /**
      * @ORM\Column(type="string", length=1)
@@ -80,7 +95,7 @@ class User implements UserInterface, \Serializable
     private $district;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", length=11)
      */
     private $manager;
 
@@ -216,26 +231,80 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * Set fullname
+     * Set surname
      *
-     * @param string $fullname
+     * @param string $surname
      * @return User
      */
-    public function setFullname($fullname)
+    public function setSurname($surname)
     {
-        $this->fullname = $fullname;
+        $this->surname = $surname;
 
         return $this;
     }
 
     /**
-     * Get fullname
+     * Get surname
      *
-     * @return string 
+     * @return string
+     */
+    public function getSurname()
+    {
+        return $this->surname;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return User
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set patronymic
+     *
+     * @param string $patronymic
+     * @return User
+     */
+    public function setPatronymic($patronymic)
+    {
+        $this->patronymic = $patronymic;
+
+        return $this;
+    }
+
+    /**
+     * Get patronymic
+     *
+     * @return string
+     */
+    public function getPatronymic()
+    {
+        return $this->patronymic;
+    }
+
+    /**
+     * @return string
      */
     public function getFullname()
     {
-        return $this->fullname;
+        return $this->surname." ".$this->name." ".$this->patronymic;
     }
 
     /**

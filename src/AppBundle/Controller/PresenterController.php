@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use AppBundle\Entity\User;
+use AppBundle\Entity\Gen;
 use AppBundle\Entity\Role;
 use AppBundle\Form\StaffType;
 
@@ -19,7 +20,7 @@ class PresenterController extends Controller
      * @Route("/presenters", name="presenters")
      * @Method("GET")
      */
-    public function viewPresentersAction()
+    public function listAction()
     {
         $users = $this->getDoctrine()
 			->getManager()
@@ -27,8 +28,8 @@ class PresenterController extends Controller
 
 		$id = $this->getUser()->getId();
 		$role = new Role();
-        $entities = $users->findByManager($id);
-		$entities2 = $users->createQueryBuilder('p')
+        $my = $users->findByManager($id);
+        $other = $users->createQueryBuilder('p')
 			->where('p.role = :role AND NOT p.manager = :id')
 			->setParameter('id', $id)
 			->setParameter('role', $role->getId('PRESENTER'))
@@ -36,8 +37,8 @@ class PresenterController extends Controller
 			->getResult();
 
         return $this->render('presenter/list.html.twig', array(
-            'my' => $entities,
-			'other' => $entities2
+            'my' => $my,
+			'other' => $other
         ));
     }
 
@@ -50,14 +51,31 @@ class PresenterController extends Controller
     public function createAction(Request $request)
     {
 		$role = new Role();
+		$gen = new Gen();
         $entity = new User();
+
+		$em = $em = $this->getDoctrine()->getManager();
+
+		$data = $request->request->get('appbundle_user');
+		$username = $gen->genUsername($data['surname'],
+                                      $data['name'],
+                                      $data['patronymic']);
+		$users = $em->getRepository('AppBundle:User');
+		while($users->findByUsername($username)) {
+			if(!isset($pers_numb)) {$pers_numb = 1; $susername = $username;}
+			$username = $susername.$pers_numb;
+			$pers_numb++;
+		}
+
 		$entity->setRole($role->getId('PRESENTER'));
 		$entity->setManager($this->getUser()->getId());
+		$entity->setUsername($username);
+		$entity->setPassword($gen->genPassword());
+
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
 
@@ -109,7 +127,7 @@ class PresenterController extends Controller
     /**
      * Displays a form to edit an existing User entity.
      *
-     * @Route("/presenters/{id}", name="presenters_edit")
+     * @Route("/presenters/edit/{id}", name="presenters_edit")
      * @Method("GET")
      */
     public function editAction($id)
@@ -223,5 +241,25 @@ class PresenterController extends Controller
             ->add('submit', 'submit', array('label' => 'Удалить представителя', 'attr' => array('class' => 'btn btn-default btn-lg btn-block')))
             ->getForm()
         ;
+    }
+
+    /**
+     * Displays some info about presenter.
+     *
+     * @Route("/presenters/{id}", name="presenters_info")
+     * @Method("GET")
+     */
+    public function infoAction($id)
+    {
+		$users = $this->getDoctrine()
+			->getManager()
+			->getRepository('AppBundle:User');
+        $presenter = $users->find($id);
+		$manager = $users->find($presenter->getManager());
+
+        return $this->render('presenter/info.html.twig', array(
+            'presenter' => $presenter,
+			'manager' => $manager
+        ));
     }
 }

@@ -1,0 +1,43 @@
+{% extends 'nav.html.twig' %}
+
+{% block title %}{{ presenter.username }} / Информация о представителе{% endblock %}
+
+{% set page = 'presenters' %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header"> Информация о представителе </h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">{{ presenter.username }}</div>
+				<div class="panel-body">
+					<p>
+						<strong>Полное имя:</strong> {{ presenter.getFullName() }}<br>
+						<strong>E-mail:</strong> {{ presenter.email }}<br>
+						<strong>Пол:</strong> {% if presenter.gender == 'm' %}Мужской{% elseif presenter.gender == 'f' %}Женский{% else %}Не указан{% endif %}<br>
+						<strong>Дата рождения:</strong> {{ presenter.birthday == NULL ? 'Не указана' : presenter.birthday|date("d.m.Y") }}<br>
+						<strong>Округ работы:</strong> {{ presenter.district == NULL ? 'Не указано' : presenter.district }}
+					</p>
+					<hr><h4>Пароль для авторизации</h4>
+					<p>{{ presenter.password }}</p>
+					<hr><h4>Контактная информация менеджера данного представителя</h4>
+					<p>
+						<strong>Полное имя:</strong> {{ manager.getFullName() }}<br>
+						<strong>E-mail:</strong> {{ manager.email }}
+					</p>
+					<hr>
+					<a class="btn btn-default btn-lg btn-block" href="{{ path('presenters_edit', {'id': presenter.id}) }}">Редактировать</a>
+					<p></p>
+					<a class="btn btn-default btn-lg btn-block" href="{{ path('presenters') }}">Вернуться к списку</a>
+				</div>
+			</div>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+{% endblock %}
