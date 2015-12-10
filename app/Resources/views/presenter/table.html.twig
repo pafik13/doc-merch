@@ -1,0 +1,14 @@
+{% macro list(name, error) %}
+	<table class="table">
+		<thead><tr><th>#</th><th>Полное имя</th><th>E-mail</th><th>Пол</th><th>Дата рождения</th><th>Округ работы</th><th></th></tr></thead>
+		<tbody>
+			{% if name|length > 0 %}
+				{% for user in name %}
+					<tr><td>{{ loop.index }}</td><td>{{ user.getFullName() }}</td><td>{{ user.email }}</td><td>{% if user.gender == 'm' %}Мужской{% elseif user.gender == 'f' %}Женский{% else %}Не указан{% endif %}</td><td>{{ user.birthday == NULL ? 'Не указана' : user.birthday|date("d.m.Y") }}</td><td>{{ user.district == NULL ? 'Не указано' : user.district }}</td><td><a href="presenters/{{ user.id }}">Информация</a><br><a href="presenters/edit/{{ user.id }}">Редактировать</a></td></tr>
+				{% endfor %}
+			{% else %}
+				<tr><td colspan="8" style="text-align: center;">{{ error }}</td></tr>
+			{% endif %}
+		</tbody>
+	</table>
+{% endmacro %}
