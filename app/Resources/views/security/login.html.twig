@@ -5,7 +5,7 @@
 {% block stylesheets %}
 	{{ parent() }}
 
-    {% stylesheets '@AppBundle/Resources/public/css/login.css' filter='cssrewrite' %}
+    {% stylesheets 'bundles/app/css/login.css' filter='cssrewrite' %}
         <link rel="stylesheet" href="{{ asset_url }}">
     {% endstylesheets %}
 {% endblock %}

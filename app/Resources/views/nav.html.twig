@@ -3,11 +3,11 @@
 {% block stylesheets %}
     {{ parent() }}
 
-    {% stylesheets '@AppBundle/Resources/public/css/main.css' filter='cssrewrite' %}
+    {% stylesheets 'bundles/app/css/main.css' filter='cssrewrite' %}
         <link rel="stylesheet" href="{{ asset_url }}" />
     {% endstylesheets %}
 
-    {% stylesheets '@AppBundle/Resources/public/css/timeline.css' filter='cssrewrite' %}
+    {% stylesheets 'bundles/app/css/timeline.css' filter='cssrewrite' %}
         <link rel="stylesheet" href="{{ asset_url }}" />
     {% endstylesheets %}
 

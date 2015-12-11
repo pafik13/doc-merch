@@ -13,3 +13,5 @@
 doc-merch.sublime-project
 doc-merch.sublime-workspace
 *.bak
+
+.idea/
