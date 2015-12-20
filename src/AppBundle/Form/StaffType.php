@@ -31,7 +31,7 @@ class StaffType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\User'
+            'data_class' => 'AppBundle\Entity\Presenter'
         ));
     }
 
@@ -40,6 +40,6 @@ class StaffType extends AbstractType
      */
     public function getName()
     {
-        return 'appbundle_user';
+        return 'appbundle_presenter';
     }
 }

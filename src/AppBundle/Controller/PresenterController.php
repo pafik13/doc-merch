@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Presenter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -24,17 +25,23 @@ class PresenterController extends Controller
     {
         $users = $this->getDoctrine()
 			->getManager()
-			->getRepository('AppBundle:User');
+			->getRepository('AppBundle:Presenter');
+        $role = new Role();
+		$user = $this->getUser();
+        if($user->getRole() === $role->getId('MANAGER')){
+            $my = $user->getPresenters();
+        } else{
+            $my=null;
+    }
 
-		$id = $this->getUser()->getId();
-		$role = new Role();
-        $my = $users->findByManager($id);
+
+
         $other = $users->createQueryBuilder('p')
-			->where('p.role = :role AND NOT p.manager = :id')
-			->setParameter('id', $id)
-			->setParameter('role', $role->getId('PRESENTER'))
-			->getQuery()
-			->getResult();
+            ->where('p.role = :role AND NOT p.manager = :id')
+            ->setParameter('id',$user->getId())
+            ->setParameter('role', $role->getId('PRESENTER'))
+            ->getQuery()
+            ->getResult();
 
         return $this->render('presenter/list.html.twig', array(
             'my' => $my,
@@ -52,38 +59,38 @@ class PresenterController extends Controller
     {
 		$role = new Role();
 		$gen = new Gen();
-        $entity = new User();
+        $newPresenter = new Presenter();
 
-		$em = $em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager();
 
-		$data = $request->request->get('appbundle_user');
+		$data = $request->request->get('appbundle_presenter');
 		$username = $gen->genUsername($data['surname'],
                                       $data['name'],
                                       $data['patronymic']);
-		$users = $em->getRepository('AppBundle:User');
+		$users = $em->getRepository('AppBundle:Presenter');
 		while($users->findByUsername($username)) {
 			if(!isset($pers_numb)) {$pers_numb = 1; $susername = $username;}
 			$username = $susername.$pers_numb;
 			$pers_numb++;
 		}
 
-		$entity->setRole($role->getId('PRESENTER'));
-		$entity->setManager($this->getUser()->getId());
-		$entity->setUsername($username);
-		$entity->setPassword($gen->genPassword());
+		$newPresenter->setRole($role->getId('PRESENTER'));
+		$newPresenter->setManager($this->getUser());
+		$newPresenter->setUsername($username);
+		$newPresenter->setPassword($gen->genPassword());
 
-        $form = $this->createCreateForm($entity);
+        $form = $this->createCreateForm($newPresenter);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $em->persist($entity);
+            $em->persist($newPresenter);
             $em->flush();
 
             return $this->redirect($this->generateUrl('presenters'));
         }
 
         return $this->render('presenter/new.html.twig', array(
-            'entity' => $entity,
+            'entity' => $newPresenter,
             'form'   => $form->createView(),
         ));
     }
@@ -91,13 +98,13 @@ class PresenterController extends Controller
     /**
      * Creates a form to create a User entity.
      *
-     * @param User $entity The entity
+     * @param User $presenter The entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(User $entity)
+    private function createCreateForm(Presenter $presenter)
     {
-        $form = $this->createForm(new StaffType(), $entity, array(
+        $form = $this->createForm(new StaffType(), $presenter, array(
             'action' => $this->generateUrl('presenters_create'),
             'method' => 'POST'
         ));
@@ -115,11 +122,11 @@ class PresenterController extends Controller
      */
     public function newAction()
     {
-        $entity = new User();
-        $form   = $this->createCreateForm($entity);
+        $newPresenter = new Presenter();
+        $form   = $this->createCreateForm($newPresenter);
 
         return $this->render('presenter/new.html.twig', array(
-            'entity' => $entity,
+            'entity' => $newPresenter,
             'form'   => $form->createView(),
         ));
     }
