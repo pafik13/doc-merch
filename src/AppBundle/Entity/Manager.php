@@ -11,6 +11,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Manager extends User
 {
+    /**
+     * @ORM\Column(type="string", length=50)
+     * @Assert\Regex(
+     *     pattern = "/^\S+/",
+     *     message = "Данное поле должно содержать одно слово - фамилию представителя."
+     * )
+     * @Assert\NotBlank(message = "У представителя обязательно должна быть указана фамилия.")
+     */
     private $surname;
 
     /**

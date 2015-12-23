@@ -11,6 +11,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Presenter extends User
 {
+    /**
+     * @ORM\Column(type="string", length=50)
+	 * @Assert\Regex(
+     *     pattern = "/^\S+/",
+     *     message = "Данное поле должно содержать одно слово - фамилию представителя."
+     * )
+	 * @Assert\NotBlank(message = "У представителя обязательно должна быть указана фамилия.")
+     */
     private $surname;
 
     /**
@@ -61,6 +69,7 @@ class Presenter extends User
 
     /**
      * @ORM\ManyToOne(targetEntity="Manager", inversedBy="presenters")
+     * @ORM\JoinColumn(name="manager_id", referencedColumnName="id",nullable=true, onDelete="SET NULL")
      */
     private $manager;
 

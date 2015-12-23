@@ -11,7 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Gen;
 use AppBundle\Entity\Role;
-use AppBundle\Form\StaffType;
+use AppBundle\Form\PresenterType;
 
 class PresenterController extends Controller
 {
@@ -32,12 +32,10 @@ class PresenterController extends Controller
             $my = $user->getPresenters();
         } else{
             $my=null;
-    }
-
-
+        }
 
         $other = $users->createQueryBuilder('p')
-            ->where('p.role = :role AND NOT p.manager = :id')
+            ->where('p.role = :role AND p.manager IS NULL OR p.manager <> :id')
             ->setParameter('id',$user->getId())
             ->setParameter('role', $role->getId('PRESENTER'))
             ->getQuery()
@@ -104,7 +102,7 @@ class PresenterController extends Controller
      */
     private function createCreateForm(Presenter $presenter)
     {
-        $form = $this->createForm(new StaffType(), $presenter, array(
+        $form = $this->createForm(new PresenterType(), $presenter, array(
             'action' => $this->generateUrl('presenters_create'),
             'method' => 'POST'
         ));
@@ -166,7 +164,7 @@ class PresenterController extends Controller
     */
     private function createEditForm(User $entity)
     {
-        $form = $this->createForm(new StaffType(), $entity, array(
+        $form = $this->createForm(new PresenterType(), $entity, array(
             'action' => $this->generateUrl('presenters_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));

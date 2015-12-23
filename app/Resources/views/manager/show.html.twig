@@ -1,0 +1,38 @@
+{% extends 'nav.html.twig' %}
+
+{% block title %}{{ manager.username }} / Информация о менеджере{% endblock %}
+
+{% set page = 'managers' %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header"> Информация о менеджере </h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">{{ manager.username }}</div>
+                <div class="panel-body">
+                    <p>
+                        <strong>Полное имя:</strong> {{ manager.getFullName() }}<br>
+                        <strong>E-mail:</strong> {{ manager.email }}<br>
+                        <strong>Пол:</strong> {% if manager.gender == 'm' %}Мужской{% elseif manager.gender == 'f' %}Женский{% else %}Не указан{% endif %}<br>
+                        <strong>Дата рождения:</strong> {{ manager.birthday == NULL ? 'Не указана' : manager.birthday|date("d.m.Y") }}<br>
+                        <strong>Округ работы:</strong> {{ manager.district == NULL ? 'Не указано' : manager.district }}
+                    </p>
+                    <hr><h4>Пароль для авторизации</h4>
+                    <p>{{ manager.password }}</p>
+                    <hr>
+                    <a class="btn btn-default btn-lg btn-block" href="{{ path('managers_edit', {'id': manager.id}) }}">Редактировать</a>
+                    <p></p>
+                    <a class="btn btn-default btn-lg btn-block" href="{{ path('managers') }}">Вернуться к списку</a>
+                </div>
+            </div>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+{% endblock %}

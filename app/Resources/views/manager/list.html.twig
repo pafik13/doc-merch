@@ -1,0 +1,31 @@
+{% extends 'nav.html.twig' %}
+
+{% block title %}Менеджеры{% endblock %}
+
+{% set page = 'managers' %}
+
+{% import "manager/table.html.twig" as table %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header"> Список менеджеров </h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">Менеджеры</div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        {{ table.list(users, "В базе нет ни одного вашего менеджера. Вы можете добавить своего менеджера, нажав на кнопку \"Добавить менеджера\" ниже.") }}
+                    </div>
+                    <a class="btn btn-default btn-lg btn-block" href="managers/add">Добавить менеджера</a>
+                </div>
+            </div>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+{% endblock %}

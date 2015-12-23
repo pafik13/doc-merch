@@ -4,22 +4,22 @@
     {{ parent() }}
 
     {% stylesheets 'bundles/app/css/main.css' filter='cssrewrite' %}
-        <link rel="stylesheet" href="{{ asset_url }}" />
+    <link rel="stylesheet" href="{{ asset_url }}" />
     {% endstylesheets %}
 
     {% stylesheets 'bundles/app/css/timeline.css' filter='cssrewrite' %}
-        <link rel="stylesheet" href="{{ asset_url }}" />
+    <link rel="stylesheet" href="{{ asset_url }}" />
     {% endstylesheets %}
 
-    <link rel="stylesheet" href="/Resources/thirdparty/css/metisMenu.css" />    
+    <link rel="stylesheet" href="/Resources/thirdparty/css/metisMenu.css" />
     <link rel="stylesheet" href="/Resources/thirdparty/css/morris.css" />
     <link rel="stylesheet" href="/Resources/thirdparty/css/font-awesome.min.css" />
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 {% endblock %}
 
@@ -45,7 +45,7 @@
                         <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu">
-						<li><a href={{ path('login_route') }}><i class="fa fa-sign-out fa-fw"></i> Сменить аккаунт</a>
+                        <li><a href={{ path('login_route') }}><i class="fa fa-sign-out fa-fw"></i> Сменить аккаунт</a>
                         <li><a href={{ path('logout') }}><i class="fa fa-sign-out fa-fw"></i> Выйти</a>
                         </li>
                     </ul>
@@ -63,7 +63,12 @@
                         </li>
                         {% if is_granted('ROLE_MANAGER') %}<li>
                             <a href={{ path('presenters') }}{% if page == 'presenters' %} class="active"{% endif %}><i class="fa fa-table fa-fw"></i> Представители</a>
-                        </li>{% endif %}
+                            </li>
+                        {% endif %}
+                        {% if is_granted('ROLE_ADMIN') %}<li>
+                            <a href={{ path('managers') }}{% if page == 'managers' %} class="active"{% endif %}><i class="fa fa-table fa-fw"></i> Менеджеры</a>
+                            </li>
+                        {% endif %}
                     </ul>
                 </div>
                 <!-- /.sidebar-collapse -->
@@ -72,7 +77,7 @@
         </nav>
 
         <div id="page-wrapper">
-			{% block main %}{% endblock %}
+            {% block main %}{% endblock %}
         </div>
         <!-- /#page-wrapper -->
 
@@ -88,6 +93,6 @@
     <script src="/Resources/thirdparty/js/morris.min.js" type="text/javascript"></script>
 
     {% javascripts '@AppBundle/Resources/public/js/*' %}
-        <script src="{{ asset_url }}"></script>
+    <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}
