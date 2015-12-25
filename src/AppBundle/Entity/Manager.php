@@ -68,8 +68,12 @@ class Manager extends User
      */
     private $presenters;
 
+    /**
+     * Manager constructor.
+     */
     public function __construct()
     {
+        parent::__construct();
         $this->presenters = new ArrayCollection();
     }
 

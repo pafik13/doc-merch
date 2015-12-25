@@ -35,7 +35,7 @@ class PresenterController extends Controller
         }
 
         $other = $users->createQueryBuilder('p')
-            ->where('p.role = :role AND p.manager IS NULL OR p.manager <> :id')
+            ->where('p.role = :role AND p.manager <> :id')
             ->setParameter('id',$user->getId())
             ->setParameter('role', $role->getId('PRESENTER'))
             ->getQuery()
