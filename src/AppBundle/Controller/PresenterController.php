@@ -28,18 +28,22 @@ class PresenterController extends Controller
 			->getRepository('AppBundle:Presenter');
         $role = new Role();
 		$user = $this->getUser();
-        if($user->getRole() === $role->getId('MANAGER')){
-            $my = $user->getPresenters();
-        } else{
+        if($user->getRole() === $role->getId('ADMIN')){
             $my=null;
+            $other = $users->createQueryBuilder('p')
+                ->where('p.role = :role')
+                ->setParameter('role', $role->getId('PRESENTER'))
+                ->getQuery()
+                ->getResult();
+        } else{
+            $my = $user->getPresenters();
+            $other = $users->createQueryBuilder('p')
+                ->where('p.role = :role AND p.manager <> :id')
+                ->setParameter('id',$user->getId())
+                ->setParameter('role', $role->getId('PRESENTER'))
+                ->getQuery()
+                ->getResult();
         }
-
-        $other = $users->createQueryBuilder('p')
-            ->where('p.role = :role AND p.manager <> :id')
-            ->setParameter('id',$user->getId())
-            ->setParameter('role', $role->getId('PRESENTER'))
-            ->getQuery()
-            ->getResult();
 
         return $this->render('presenter/list.html.twig', array(
             'my' => $my,
@@ -260,7 +264,12 @@ class PresenterController extends Controller
 			->getManager()
 			->getRepository('AppBundle:User');
         $presenter = $users->find($id);
-		$manager = $users->find($presenter->getManager());
+        if($presenter->getManager()){
+            $manager = $users->find($presenter->getManager());
+        } else{
+            $manager=null;
+        }
+
 
         return $this->render('presenter/info.html.twig', array(
             'presenter' => $presenter,
