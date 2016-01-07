@@ -21,8 +21,9 @@
                 <div class="panel-heading">Мои представители</div>
 				<div class="panel-body">
 					<div class="table-responsive">
-						{{ table.list(my, "В базе нет ни одного вашего представителя. Вы можете добавить своего представителя, нажав на кнопку \"Добавить представителя\" ниже.") }}
+						{{ table.list("my",my, "В базе нет ни одного вашего представителя. Вы можете добавить своего представителя, нажав на кнопку \"Добавить представителя\" ниже.") }}
 					</div>
+                    <label><input id="myCheckbox" type="checkbox">Показать неактивных пользователей</label>
 					<a class="btn btn-default btn-lg btn-block" href="presenters/add">Добавить представителя</a>
 				</div>
 			</div>
@@ -37,7 +38,8 @@
                 <div class="panel-heading">Другие представители</div>
 				<div class="panel-body">
 					<div class="table-responsive">
-						{{ table.list(other, "В базе нет представителей других менеджеров.") }}
+						{{ table.list("other", other, "В базе нет представителей других менеджеров.") }}
+                        <label><input id="otherCheckbox" type="checkbox">Показать неактивных пользователей</label>
 					</div>
 				</div>
 			</div>
@@ -46,3 +48,9 @@
     </div>
 	<!-- /.row -->
 {% endblock %}
+{% block javascripts %}
+{{ parent() }}
+    {% javascripts 'bundles/app/js/table.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{%  endblock %}

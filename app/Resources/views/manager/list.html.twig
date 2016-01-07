@@ -22,6 +22,7 @@
                     <div class="table-responsive">
                         {{ table.list(users, "В базе нет ни одного вашего менеджера. Вы можете добавить своего менеджера, нажав на кнопку \"Добавить менеджера\" ниже.") }}
                     </div>
+                    <label><input id="otherCheckbox" type="checkbox">Показать неактивных пользователей</label>
                     <a class="btn btn-default btn-lg btn-block" href="managers/add">Добавить менеджера</a>
                 </div>
             </div>
@@ -29,3 +30,9 @@
         <!-- /.col-lg-12 -->
     </div>
 {% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts 'bundles/app/js/table.js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{%  endblock %}
