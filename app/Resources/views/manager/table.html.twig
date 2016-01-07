@@ -7,6 +7,7 @@
 			<th>Пол</th>
 			<th>Дата рождения</th>
 			<th>Округ работы</th>
+			<th>Статус</th>
 			<th></th>
 		</tr></thead>
 		<tbody>
@@ -19,6 +20,7 @@
 						<td>{% if user.gender == 'm' %}Мужской{% elseif user.gender == 'f' %}Женский{% else %}Не указан{% endif %}</td>
 						<td>{{ user.birthday == NULL ? 'Не указана' : user.birthday|date("d.m.Y") }}</td>
 						<td>{{ user.district == NULL ? 'Не указано' : user.district }}</td>
+						<td>{{ user.isActive == true ? 'Активный' : 'Неактивный' }}</td>
 						<td><a href="managers/{{ user.id }}">Информация</a>
 							<br><a href="managers/edit/{{ user.id }}">Редактировать</a>
 							<br>
