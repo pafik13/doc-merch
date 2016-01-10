@@ -39,11 +39,11 @@ class ManagerController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $data = $request->request->get('appbundle_presenter');
-        $username = $gen->genUsername($data['surname'],
-            $data['name'],
-            $data['patronymic']);
-        $users = $em->getRepository('AppBundle:Presenter');
+        $data = $request->request->get('appbundle_manager');
+        $username = $gen->genUsername(  $data['surname'],
+                                        $data['name'],
+                                        $data['patronymic']);
+        $users = $em->getRepository('AppBundle:User');
         while($users->findByUsername($username)) {
             if(!isset($pers_numb)) {$pers_numb = 1; $susername = $username;}
             $username = $susername.$pers_numb;
