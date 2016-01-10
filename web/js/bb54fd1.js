@@ -27,10 +27,14 @@ $(function() {
     });
 });
 
-/**
- * Created by dasha on 07.01.16.
- */
 $(document).ready(function(){
+
+    $('#my, #other').DataTable( {
+            "paging":   false,
+            "info": false,
+            "searching": false
+        }
+    );
     $("table tbody>tr.inactive").addClass('hidden');
     $("input#myCheckbox").on('change', function(){
         if ($(this).is(':checked'))
