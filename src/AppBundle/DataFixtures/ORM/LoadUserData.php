@@ -71,7 +71,7 @@ class LoadUserData implements FixtureInterface
         $userPresenter1->setPatronymic('Иванович');
         $userPresenter1->setGender('m');
         $userPresenter1->setBirthday(new \DateTime('1900-01-01'));
-        $userPresenter1->setDistrict('presenter1');
+        $userPresenter1->setTerritory('presenter1');
         $userPresenter1->setManager($userManager1);
 
         $userPresenter2 = new Presenter();
@@ -84,7 +84,7 @@ class LoadUserData implements FixtureInterface
         $userPresenter2->setPatronymic('Петрович');
         $userPresenter2->setGender('m');
         $userPresenter2->setBirthday(new \DateTime('1900-01-01'));
-        $userPresenter2->setDistrict('presenter2');
+        $userPresenter2->setTerritory('presenter2');
         $userPresenter2->setManager($userManager2);
 
         $manager->persist($userPresenter1);
