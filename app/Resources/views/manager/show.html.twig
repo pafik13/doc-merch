@@ -22,7 +22,7 @@
                         <strong>E-mail:</strong> {{ manager.email }}<br>
                         <strong>Пол:</strong> {% if manager.gender == 'm' %}Мужской{% elseif manager.gender == 'f' %}Женский{% else %}Не указан{% endif %}<br>
                         <strong>Дата рождения:</strong> {{ manager.birthday == NULL ? 'Не указана' : manager.birthday|date("d.m.Y") }}<br>
-                        <strong>Округ работы:</strong> {{ manager.district == NULL ? 'Не указано' : manager.district }}<br>
+                        <strong>Округ работы:</strong> {{ manager.territory == NULL ? 'Не указано' : manager.territory.getName() }}<br>
                         <strong>Активный:</strong> {{ manager.isActive == true ? 'Да' : 'Нет' }}
                     </p>
                     <hr><h4>Пароль для авторизации</h4>

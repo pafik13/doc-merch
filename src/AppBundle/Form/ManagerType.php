@@ -22,7 +22,7 @@ class ManagerType extends AbstractType
             ->add('patronymic', 'text', array('label' => 'Отчество', 'attr' => array('pattern' => '[А-Я][а-я]+')))
             ->add('gender', 'choice', array('choices' => array(NULL => 'Не указан', 'm' => 'Мужской', 'f' => 'Женский'), 'label' => 'Пол', 'required' => false))
             ->add('birthday', 'date', array('label' => 'Дата рождения', 'format' => 'dd MM yyyy', 'years' => range(date('Y')-5, date('Y')-100), 'placeholder' => array('year' => 'Год', 'month' => 'Месяц', 'day' => 'День'), 'required' => false))
-            ->add('district', 'text', array('label' => 'Округ работы', 'required' => false, 'attr' => array('placeholder' => 'Округ работы')))
+            ->add('territory', 'text', array('label' => 'Округ работы', 'required' => false, 'attr' => array('placeholder' => 'Округ работы')))
             ->add('isActive', CheckboxType::class, array('label'=>'Активный', 'required'=>false) )
         ;
 

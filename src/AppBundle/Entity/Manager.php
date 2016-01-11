@@ -59,9 +59,9 @@ class Manager extends User
     private $birthday;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\ManyToOne(targetEntity="Territory")
      */
-    private $district;
+    private $territory;
 
     /**
      * @ORM\OneToMany(targetEntity="Presenter", mappedBy="manager")
@@ -162,17 +162,17 @@ class Manager extends User
     /**
      * @return mixed
      */
-    public function getDistrict()
+    public function getTerritory()
     {
-        return $this->district;
+        return $this->territory;
     }
 
     /**
-     * @param mixed $district
+     * @param mixed $territory
      */
-    public function setDistrict($district)
+    public function setTerritory($territory)
     {
-        $this->district = $district;
+        $this->territory = $territory;
         return $this;
     }
 

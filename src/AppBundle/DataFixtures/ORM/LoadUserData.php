@@ -4,6 +4,7 @@ namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\Manager;
 use AppBundle\Entity\Presenter;
+use AppBundle\Entity\Territory;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use AppBundle\Entity\User;
@@ -20,6 +21,17 @@ class LoadUserData implements FixtureInterface
         $userAdmin->setPassword('password');
         $userAdmin->setEmail('admin@admin.com');
         $userAdmin->setRole($role->getId('ADMIN'));
+
+        $territory1 = new Territory();
+        $territory1->setName("Округ1");
+        $territory1->setKey("Описание");
+
+        $territory2 = new Territory();
+        $territory2->setName("Округ2");
+        $territory2->setKey("Описание");
+
+        $manager->persist($territory1);
+        $manager->persist($territory2);
 
         $manager->persist($userAdmin);
 
@@ -42,7 +54,7 @@ class LoadUserData implements FixtureInterface
         $userManager1->setPatronymic('manager1');
         $userManager1->setGender('m');
         $userManager1->setBirthday(new \DateTime('1900-01-01'));
-        $userManager1->setDistrict('manager1');
+        $userManager1->setTerritory($territory1);
 
 
         $userManager2 = new Manager();
@@ -55,7 +67,7 @@ class LoadUserData implements FixtureInterface
         $userManager2->setPatronymic('manager2');
         $userManager2->setGender('m');
         $userManager2->setBirthday(new \DateTime('1900-01-01'));
-        $userManager2->setDistrict('manager2');
+        $userManager2->setTerritory($territory2);
 
         $manager->persist($userManager1);
         $manager->persist($userManager2);
@@ -71,7 +83,7 @@ class LoadUserData implements FixtureInterface
         $userPresenter1->setPatronymic('Иванович');
         $userPresenter1->setGender('m');
         $userPresenter1->setBirthday(new \DateTime('1900-01-01'));
-        $userPresenter1->setTerritory('presenter1');
+        $userPresenter1->setTerritory($territory1);
         $userPresenter1->setManager($userManager1);
 
         $userPresenter2 = new Presenter();
@@ -84,7 +96,7 @@ class LoadUserData implements FixtureInterface
         $userPresenter2->setPatronymic('Петрович');
         $userPresenter2->setGender('m');
         $userPresenter2->setBirthday(new \DateTime('1900-01-01'));
-        $userPresenter2->setTerritory('presenter2');
+        $userPresenter2->setTerritory($territory2);
         $userPresenter2->setManager($userManager2);
 
         $manager->persist($userPresenter1);

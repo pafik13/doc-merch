@@ -22,7 +22,7 @@
 						<strong>E-mail:</strong> {{ presenter.email }}<br>
 						<strong>Пол:</strong> {% if presenter.gender == 'm' %}Мужской{% elseif presenter.gender == 'f' %}Женский{% else %}Не указан{% endif %}<br>
 						<strong>Дата рождения:</strong> {{ presenter.birthday == NULL ? 'Не указана' : presenter.birthday|date("d.m.Y") }}<br>
-						<strong>Округ работы:</strong> {{ presenter.district == NULL ? 'Не указано' : presenter.district }}<br>
+						<strong>Округ работы:</strong> {{ presenter.territory == NULL ? 'Не указано' : presenter.territory.getName() }}<br>
 						<strong>Активный:</strong> {{ presenter.isActive == true ? 'Да' : 'Нет' }}
 					</p>
 					<hr><h4>Пароль для авторизации</h4>
