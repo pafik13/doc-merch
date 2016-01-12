@@ -53,9 +53,7 @@ class LoadUserData implements FixtureInterface
         $userManager1->setName('manager1');
         $userManager1->setPatronymic('manager1');
         $userManager1->setGender('m');
-        $userManager1->setBirthday(new \DateTime('1900-01-01'));
-        $userManager1->setTerritory($territory1);
-
+        $userManager1->setBirthday(new \DateTime('1980-01-01'));
 
         $userManager2 = new Manager();
         $userManager2->setUsername('manager2');
@@ -66,8 +64,7 @@ class LoadUserData implements FixtureInterface
         $userManager2->setName('manager2');
         $userManager2->setPatronymic('manager2');
         $userManager2->setGender('m');
-        $userManager2->setBirthday(new \DateTime('1900-01-01'));
-        $userManager2->setTerritory($territory2);
+        $userManager2->setBirthday(new \DateTime('1980-01-01'));
 
         $manager->persist($userManager1);
         $manager->persist($userManager2);
@@ -82,7 +79,7 @@ class LoadUserData implements FixtureInterface
         $userPresenter1->setName('Иван');
         $userPresenter1->setPatronymic('Иванович');
         $userPresenter1->setGender('m');
-        $userPresenter1->setBirthday(new \DateTime('1900-01-01'));
+        $userPresenter1->setBirthday(new \DateTime('1980-01-01'));
         $userPresenter1->setTerritory($territory1);
         $userPresenter1->setManager($userManager1);
 
@@ -95,9 +92,9 @@ class LoadUserData implements FixtureInterface
         $userPresenter2->setName('Петр');
         $userPresenter2->setPatronymic('Петрович');
         $userPresenter2->setGender('m');
-        $userPresenter2->setBirthday(new \DateTime('1900-01-01'));
-        $userPresenter2->setTerritory($territory2);
+        $userPresenter2->setBirthday(new \DateTime('1980-01-01'));
         $userPresenter2->setManager($userManager2);
+        $userPresenter2->setTerritory($territory2);
 
         $manager->persist($userPresenter1);
         $manager->persist($userPresenter2);

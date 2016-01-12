@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -22,7 +23,7 @@ class PresenterType extends AbstractType
 			->add('patronymic', 'text', array('label' => 'Отчество', 'attr' => array('pattern' => '[А-Я][а-я]+')))
             ->add('gender', 'choice', array('choices' => array(NULL => 'Не указан', 'm' => 'Мужской', 'f' => 'Женский'), 'label' => 'Пол', 'required' => false))
             ->add('birthday', 'date', array('label' => 'Дата рождения', 'format' => 'dd MM yyyy', 'years' => range(date('Y')-5, date('Y')-100), 'placeholder' => array('year' => 'Год', 'month' => 'Месяц', 'day' => 'День'), 'required' => false))
-            ->add('territory', 'text', array('label' => 'Округ работы', 'required' => false, 'attr' => array('placeholder' => 'Округ работы')))
+            ->add('territory', EntityType::class, array('class'=>'AppBundle:Territory','choice_label'=>'name','label' => 'Округ работы','placeholder'=>'Не указан', 'required' => false))
             ->add('isActive', CheckboxType::class, array('label'=>'Активный', 'required'=>false) )
         ;
     }
