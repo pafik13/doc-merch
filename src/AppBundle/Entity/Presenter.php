@@ -60,6 +60,7 @@ class Presenter extends User
 
     /**
      * @ORM\ManyToOne(targetEntity="Territory")
+     * @ORM\JoinColumn(name="territory_id", referencedColumnName="id",nullable=true, onDelete="SET NULL")
      */
     private $territory;
 

@@ -1,0 +1,32 @@
+{% extends 'nav.html.twig' %}
+
+{% block title %}{{ territory.name }} / Информация об округе{% endblock %}
+
+{% set page = 'territories' %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header"> Информация об округе </h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">{{ territory.name }}</div>
+                <div class="panel-body">
+                    <p>
+                        <strong>Название:</strong> {{ territory.name }}<br>
+                        <strong>Описание:</strong> {{ territory.key }}<br>
+                    </p>
+                    <a class="btn btn-default btn-lg btn-block" href="{{ path('territories_edit', {'id': territory.id}) }}">Редактировать</a>
+                    <p></p>
+                    <a class="btn btn-default btn-lg btn-block" href="{{ path('territories') }}">Вернуться к списку</a>
+                </div>
+            </div>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+{% endblock %}

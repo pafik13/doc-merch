@@ -1,0 +1,55 @@
+{% extends 'nav.html.twig' %}
+
+{% block title %}Округи{% endblock %}
+
+{% set page = 'territories' %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header"> Список округов </h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">Округи</div>
+                <div class="panel-body">
+                    <div class="checkbox text-right">
+                    </div>
+                    <div class="table-responsive">
+                        <table id="territories" class="table">
+                            <thead><tr>
+                                <th>#</th>
+                                <th>Название</th>
+                                <th>Описание</th>
+                                <th></th>
+                            </tr></thead>
+                            <tbody>
+                            {% if territories|length > 0 %}
+                                {% for territory in territories %}
+                                    <tr>
+                                        <td>{{ loop.index }}</td>
+                                        <td>{{ territory.getName() }}</td>
+                                        <td>{{ territory.getKey() }}</td>
+                                        <td><a href="territories/{{ territory.id }}">Информация</a>
+                                            <br><a href="territories/edit/{{ territory.id }}">Редактировать</a>
+                                            <br>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr><td colspan="8" style="text-align: center;">"В базе нет ни одного округа. Вы можете добавить округ, нажав на кнопку \"Добавить округ\" ниже."</td></tr>
+                            {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <a class="btn btn-default btn-lg btn-block" href="territories/add">Добавить округ</a>
+                </div>
+            </div>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+{% endblock %}
