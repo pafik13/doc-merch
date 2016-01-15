@@ -64,7 +64,11 @@
                         <li>
                             <a href={{ path('mainpage') }}{% if page == 'mainpage' %} class="active"{% endif %}><i class="fa fa-dashboard fa-fw"></i> Сводная информация</a>
                         </li>
-                        {% if is_granted('ROLE_MANAGER') %}<li>
+                        {% if is_granted('ROLE_MANAGER') %}
+                            <li>
+                                <a href={{  path('territories') }}{% if page == 'territories' %} class="active"{% endif %}><i class="fa fa-table fa-fw"></i> Округи</a>
+                            </li>
+                            <li>
                             <a href={{ path('presenters') }}{% if page == 'presenters' %} class="active"{% endif %}><i class="fa fa-table fa-fw"></i> Представители</a>
                             </li>
                         {% endif %}
@@ -72,10 +76,6 @@
                             <li>
                                 <a href={{ path('managers') }}{% if page == 'managers' %} class="active"{% endif %}><i class="fa fa-table fa-fw"></i> Менеджеры</a>
                             </li>
-                            <li>
-                                <a href={{  path('territories') }}{% if page == 'territories' %} class="active"{% endif %}><i class="fa fa-table fa-fw"></i> Округи</a>
-                            </li>
-
                         {% endif %}
                     </ul>
                 </div>
