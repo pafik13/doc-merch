@@ -1,5 +1,8 @@
 {% extends 'nav.html.twig' %}
-
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="/Resources/thirdparty/css/jquery.modal.css" type="text/css" media="screen">
+{% endblock %}
 {% block title %}Лечебно-профилактические учреждения{% endblock %}
 
 {% set page = 'hospitals' %}
@@ -50,10 +53,13 @@
                             </tbody>
                         </table>
                     </div>
-                    <a class="btn btn-default btn-lg btn-block" href="hospitals/add">Добавить округ</a>
+                    <a class="btn btn-default btn-lg btn-block" href="hospitals/add">Добавить лечебно-профилактическое учреждение</a>
                 </div>
             </div>
         </div>
         <!-- /.col-lg-12 -->
     </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
 {% endblock %}

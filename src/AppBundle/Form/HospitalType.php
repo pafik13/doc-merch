@@ -22,8 +22,12 @@ class HospitalType extends AbstractType
             ->add('shortName', TextType::class, array('label' => 'Краткое наименование'))
             ->add('fullName', TextType::class, array('label' => 'Полное наименование', 'attr' => array('pattern' => '[А-Я][а-я]+')))
             ->add('territory', EntityType::class, array('class'=>'AppBundle:Territory','choice_label'=>'name','label' => 'Округ','placeholder'=>'Не указан', 'required' => false))
-            ->add('address', TextType::class, array('label'=>'Адрес', 'read_only'=>'read_only'))
-            ->add('map',ButtonType::class, array('label'=>'Карта'))
+            ->add('address', TextType::class, array('label'=>'Адрес','read_only'=>'read_only'))
+            ->add('ka_region',TextType::class, array('label'=>'Регион'))
+            ->add('ka_district',TextType::class, array('label'=>'Район'))
+            ->add('ka_city',TextType::class, array('label'=>'Город'))
+            ->add('ka_street',TextType::class, array('label'=>'Улица'))
+            ->add('ka_building',TextType::class, array('label'=>'Номер дома'))
         ;
     }
 

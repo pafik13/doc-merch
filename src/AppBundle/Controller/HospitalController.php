@@ -70,7 +70,7 @@ class HospitalController extends Controller
 
         $editForm->handleRequest($request);
 
-        if( $editForm->isValid()){
+        if( $editForm->isSubmitted() && $editForm->isValid()){
             $em->flush();
 
             return $this->redirect($this->generateUrl('hospitals'));
@@ -122,7 +122,7 @@ class HospitalController extends Controller
     {
         $form = $this->createForm(new HospitalType(), $hospital);
 
-        $form->add('submit', 'submit', array('label' => 'Добавить округ', 'attr' => array('class' => 'btn btn-default btn-lg btn-block')));
+        $form->add('submit', 'submit', array('label' => 'Добавить ЛПУ', 'attr' => array('class' => 'btn btn-default btn-lg btn-block')));
 
         return $form;
     }

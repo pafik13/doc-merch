@@ -55,4 +55,15 @@ $(document).ready(function(){
         else
             $("table#other tbody>tr.inactive").addClass('hidden');
     });
+
+    $('.full-address').change(function(){
+        if (!$(".full-address").val()){
+            $("#address-button").html('Добавить адрес');
+        } else {
+            $("#address-button").html('Изменить адрес');
+        }
+    });
+    $('#change-address-button').click(function(){
+        $('.ka-city').change();
+    });
 });

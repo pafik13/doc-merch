@@ -1,6 +1,19 @@
 {% extends 'nav.html.twig' %}
 
-{% block title %}Добавить Округ{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+
+    {% stylesheets 'bundles/app/css/modal.css' filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+
+    {% stylesheets 'bundles/app/css/form_with_map.css' filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+
+    <script src="http://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+{% endblock %}
+{% block title %}Добавить ЛПУ{% endblock %}
 
 {% set page = 'hospitals' %}
 
@@ -8,7 +21,7 @@
     {% form_theme form with 'bootstrap_3_layout.html.twig' %}
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header"> Добавление нового округа </h1>
+            <h1 class="page-header"> Добавление нового лечебно-профилактического учреждения </h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
@@ -16,12 +29,61 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
-                <div class="panel-heading">Новый округ</div>
+                <div class="panel-heading">Новое лечебно-профилактическое учреждение</div>
                 <div class="panel-body">
-                    {{ form_start(form) }}
+                    {{ form_start(form,{'attr':{'class':'js-form-address'}}) }}
                     {{ form_row(form.shortName) }}
                     {{ form_row(form.fullName) }}
+                    {{ form_row(form.address,{'attr':{'class':'value full-address'}}) }}
+                    <!-- Button trigger modal -->
+                    <a href="#" id="address-button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Добавить адрес</a>
+                    {#<button id="address-button" class="btn btn-default" data-toggle="modal" data-target="#myModal">#}
+                            {#Добавить адрес#}
+                    {#</button>#}
                     {{ form_row(form.territory) }}
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="address">
+                                        <div class="col-1">
+                                                <div class="field">
+                                                    {{ form_row(form.ka_region,{'attr':{'class':'ka-region'}}) }}
+                                                </div>
+                                                <div class="field">
+                                                    {{ form_row(form.ka_district,{'attr':{'class':'ka-district'}}) }}
+                                                </div>
+                                                <div class="field">
+                                                    {{ form_row(form.ka_city,{'attr':{'class':'ka-city'}}) }}
+                                                </div>
+                                                <div class="field">
+                                                    {{ form_row(form.ka_street,{'attr':{'class':'ka-street'}}) }}
+                                                </div>
+                                                <div class="field">
+                                                    {{ form_row(form.ka_building,{'attr':{'class':'ka-building'}}) }}
+                                                </div>
+                                                <p class="title">Текстовое представление адреса</p>
+                                                <input type="text" class="value full-address form-control">
+                                        </div>
+                                        <div class="col-2">
+                                            <div id="map" class="panel-map"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                                </div>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
+                    <!-- /.modal -->
                     {{ form_end(form) }}
                     <a class="btn btn-default btn-lg btn-block" href="{{ path('hospitals') }}">Вернуться к списку</a>
                 </div>
@@ -29,5 +91,13 @@
         </div>
         <!-- /.col-lg-12 -->
     </div>
+    <!-- Modal HTML embedded directly into document -->
+
     <!-- /.row -->
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts '@AppBundle/Resources/public/js/form_with_map.js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock %}

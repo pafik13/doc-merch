@@ -1,5 +1,17 @@
 {% extends 'nav.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
 
+    {% stylesheets 'bundles/app/css/modal.css' filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+
+    {% stylesheets 'bundles/app/css/form_with_map.css' filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+
+    <script src="http://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+{% endblock %}
 {% block title %}Редактировать лечебно-профилактическое учреждение{% endblock %}
 
 {% set page = 'hospitals' %}
@@ -18,7 +30,59 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Изменение информации о лечебно-профилактическом учреждении</div>
                 <div class="panel-body">
-                    {{ form(edit_form) }}
+                    {{ form_start(edit_form,{'attr':{'class':'js-form-address'}}) }}
+                    {{ form_row(edit_form.shortName) }}
+                    {{ form_row(edit_form.fullName) }}
+                    {{ form_row(edit_form.address,{'attr':{'class':'value full-address'}}) }}
+                    <!-- Button trigger modal -->
+                    <a href="#" id="address-button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Изменить адрес</a>
+                    {{ form_row(edit_form.territory) }}
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="address">
+                                        <div class="col-1">
+                                            <div class="field">
+                                                {{ form_row(edit_form.ka_region,{'attr':{'class':'ka-region'}}) }}
+                                            </div>
+                                            <div class="field">
+                                                {{ form_row(edit_form.ka_district,{'attr':{'class':'ka-district'}}) }}
+                                            </div>
+                                            <div class="field">
+                                                {{ form_row(edit_form.ka_city,{'attr':{'class':'ka-city'}}) }}
+                                            </div>
+                                            <div class="field">
+                                                {{ form_row(edit_form.ka_street,{'attr':{'class':'ka-street'}}) }}
+                                            </div>
+                                            <div class="field">
+                                                {{ form_row(edit_form.ka_building,{'attr':{'class':'ka-building'}}) }}
+                                            </div>
+                                            <p class="title">Текстовое представление адреса</p>
+                                            <input type="text" class="value full-address form-control">
+                                        </div>
+                                        <div class="col-2">
+                                            <div id="map" class="panel-map"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                                </div>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
+                    <!-- /.modal -->
+
+                    {{ form_end(edit_form) }}
+
                 </div>
             </div>
         </div>
@@ -48,4 +112,10 @@
         </div>
         <!-- /.col-lg-12 -->
     </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts '@AppBundle/Resources/public/js/form_with_map.js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock %}
