@@ -1,0 +1,32 @@
+{% extends 'nav.html.twig' %}
+
+{% block title %}{{ hospital.name }} / Информация о лечебно-профилактическом учреждении{% endblock %}
+
+{% set page = 'hospitals' %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header"> Информация о лечебно-профилактическом учреждении </h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">{{ hospital.name }}</div>
+                <div class="panel-body">
+                    <p>
+                        <strong>Название:</strong> {{ hospital.name }}<br>
+                        <strong>Описание:</strong> {{ hospital.key }}<br>
+                    </p>
+                    <a class="btn btn-default btn-lg btn-block" href="{{ path('hospitals_edit', {'id': hospital.id}) }}">Редактировать</a>
+                    <p></p>
+                    <a class="btn btn-default btn-lg btn-block" href="{{ path('hospitals') }}">Вернуться к списку</a>
+                </div>
+            </div>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+{% endblock %}
