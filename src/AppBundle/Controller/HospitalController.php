@@ -155,7 +155,7 @@ class HospitalController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('hospitals_delete', array('id'=>$hospital->getId())))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Удалить округ', 'attr' => array('class' => 'btn btn-default btn-lg btn-block')))
+            ->add('submit', 'submit', array('label' => 'Удалить ЛПУ', 'attr' => array('class' => 'btn btn-default btn-lg btn-block')))
             ->getForm()
             ;
     }
