@@ -35,9 +35,12 @@
                     {{ form_row(edit_form.fullName) }}
                     {{ form_row(edit_form.address,{'attr':{'class':'value full-address'}}) }}
                     <!-- Button trigger modal -->
-                    <a href="#" id="address-button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Изменить адрес</a>
+                    <a href="#" id="change-address-button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Изменить адрес</a>
                     {{ form_row(edit_form.territory) }}
-
+                    <div class="hidden">
+                        {{ form_row(edit_form.latitude,{'attr':{'class':'latitude'}}) }}
+                        {{ form_row(edit_form.longitude,{'attr':{'class':'longitude'}}) }}
+                    </div>
                     <!-- Modal -->
                     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog">

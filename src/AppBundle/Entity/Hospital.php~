@@ -75,6 +75,18 @@ class Hospital
      * @ORM\ManyToOne(targetEntity="Territory")
      */
     private $territory;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="latitude", type="text")
+     */
+    private $latitude;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="longitude", type="text")
+     */
+    private $longitude;
 
 
     /**
@@ -177,5 +189,120 @@ class Hospital
     public function getTerritory()
     {
         return $this->territory;
+    }
+
+    /**
+     * Set ka_region
+     *
+     * @param string $kaRegion
+     * @return Hospital
+     */
+    public function setKaRegion($kaRegion)
+    {
+        $this->ka_region = $kaRegion;
+
+        return $this;
+    }
+
+    /**
+     * Get ka_region
+     *
+     * @return string 
+     */
+    public function getKaRegion()
+    {
+        return $this->ka_region;
+    }
+
+    /**
+     * Set ka_district
+     *
+     * @param string $kaDistrict
+     * @return Hospital
+     */
+    public function setKaDistrict($kaDistrict)
+    {
+        $this->ka_district = $kaDistrict;
+
+        return $this;
+    }
+
+    /**
+     * Get ka_district
+     *
+     * @return string 
+     */
+    public function getKaDistrict()
+    {
+        return $this->ka_district;
+    }
+
+    /**
+     * Set ka_city
+     *
+     * @param string $kaCity
+     * @return Hospital
+     */
+    public function setKaCity($kaCity)
+    {
+        $this->ka_city = $kaCity;
+
+        return $this;
+    }
+
+    /**
+     * Get ka_city
+     *
+     * @return string 
+     */
+    public function getKaCity()
+    {
+        return $this->ka_city;
+    }
+
+    /**
+     * Set ka_street
+     *
+     * @param string $kaStreet
+     * @return Hospital
+     */
+    public function setKaStreet($kaStreet)
+    {
+        $this->ka_street = $kaStreet;
+
+        return $this;
+    }
+
+    /**
+     * Get ka_street
+     *
+     * @return string 
+     */
+    public function getKaStreet()
+    {
+        return $this->ka_street;
+    }
+
+    /**
+     * Set ka_building
+     *
+     * @param string $kaBuilding
+     * @return Hospital
+     */
+    public function setKaBuilding($kaBuilding)
+    {
+        $this->ka_building = $kaBuilding;
+
+        return $this;
+    }
+
+    /**
+     * Get ka_building
+     *
+     * @return string 
+     */
+    public function getKaBuilding()
+    {
+        return $this->ka_building;
     }
 }

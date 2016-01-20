@@ -44,13 +44,13 @@ class Hospital
     /**
      * @var string
      *
-     * @ORM\Column(name="ka_region", type="text")
+     * @ORM\Column(name="ka_region", type="text", nullable=true)
      */
     private $ka_region;
     /**
      * @var string
      *
-     * @ORM\Column(name="ka_district", type="text")
+     * @ORM\Column(name="ka_district", type="text",nullable=true)
      */
     private $ka_district;
     /**
@@ -75,6 +75,18 @@ class Hospital
      * @ORM\ManyToOne(targetEntity="Territory")
      */
     private $territory;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="latitude", type="text")
+     */
+    private $latitude;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="longitude", type="text")
+     */
+    private $longitude;
 
 
     /**
@@ -292,5 +304,51 @@ class Hospital
     public function getKaBuilding()
     {
         return $this->ka_building;
+    }
+
+    /**
+     * Set latitude
+     *
+     * @param string $latitude
+     * @return Hospital
+     */
+    public function setLatitude($latitude)
+    {
+        $this->latitude = $latitude;
+
+        return $this;
+    }
+
+    /**
+     * Get latitude
+     *
+     * @return string 
+     */
+    public function getLatitude()
+    {
+        return $this->latitude;
+    }
+
+    /**
+     * Set longitude
+     *
+     * @param string $longitude
+     * @return Hospital
+     */
+    public function setLongitude($longitude)
+    {
+        $this->longitude = $longitude;
+
+        return $this;
+    }
+
+    /**
+     * Get longitude
+     *
+     * @return string 
+     */
+    public function getLongitude()
+    {
+        return $this->longitude;
     }
 }

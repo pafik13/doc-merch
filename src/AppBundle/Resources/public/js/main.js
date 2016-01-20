@@ -63,7 +63,4 @@ $(document).ready(function(){
             $("#address-button").html('Изменить адрес');
         }
     });
-    $('#change-address-button').click(function(){
-        $('.ka-city').change();
-    });
 });

@@ -37,11 +37,11 @@
                     {{ form_row(form.address,{'attr':{'class':'value full-address'}}) }}
                     <!-- Button trigger modal -->
                     <a href="#" id="address-button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Добавить адрес</a>
-                    {#<button id="address-button" class="btn btn-default" data-toggle="modal" data-target="#myModal">#}
-                            {#Добавить адрес#}
-                    {#</button>#}
                     {{ form_row(form.territory) }}
-
+                    <div class="hidden">
+                        {{ form_row(form.latitude,{'attr':{'class':'latitude'}}) }}
+                        {{ form_row(form.longitude,{'attr':{'class':'longitude'}}) }}
+                    </div>
                     <!-- Modal -->
                     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
@@ -69,6 +69,9 @@
                                                 </div>
                                                 <p class="title">Текстовое представление адреса</p>
                                                 <input type="text" class="value full-address form-control">
+
+                                                <p class="title">Координаты</p>
+                                                <input type="text" class="gps-position form-control">
                                         </div>
                                         <div class="col-2">
                                             <div id="map" class="panel-map"></div>

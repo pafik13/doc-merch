@@ -94,6 +94,12 @@ $(function () {
 				top: 10
 			}
 		});
+		if($('.latitude').val() && $('.longitude').val()) {
+			var position = [$('.latitude').val(),$('.longitude').val()].map(Number);
+			var placemark = new ymaps.Placemark(position, {}, {});
+			map.geoObjects.add(placemark);
+			map.setCenter(position, 16);
+		}
 	});
 
 	function setLabel($input, text) {
@@ -155,9 +161,16 @@ $(function () {
 					map.geoObjects.remove(geoObject);
 				});
 
-				var position = res.geoObjects.get(0).geometry.getCoordinates(),
-					placemark = new ymaps.Placemark(position, {}, {});
-
+				//var position = res.geoObjects.get(0).geometry.getCoordinates(),
+				//	placemark = new ymaps.Placemark(position, {}, {});
+				//$('.gps-position').val(position);
+				//map.geoObjects.add(placemark);
+				var position = res.geoObjects.get(0).geometry.getCoordinates();
+				$('.gps-position').val(position);
+				var pos = $('.gps-position').val().split(",").map(Number);
+				$('.latitude').val(pos[0]);
+				$('.longitude').val(pos[1]);
+				placemark = new ymaps.Placemark(pos, {}, {});
 				map.geoObjects.add(placemark);
 				map.setCenter(position, zoom);
 			});
