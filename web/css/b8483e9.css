@@ -11,9 +11,6 @@ input, button {
 .address {
     margin: auto 0;
     padding: 40px;
-    border: 2px solid #e1e1e1;
-    background-color: #f7f7f7;
-    box-shadow: rgba(0, 0, 0, 0.075) 1px 1px 5px;
 }
 
 .address h1 {
