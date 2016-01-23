@@ -38,7 +38,7 @@ class Hospital
     /**
      * @var string
      *
-     * @ORM\Column(name="address", type="text")
+     * @ORM\Column(name="address", type="text", nullable = true)
      */
     private $address;
     /**
@@ -56,19 +56,19 @@ class Hospital
     /**
      * @var string
      *
-     * @ORM\Column(name="ka_city", type="text")
+     * @ORM\Column(name="ka_city", type="text", nullable = true)
      */
     private $ka_city;
     /**
      * @var string
      *
-     * @ORM\Column(name="ka_street", type="text")
+     * @ORM\Column(name="ka_street", type="text", nullable = true)
      */
     private $ka_street;
     /**
      * @var string
      *
-     * @ORM\Column(name="ka_building", type="text")
+     * @ORM\Column(name="ka_building", type="text", nullable = true)
      */
     private $ka_building;
     /**
@@ -78,13 +78,13 @@ class Hospital
     /**
      * @var string
      *
-     * @ORM\Column(name="latitude", type="text")
+     * @ORM\Column(name="latitude", type="text", nullable = true)
      */
     private $latitude;
     /**
      * @var string
      *
-     * @ORM\Column(name="longitude", type="text")
+     * @ORM\Column(name="longitude", type="text", nullable = true)
      */
     private $longitude;
 
