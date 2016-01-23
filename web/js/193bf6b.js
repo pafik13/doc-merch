@@ -94,12 +94,6 @@ $(function () {
 				top: 10
 			}
 		});
-		if($('.latitude').val() && $('.longitude').val()) {
-			var position = [$('.latitude').val(),$('.longitude').val()].map(Number);
-			var placemark = new ymaps.Placemark(position, {}, {});
-			map.geoObjects.add(placemark);
-			map.setCenter(position, 16);
-		}
 	});
 
 	function setLabel($input, text) {
@@ -165,14 +159,14 @@ $(function () {
 				//	placemark = new ymaps.Placemark(position, {}, {});
 				//$('.gps-position').val(position);
 				//map.geoObjects.add(placemark);
-				var position = res.geoObjects.get(0).geometry.getCoordinates();
-				$('.gps-position').val(position);
-				var pos = $('.gps-position').val().split(",").map(Number);
+				var pos = res.geoObjects.get(0).geometry.getCoordinates();
+				//$('.gps-position').val(position);
+				//var pos = $('.gps-position').val().split(",").map(Number);
 				$('.latitude').val(pos[0]);
 				$('.longitude').val(pos[1]);
-				placemark = new ymaps.Placemark(pos, {}, {});
+				var placemark = new ymaps.Placemark(pos, {}, {});
 				map.geoObjects.add(placemark);
-				map.setCenter(position, zoom);
+				map.setCenter(pos, zoom);
 			});
 		}
 	}
@@ -197,4 +191,28 @@ $(function () {
 			}
 		}
 	}
+
+	$('#address-button').click(function(){
+		if($('.latitude').val() && $('.longitude').val()) {
+			var position = [$('.latitude').val(),$('.longitude').val()].map(Number);
+			var placemark = new ymaps.Placemark(position, {}, {});
+			map.geoObjects.removeAll();
+			map.geoObjects.add(placemark);
+			var zoom = 4;
+			if($('.ka-building').val()){
+				zoom=16;
+			} else if($('.ka-street').val()){
+				zoom=13;
+			} else if(($('.ka-city').val())){
+				zoom=10;
+			} else if($('.ka-district').val()){
+				zoom=7;
+			} else if ($('.ka-region').val()){
+				zoom=4;
+			}
+			map.setCenter(position, zoom);
+		}
+	});
+
+
 });

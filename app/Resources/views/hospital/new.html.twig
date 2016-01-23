@@ -39,26 +39,26 @@
                         <a href="#" id="address-button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Добавить адрес</a>
                     </div>
                     <div class="hidden">
-                        {{ form_row(form.latitude,{'attr':{'class':'latitude'}}) }}
-                        {{ form_row(form.longitude,{'attr':{'class':'longitude'}}) }}
+                        {{ form_row(form.latitude,{'attr':{'class':'latitude address-field'}}) }}
+                        {{ form_row(form.longitude,{'attr':{'class':'longitude address-field'}}) }}
                     </div>
                     <!-- Modal -->
                     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <button type="button" class="close-address-button close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                 </div>
                                 <div class="modal-body">
                                     <div class="address row">
                                         <div class="col-lg-6">
-                                            {{ form_row(form.shortName) }}
-                                            {{ form_row(form.ka_region,{'attr':{'class':'ka-region'}}) }}
-                                            {{ form_row(form.ka_district,{'attr':{'class':'ka-district'}}) }}
-                                            {{ form_row(form.ka_city,{'attr':{'class':'ka-city'}}) }}
-                                            {{ form_row(form.ka_street,{'attr':{'class':'ka-street'}}) }}
-                                            {{ form_row(form.ka_building,{'attr':{'class':'ka-building'}}) }}
-                                            {{ form_row(form.address,{'attr':{'class':'value full-address'}}) }}
+                                            {{ form_row(form.shortName,{'attr':{'class':'address-field'}}) }}
+                                            {{ form_row(form.ka_region,{'attr':{'class':'ka-region address-field'}}) }}
+                                            {{ form_row(form.ka_district,{'attr':{'class':'ka-district address-field'}}) }}
+                                            {{ form_row(form.ka_city,{'attr':{'class':'ka-city address-field'}}) }}
+                                            {{ form_row(form.ka_street,{'attr':{'class':'ka-street address-field'}}) }}
+                                            {{ form_row(form.ka_building,{'attr':{'class':'ka-building address-field'}}) }}
+                                            {{ form_row(form.address,{'attr':{'class':'value full-address address-field'}}) }}
 
                                             {#<p class="title">Текстовое представление адреса</p>#}
                                             {#<input type="text" class="value full-address form-control">#}
@@ -72,7 +72,8 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Сохранить</button>
+                                    <button type="button" class="close-address-button btn btn-default" data-dismiss="modal">Закрыть</button>
                                 </div>
                             </div>
                             <!-- /.modal-content -->
@@ -94,6 +95,9 @@
 {% block javascripts %}
     {{ parent() }}
     {% javascripts '@AppBundle/Resources/public/js/form_with_map.js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    {% javascripts '@AppBundle/Resources/public/js/modal.js' %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}

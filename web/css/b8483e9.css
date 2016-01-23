@@ -10,7 +10,6 @@ input, button {
 
 .address {
     margin: auto 0;
-    padding: 40px;
 }
 
 .address h1 {
@@ -53,12 +52,10 @@ input, button {
 }
 
 .panel-map {
-    width: 384px;
     height: 582px;
-    padding: 20px;
     border: 1px solid #d8d8d8;
-    background: #ffffff;
-    background-size: 400px 250px;
+    position: relative;
+    padding: 10px;
 }
 
 .addition {
