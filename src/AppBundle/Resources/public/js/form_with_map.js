@@ -1,9 +1,9 @@
 $(function () {
-	var $region = $('.ka-region'),
-		$district = $('.ka-district'),
-		$city = $('.ka-city'),
-		$street = $('.ka-street'),
-		$building = $('.ka-building');
+	var $region = $('[name="region"]'),
+		$district = $('[name="district"]'),
+		$city = $('[name="city"]'),
+		$street = $('[name="street"]'),
+		$building = $('[name="building"]');
 
 	var map = null,
 		map_created = false;
@@ -155,18 +155,12 @@ $(function () {
 					map.geoObjects.remove(geoObject);
 				});
 
-				//var position = res.geoObjects.get(0).geometry.getCoordinates(),
-				//	placemark = new ymaps.Placemark(position, {}, {});
-				//$('.gps-position').val(position);
-				//map.geoObjects.add(placemark);
-				var pos = res.geoObjects.get(0).geometry.getCoordinates();
-				//$('.gps-position').val(position);
-				//var pos = $('.gps-position').val().split(",").map(Number);
-				$('.latitude').val(pos[0]);
-				$('.longitude').val(pos[1]);
-				var placemark = new ymaps.Placemark(pos, {}, {});
+				var position = res.geoObjects.get(0).geometry.getCoordinates(),
+					placemark = new ymaps.Placemark(position, {}, {});
+				$('.latitude').val(position[0]);
+				$('.longitude').val(position[1]);
 				map.geoObjects.add(placemark);
-				map.setCenter(pos, zoom);
+				map.setCenter(position, zoom);
 			});
 		}
 	}
@@ -191,28 +185,4 @@ $(function () {
 			}
 		}
 	}
-
-	$('#address-button').click(function(){
-		if($('.latitude').val() && $('.longitude').val()) {
-			var position = [$('.latitude').val(),$('.longitude').val()].map(Number);
-			var placemark = new ymaps.Placemark(position, {}, {});
-			map.geoObjects.removeAll();
-			map.geoObjects.add(placemark);
-			var zoom = 4;
-			if($('.ka-building').val()){
-				zoom=16;
-			} else if($('.ka-street').val()){
-				zoom=13;
-			} else if(($('.ka-city').val())){
-				zoom=10;
-			} else if($('.ka-district').val()){
-				zoom=7;
-			} else if ($('.ka-region').val()){
-				zoom=4;
-			}
-			map.setCenter(position, zoom);
-		}
-	});
-
-
 });

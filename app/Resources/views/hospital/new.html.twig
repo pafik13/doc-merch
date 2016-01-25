@@ -31,17 +31,26 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Новое лечебно-профилактическое учреждение</div>
                 <div class="panel-body">
-                    {{ form_start(form,{'attr':{'class':'js-form-address'}}) }}
+                    {{ form_start(form, {'attr':{'class':'add-hospital-form'}}) }}
                     {{ form_row(form.fullName) }}
+
                     {{ form_row(form.territory) }}
+                    {{ form_row(form.address,{'attr':{'class':'value full-address'}}) }}
                     <!-- Button trigger modal -->
                     <div class="form-group">
                         <a href="#" id="address-button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Добавить адрес</a>
                     </div>
                     <div class="hidden">
-                        {{ form_row(form.latitude,{'attr':{'class':'latitude address-field'}}) }}
-                        {{ form_row(form.longitude,{'attr':{'class':'longitude address-field'}}) }}
+                        {{ form_row(form.shortName,{'attr':{'class':'short-name'}}) }}
+                        {{ form_row(form.latitude,{'attr':{'class':'latitude'}}) }}
+                        {{ form_row(form.longitude,{'attr':{'class':'longitude'}}) }}
+                        {{ form_row(form.ka_region,{'attr':{'class':'ka-region'}}) }}
+                        {{ form_row(form.ka_district,{'attr':{'class':'ka-district'}}) }}
+                        {{ form_row(form.ka_city,{'attr':{'class':'ka-city'}}) }}
+                        {{ form_row(form.ka_street,{'attr':{'class':'ka-street'}}) }}
+                        {{ form_row(form.ka_building,{'attr':{'class':'ka-building'}}) }}
                     </div>
+                    {{ form_end(form) }}
                     <!-- Modal -->
                     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
@@ -52,19 +61,36 @@
                                 <div class="modal-body">
                                     <div class="address row">
                                         <div class="col-lg-6">
-                                            {{ form_row(form.shortName,{'attr':{'class':'address-field'}}) }}
-                                            {{ form_row(form.ka_region,{'attr':{'class':'ka-region address-field'}}) }}
-                                            {{ form_row(form.ka_district,{'attr':{'class':'ka-district address-field'}}) }}
-                                            {{ form_row(form.ka_city,{'attr':{'class':'ka-city address-field'}}) }}
-                                            {{ form_row(form.ka_street,{'attr':{'class':'ka-street address-field'}}) }}
-                                            {{ form_row(form.ka_building,{'attr':{'class':'ka-building address-field'}}) }}
-                                            {{ form_row(form.address,{'attr':{'class':'value full-address address-field'}}) }}
-
-                                            {#<p class="title">Текстовое представление адреса</p>#}
-                                            {#<input type="text" class="value full-address form-control">#}
-
-                                            {#<p class="title">Координаты</p>#}
-                                            {#<input type="text" class="gps-position form-control">#}
+                                            <form class="js-form-address">
+                                                <div class="form-group">
+                                                    <label class="control-label">Краткое наименование</label>
+                                                    <input class="form-control" name="short-name" type="text">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label">Регион</label>
+                                                    <input class="form-control" name="region" type="text">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label">Район</label>
+                                                    <input class="form-control" name="district" type="text">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label">Город</label>
+                                                    <input class="form-control" name="city" type="text">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label">Улица</label>
+                                                    <input class="form-control" name="street" type="text">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label">Номер дома</label>
+                                                    <input class="form-control" name="building" type="text">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label">Адрес</label>
+                                                    <textarea readonly class="form-control value full-address" name="address" type="text"></textarea>
+                                                </div>
+                                            </form>
                                         </div>
                                         <div class="col-lg-6">
                                             <div id="map" class="panel-map"></div>
@@ -72,7 +98,7 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Сохранить</button>
+                                    <button type="button" class="save-address-button btn btn-default" data-dismiss="modal">Сохранить</button>
                                     <button type="button" class="close-address-button btn btn-default" data-dismiss="modal">Закрыть</button>
                                 </div>
                             </div>
@@ -81,7 +107,7 @@
                         <!-- /.modal-dialog -->
                     </div>
                     <!-- /.modal -->
-                    {{ form_end(form) }}
+
                     <a class="btn btn-default btn-lg btn-block" href="{{ path('hospitals') }}">Вернуться к списку</a>
                 </div>
             </div>
