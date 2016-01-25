@@ -21,7 +21,7 @@ class HospitalType extends AbstractType
     {
         $builder
             ->add('shortName', TextType::class, array('label' => 'Краткое наименование'))
-            ->add('fullName', TextType::class, array('label' => 'Полное наименование', 'attr' => array('pattern' => '[А-Я][а-я]+')))
+            ->add('fullName', TextType::class, array('label' => 'Полное наименование'))
             ->add('territory', EntityType::class, array('class'=>'AppBundle:Territory','choice_label'=>'name','label' => 'Округ','placeholder'=>'Не указан', 'required' => false))
             ->add('address', TextType::class, array('label'=>'Адрес','read_only'=>'read_only','required' => false))
             ->add('ka_region',TextType::class, array('label'=>'Регион','required' => false))
