@@ -157,8 +157,8 @@ $(function () {
 
 				var position = res.geoObjects.get(0).geometry.getCoordinates(),
 					placemark = new ymaps.Placemark(position, {}, {});
-				$('.latitude').val(position[0]);
-				$('.longitude').val(position[1]);
+				$('[name="latitude"]').val(position[0]);
+				$('[name="longitude"]').val(position[1]);
 				map.geoObjects.add(placemark);
 				map.setCenter(position, zoom);
 			});
@@ -168,7 +168,7 @@ $(function () {
 	function addressUpdate() {
 		var address = $.kladr.getAddress('.js-form-address');
 
-		$('.full-address').val(address).change();
+		$('.value').val(address).change();
 	}
 
 	function log(obj) {

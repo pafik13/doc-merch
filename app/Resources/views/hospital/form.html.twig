@@ -1,0 +1,82 @@
+{% macro list(form) %}
+    {{ form_start(form, {'attr':{'class':'add-hospital-form'}}) }}
+    {{ form_row(form.fullName, {'attr':{'class':'name'}}) }}
+    {{ form_row(form.shortName, {'attr':{'class':'name short-name'}}) }}
+    {{ form_row(form.territory) }}
+    {{ form_row(form.address,{'attr':{'class':'full-address'}}) }}
+    <!-- Button trigger modal -->
+    <div class="form-group">
+        <a href="#" id="address-button" class="btn btn-default" data-toggle="modal" data-target="#myModal">
+            {% if form.vars.value.address %} Изменить адрес
+            {% else %} Добавить адрес
+            {% endif %}
+        </a>
+    </div>
+    <div class="hidden">
+        {{ form_row(form.latitude,{'attr':{'class':'latitude'}}) }}
+        {{ form_row(form.longitude,{'attr':{'class':'longitude'}}) }}
+        {{ form_row(form.ka_region,{'attr':{'class':'ka-region'}}) }}
+        {{ form_row(form.ka_district,{'attr':{'class':'ka-district'}}) }}
+        {{ form_row(form.ka_city,{'attr':{'class':'ka-city'}}) }}
+        {{ form_row(form.ka_street,{'attr':{'class':'ka-street'}}) }}
+        {{ form_row(form.ka_building,{'attr':{'class':'ka-building'}}) }}
+    </div>
+    {{ form_end(form) }}
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title custom_align" id="modal-title">Адрес </h4>
+                    <button type="button" class="close-address-button close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="address row">
+                        <div class="col-lg-6">
+                            <form class="js-form-address">
+                                <div class="form-group">
+                                    <label class="control-label">Регион</label>
+                                    <input class="form-control address-field" name="region" type="text">
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">Район</label>
+                                    <input class="form-control address-field" name="district" type="text">
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">Город</label>
+                                    <input class="form-control address-field" name="city" type="text">
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">Улица</label>
+                                    <input class="form-control address-field" name="street" type="text">
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">Номер дома</label>
+                                    <input class="form-control address-field" name="building" type="text">
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">Адрес</label>
+                                    <textarea readonly class="form-control value" name="full-address" type="text"></textarea>
+                                </div>
+                                <div class="hidden">
+                                    <input class="form-control" name="latitude" type="text">
+                                    <input class="form-control" name="longitude" type="text">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-lg-6">
+                            <div id="map" class="panel-map"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="save-address-button btn btn-default" data-dismiss="modal">Сохранить</button>
+                    <button type="button" class="close-address-button btn btn-default" data-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+{% endmacro %}

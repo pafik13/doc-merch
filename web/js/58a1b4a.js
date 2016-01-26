@@ -1,46 +1,32 @@
 $(document).ready(function(){
-    $('#address-button').click(function(){
-        $('.js-form-address').find('input').each(function(i, elem) {
-            var input = $(elem);
-            input.data('initialState', input.val());
-        });
-        $('.full-address').data('initialState',$('.full-address').val());
-        $('.latitude').data('initialState',$('.latitude').val());
-        $('.longitude').data('initialState',$('.longitude').val());
-        $('.short-name').data('initialState',$('.short-name').val());
-    });
-
     $('.full-address').change(function(){
         if (!$(".full-address").val()){
             $("#address-button").html('Добавить адрес');
+            $('.latitude').val("");
+            $('.longitude').val("");
         } else {
             $("#address-button").html('Изменить адрес');
         }
     });
 
-    $('.close-address-button').click(function(){
-        $('.js-form-address').find('input').each(function(i, elem) {
-            var input = $(elem);
-            input.val(input.data('initialState'));
-        });
-        $('.full-address').val($('.full-address').data('initialState'));
-        $('.latitude').val($('.latitude').data('initialState'));
-        $('.longitude').val($('.longitude').data('initialState'));
-        $('.short-name').val($('.short-name').data('initialState'));
-        $('.full-address').trigger("change");
-    });
-
     $('.save-address-button').click(function(){
-        $('.short-name').val($('[name="short-name"]').val());
         $('.ka-region').val($('[name="region"]').val());
         $('.ka-district').val($('[name="district"]').val());
         $('.ka-city').val($('[name="city"]').val());
         $('.ka-street').val($('[name="street"]').val());
         $('.ka-building').val($('[name="building"]').val());
+        $('.latitude').val($('[name="latitude"]').val());
+        $('.longitude').val($('[name="longitude"]').val());
+        $('.full-address').val($('[name="full-address"]').val());
+        $('.full-address').change();
     });
 
     $('#address-button').click(function(){
-        $('[name="short-name"]').val($('.short-name').val())
+        $('form.js-form-address').find('.address-field').each(function(i, elem) {
+            var input = $(elem);
+            input.kladr('controller').clear();
+        });
+
         $.kladr.setValues({
             region: $('.ka-region').val(),
             district: $('.ka-district').val(),
@@ -48,5 +34,27 @@ $(document).ready(function(){
             street: $('.ka-street').val(),
             building: $('.ka-building').val()
         }, 'form.js-form-address');
+
+        $('#modal-title').append($('.short-name').val());
     });
+
+    var input = $('form.add-hospital-form input.name')
+    input.each(function () {
+        if (!$(this).val()) {
+            $('#address-button').addClass("disabled");
+            return false;
+        }
+    });
+
+    input.keyup(function () {
+        var trigger = false;
+        input.each(function () {
+            if (!$(this).val()) {
+                trigger = true;
+            }
+        });
+        trigger ? $('#address-button').addClass("disabled") : $('#address-button').removeClass("disabled");
+    });
+
+
 });
