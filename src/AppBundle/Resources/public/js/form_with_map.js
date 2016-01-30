@@ -1,9 +1,9 @@
 $(function () {
-	var $region = $('.ka-region'),
-		$district = $('.ka-district'),
-		$city = $('.ka-city'),
-		$street = $('.ka-street'),
-		$building = $('.ka-building');
+	var $region = $('[name="region"]'),
+		$district = $('[name="district"]'),
+		$city = $('[name="city"]'),
+		$street = $('[name="street"]'),
+		$building = $('[name="building"]');
 
 	var map = null,
 		map_created = false;
@@ -94,12 +94,6 @@ $(function () {
 				top: 10
 			}
 		});
-		if($('.latitude').val() && $('.longitude').val()) {
-			var position = [$('.latitude').val(),$('.longitude').val()].map(Number);
-			var placemark = new ymaps.Placemark(position, {}, {});
-			map.geoObjects.add(placemark);
-			map.setCenter(position, 16);
-		}
 	});
 
 	function setLabel($input, text) {
@@ -161,16 +155,10 @@ $(function () {
 					map.geoObjects.remove(geoObject);
 				});
 
-				//var position = res.geoObjects.get(0).geometry.getCoordinates(),
-				//	placemark = new ymaps.Placemark(position, {}, {});
-				//$('.gps-position').val(position);
-				//map.geoObjects.add(placemark);
-				var position = res.geoObjects.get(0).geometry.getCoordinates();
-				$('.gps-position').val(position);
-				var pos = $('.gps-position').val().split(",").map(Number);
-				$('.latitude').val(pos[0]);
-				$('.longitude').val(pos[1]);
-				placemark = new ymaps.Placemark(pos, {}, {});
+				var position = res.geoObjects.get(0).geometry.getCoordinates(),
+					placemark = new ymaps.Placemark(position, {}, {});
+				$('[name="latitude"]').val(position[0]);
+				$('[name="longitude"]').val(position[1]);
 				map.geoObjects.add(placemark);
 				map.setCenter(position, zoom);
 			});
@@ -180,7 +168,7 @@ $(function () {
 	function addressUpdate() {
 		var address = $.kladr.getAddress('.js-form-address');
 
-		$('.full-address').val(address).change();
+		$('.value').val(address).change();
 	}
 
 	function log(obj) {
@@ -197,70 +185,4 @@ $(function () {
 			}
 		}
 	}
-});
-$(function() {
-
-    $('#side-menu').metisMenu();
-
-});
-
-//Loads the correct sidebar on window load,
-//collapses the sidebar on window resize.
-// Sets the min-height of #page-wrapper to window size
-$(function() {
-    $(window).bind("load resize", function() {
-        topOffset = 50;
-        width = (this.window.innerWidth > 0) ? this.window.innerWidth : this.screen.width;
-        if (width < 768) {
-            $('div.navbar-collapse').addClass('collapse');
-            topOffset = 100; // 2-row-menu
-        } else {
-            $('div.navbar-collapse').removeClass('collapse');
-        }
-
-        height = ((this.window.innerHeight > 0) ? this.window.innerHeight : this.screen.height) - 1;
-        height = height - topOffset;
-        if (height < 1) height = 1;
-        if (height > topOffset) {
-            $("#page-wrapper").css("min-height", (height) + "px");
-        }
-    });
-});
-
-$(document).ready(function(){
-
-    $('#my, #other').DataTable( {
-            "paging":   false,
-            "info": false,
-            "searching": false,
-            "order": [[ 6, "asc" ]]
-        }
-    );
-    $('#territories').DataTable({
-        "paging":   false,
-        "info": false,
-        "searching": false,
-        "order": [[ 0, "asc" ]]
-    });
-    $("table tbody>tr.inactive").addClass('hidden');
-    $("input#myCheckbox").on('change', function(){
-        if ($(this).is(':checked'))
-            $("table#my tbody>tr.inactive").removeClass('hidden');
-        else
-            $("table#my tbody>tr.inactive").addClass('hidden');
-    });
-    $("input#otherCheckbox").on('change', function(){
-        if ($(this).is(':checked'))
-            $("table#other tbody>tr.inactive").removeClass('hidden');
-        else
-            $("table#other tbody>tr.inactive").addClass('hidden');
-    });
-
-    $('.full-address').change(function(){
-        if (!$(".full-address").val()){
-            $("#address-button").html('Добавить адрес');
-        } else {
-            $("#address-button").html('Изменить адрес');
-        }
-    });
 });

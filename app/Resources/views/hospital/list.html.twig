@@ -1,0 +1,65 @@
+{% extends 'nav.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="/Resources/thirdparty/css/jquery.modal.css" type="text/css" media="screen">
+{% endblock %}
+{% block title %}Лечебно-профилактические учреждения{% endblock %}
+
+{% set page = 'hospitals' %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header"> Список ЛПУ </h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">Лечебно-профилактические учреждения</div>
+                <div class="panel-body">
+                    <div class="checkbox text-right">
+                    </div>
+                    <div class="table-responsive">
+                        <table id="hospitals" class="table">
+                            <thead><tr>
+                                <th>#</th>
+                                <th>Краткое наименование</th>
+                                <th>Полное наименование</th>
+                                <th>Адрес</th>
+                                <th>Округ</th>
+                                <th></th>
+                            </tr></thead>
+                            <tbody>
+                            {% if hospitals|length > 0 %}
+                                {% for hospital in hospitals %}
+                                    <tr>
+                                        <td>{{ loop.index }}</td>
+                                        <td>{{ hospital.getShortName() }}</td>
+                                        <td>{{ hospital.getFullName() }}</td>
+                                        <td>{{ hospital.getAddress() }}</td>
+                                        <td>{{ hospital.territory == NULL ? 'Не указано' :hospital.getTerritory().getName() }}</td>
+                                        <td><a href="hospitals/{{ hospital.id }}">Информация</a>
+                                            <br><a href="hospitals/edit/{{ hospital.id }}">Редактировать</a>
+                                            <br>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr><td colspan="8" style="text-align: center;">"В базе нет ни одного лечебно-профилактического учреждения. Вы можете добавить лечебно-профилактическое учреждение, нажав на кнопку \"Добавить округ\" ниже."</td></tr>
+                            {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <a class="btn btn-default btn-lg btn-block" href="hospitals/add">Добавить лечебно-профилактическое учреждение</a>
+                </div>
+            </div>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

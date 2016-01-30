@@ -38,37 +38,37 @@ class Hospital
     /**
      * @var string
      *
-     * @ORM\Column(name="address", type="text", nullable = true)
+     * @ORM\Column(name="address", type="text")
      */
     private $address;
     /**
      * @var string
      *
-     * @ORM\Column(name="ka_region", type="text", nullable=true)
+     * @ORM\Column(name="ka_region", type="text")
      */
     private $ka_region;
     /**
      * @var string
      *
-     * @ORM\Column(name="ka_district", type="text",nullable=true)
+     * @ORM\Column(name="ka_district", type="text")
      */
     private $ka_district;
     /**
      * @var string
      *
-     * @ORM\Column(name="ka_city", type="text", nullable = true)
+     * @ORM\Column(name="ka_city", type="text")
      */
     private $ka_city;
     /**
      * @var string
      *
-     * @ORM\Column(name="ka_street", type="text", nullable = true)
+     * @ORM\Column(name="ka_street", type="text")
      */
     private $ka_street;
     /**
      * @var string
      *
-     * @ORM\Column(name="ka_building", type="text", nullable = true)
+     * @ORM\Column(name="ka_building", type="text")
      */
     private $ka_building;
     /**
@@ -78,13 +78,13 @@ class Hospital
     /**
      * @var string
      *
-     * @ORM\Column(name="latitude", type="text", nullable = true)
+     * @ORM\Column(name="latitude", type="text")
      */
     private $latitude;
     /**
      * @var string
      *
-     * @ORM\Column(name="longitude", type="text", nullable = true)
+     * @ORM\Column(name="longitude", type="text")
      */
     private $longitude;
 
@@ -304,51 +304,5 @@ class Hospital
     public function getKaBuilding()
     {
         return $this->ka_building;
-    }
-
-    /**
-     * Set latitude
-     *
-     * @param string $latitude
-     * @return Hospital
-     */
-    public function setLatitude($latitude)
-    {
-        $this->latitude = $latitude;
-
-        return $this;
-    }
-
-    /**
-     * Get latitude
-     *
-     * @return string 
-     */
-    public function getLatitude()
-    {
-        return $this->latitude;
-    }
-
-    /**
-     * Set longitude
-     *
-     * @param string $longitude
-     * @return Hospital
-     */
-    public function setLongitude($longitude)
-    {
-        $this->longitude = $longitude;
-
-        return $this;
-    }
-
-    /**
-     * Get longitude
-     *
-     * @return string 
-     */
-    public function getLongitude()
-    {
-        return $this->longitude;
     }
 }

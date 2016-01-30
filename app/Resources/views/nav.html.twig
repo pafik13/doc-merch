@@ -14,9 +14,9 @@
     <link rel="stylesheet" href="/Resources/thirdparty/css/metisMenu.css" />
     <link rel="stylesheet" href="/Resources/thirdparty/css/morris.css" />
 
-
-    <link rel="stylesheet" href="/Resources/thirdparty/css/font-awesome.min.css" />
-    <link rel="stylesheet" href="/Resources/thirdparty/css/dataTables/dataTables.bootstrap.min.css" />
+    {#{% stylesheets 'bundles/app/css/modal.css' filter='cssrewrite' %}#}
+    {#<link rel="stylesheet" href="{{ asset_url }}" />#}
+    {#{% endstylesheets %}#}
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -69,6 +69,9 @@
                                 <a href={{  path('territories') }}{% if page == 'territories' %} class="active"{% endif %}><i class="fa fa-table fa-fw"></i> Округи</a>
                             </li>
                             <li>
+                                <a href={{  path('hospitals') }}{% if page == 'hospitals' %} class="active"{% endif %}><i class="fa fa-table fa-fw"></i> ЛПУ</a>
+                            </li>
+                            <li>
                             <a href={{ path('presenters') }}{% if page == 'presenters' %} class="active"{% endif %}><i class="fa fa-table fa-fw"></i> Представители</a>
                             </li>
                         {% endif %}
@@ -101,8 +104,9 @@
     <script src="/Resources/thirdparty/js/morris.min.js" type="text/javascript"></script>
     <script src="/Resources/thirdparty/js/jquery.dataTables.min.js" type="text/javascript"></script>
     <script src="/Resources/thirdparty/js/dataTables.bootstrap.min.js" type="text/javascript"></script>
+    <script src="/Resources/thirdparty/js/jquery.kladr.min.js" type="text/javascript"></script>
 
-    {% javascripts '@AppBundle/Resources/public/js/*' %}
-    <script src="{{ asset_url }}"></script>
+    {% javascripts '@AppBundle/Resources/public/js/main.js' %}
+        <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}

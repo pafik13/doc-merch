@@ -1,0 +1,73 @@
+{% extends 'nav.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <script src="http://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+{% endblock %}
+
+{% block title %}{{ hospital.shortName }} / Информация о лечебно-профилактическом учреждении{% endblock %}
+
+{% set page = 'hospitals' %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header"> Информация о лечебно-профилактическом учреждении </h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">{{ hospital.shortName }}</div>
+                <div class="panel-body">
+                    <p><strong>Краткое наименование:</strong> {{ hospital.shortName }}</p>
+                    <p><strong>Полное наименование:</strong> {{ hospital.fullName }}</p>
+                    <p><strong>Округ:</strong> {{ hospital.territory.name }}</p>
+                    <p>
+                        <strong>Адрес:</strong> {{ hospital.address }}
+                        <a href="#" id="address-button" data-toggle="modal" data-target="#myModal">
+                            <i class="fa fa-map"></i>
+                        </a>
+                    </p>
+                    <div class="hidden">
+                        <p name="latitude">{{ hospital.latitude }}</p>
+                        <p name="longitude">{{ hospital.longitude }}</p>
+                        <p name="address">{{ hospital.address }}</p>
+                    </div>
+                    <a class="btn btn-default btn-lg btn-block" href="{{ path('hospitals_edit', {'id': hospital.id}) }}">Редактировать</a>
+                    <p></p>
+                    <a class="btn btn-default btn-lg btn-block" href="{{ path('hospitals') }}">Вернуться к списку</a>
+                </div>
+            </div>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close-address-button close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="modal-title">Адрес {{ hospital.shortName }}</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="map" style="width:100%; height:500px"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="close-address-button btn btn-default" data-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts '@AppBundle/Resources/public/js/balloon_and_hint.js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
