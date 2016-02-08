@@ -20,4 +20,20 @@ class PresentationController extends Controller
             'presentations' => $items,
         ));
     }
+
+    /**
+     * @Route("/presentations/{id}",name="presentations_show")
+     * @Method("GET")
+     */
+    public function showAction($id)
+    {
+        $presentations = $this->getDoctrine()
+            ->getManager()
+            ->getRepository('AppBundle:Presentation');
+        $presentation = $presentations->find($id);
+
+        return $this->render('presentations/show.html.twig', array(
+            'presentation' => $presentation
+        ));
+    }
 }
