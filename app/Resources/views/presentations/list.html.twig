@@ -1,0 +1,59 @@
+{% extends 'nav.html.twig' %}
+
+{% block title %}Презентации{% endblock %}
+
+{% set page = 'subcategories' %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header"> Список презентаций </h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">Презентации</div>
+                <div class="panel-body">
+                    <div class="checkbox text-right">
+                    </div>
+                    <div class="table-responsive">
+                        <table id="presentations" class="table">
+                            <thead><tr>
+                                <th>#</th>
+                                <th>Название</th>
+                                <th>Шаблон</th>
+                                <th>Дата создания</th>
+                                <th>Создатель</th>
+                                <th></th>
+                            </tr></thead>
+                            <tbody>
+                            {% if presentations|length > 0 %}
+                                {% for presentation in presentations %}
+                                    <tr>
+                                        <td>{{ loop.index }}</td>
+                                        <td>{{ presentation.getName() }}</td>
+                                        <td>{{ presentation.getTemplate() }}</td>
+                                        <td>{{ presentation.getDate().format('Y-m-d H:i:s') }}</td>
+                                        <td>{{ presentation.getAuthor().getUsername() }}</td>
+                                        <td><a href="presentations/{{ presentation.id }}">Информация</a>
+                                            <br><a href="presentations/edit/{{ presentation.id }}">Редактировать</a>
+                                            <br>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr><td colspan="8" style="text-align: center;">"В базе нет ни одной презентации. Вы можете добавить презентацию, нажав на кнопку \"Добавить презентацию\" ниже."</td></tr>
+                            {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <a class="btn btn-default btn-lg btn-block" href="presentations/add">Добавить презентацию</a>
+                </div>
+            </div>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+{% endblock %}
