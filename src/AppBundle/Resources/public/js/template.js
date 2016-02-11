@@ -6,6 +6,33 @@ $(document).ready(function(){
     var current_category = presentation.categories[0];
     var current_subcategory = current_category.subcategories[0];
     var current_slide = current_subcategory.slides[0];
+    sortSlides();
+
+    function sortSlides(){
+        current_subcategory.slides.sort(function (a, b) {
+            a= a.queue;
+            b= b.queue;
+
+            if(a > b) {
+                return 1;
+            } else if(a < b) {
+                return -1;
+            } else {
+                return 0;
+            }
+        });
+    }
+
+    function nextSlide(){
+        var ids = $.map(current_subcategory.slides,function(n,i){
+            return n.queue;
+        });
+        var highest = Math.max.apply(Math, ids);
+        var lowest = Math.min.apply(Math, ids);
+
+        var id = current_slide.queue;
+
+    }
 
     function loadCategories(){
         presentation.categories.forEach(function(item){
@@ -56,14 +83,14 @@ $(document).ready(function(){
     loadSubcategories();
     $("#slide").attr({src: current_slide.image});
 
-    $("#next").click(function(){
+    $(".nav-arrow-right").click(function(){
         var id = $.inArray(current_slide, current_subcategory.slides);
         var next = (id >= current_subcategory.slides.length-1) ? 0 : id+1;
         current_slide = current_subcategory.slides[next];
         $("#slide").attr({src: current_slide.image});
     });
 
-    $("#prev").click(function(){
+    $(".nav-arrow-left").click(function(){
         var id = $.inArray(current_slide, current_subcategory.slides);
         var next = (id <= 0) ? current_subcategory.slides.length-1 : id-1;
         current_slide = current_subcategory.slides[next];

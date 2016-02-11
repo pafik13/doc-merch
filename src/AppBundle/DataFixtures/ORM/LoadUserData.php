@@ -108,24 +108,24 @@ class LoadUserData implements FixtureInterface
 
 
         $category1 = new Category();
-        $category1->setName("category1");
+        $category1->setName("Группа 1");
 
         $category2 = new Category();
-        $category2->setName("category2");
+        $category2->setName("Группа 2");
 
         $manager->persist($category1);
         $manager->persist($category2);
 
         $subcategory1 = new Subcategory();
-        $subcategory1->setName("subcategory1");
+        $subcategory1->setName("Подгруппа 1");
         $subcategory1->setCategory($category1);
 
         $subcategory2 = new Subcategory();
-        $subcategory2->setName("subcategory2");
+        $subcategory2->setName("Подгруппа 2");
         $subcategory2->setCategory($category1);
 
         $subcategory3 = new Subcategory();
-        $subcategory3->setName("subcategory3");
+        $subcategory3->setName("Подгруппа 3");
         $subcategory3->setCategory($category2);
 
         $manager->persist($subcategory1);
