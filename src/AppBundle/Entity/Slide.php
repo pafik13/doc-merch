@@ -3,12 +3,16 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
+use JMS\Serializer\Annotation\Exclude;
 
 /**
  * Slide
  *
  * @ORM\Table(name="slide")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\SlideRepository")
+ * @ExclusionPolicy("none")
  */
 class Slide
 {
@@ -18,6 +22,7 @@ class Slide
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Exclude
      */
     private $id;
 
@@ -29,7 +34,9 @@ class Slide
     private $image;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Subcategory")
+     * @ORM\ManyToOne(targetEntity="Subcategory", inversedBy="slides")
+     * @ORM\JoinColumn(name="subcategory_id", referencedColumnName="id",nullable=true, onDelete="SET NULL")
+     * @Exclude
      */
     private $subcategory;
 
@@ -75,29 +82,6 @@ class Slide
     }
 
     /**
-     * Set subcategory
-     *
-     * @param string $subcategory
-     * @return Slide
-     */
-    public function setSubcategory($subcategory)
-    {
-        $this->subcategory = $subcategory;
-
-        return $this;
-    }
-
-    /**
-     * Get subcategory
-     *
-     * @return string 
-     */
-    public function getSubcategory()
-    {
-        return $this->subcategory;
-    }
-
-    /**
      * Set queue
      *
      * @param integer $queue
@@ -118,5 +102,24 @@ class Slide
     public function getQueue()
     {
         return $this->queue;
+    }
+
+    public function getSubcategory()
+    {
+        return $this->subcategory;
+    }
+
+    public function setSubcategory($subcategory)
+    {
+        if ($this->subcategory !== null) {
+            $this->subcategory->removeSlide($this);
+        }
+
+        if ($subcategory !== null) {
+            $subcategory->addSlide($this);
+        }
+
+        $this->subcategory = $subcategory;
+        return $this;
     }
 }

@@ -42,7 +42,7 @@ $(document).ready(function(){
             "order": [[ 6, "asc" ]]
         }
     );
-    $('#territories, #hospitals').DataTable({
+    $('table').not('#my, #other').DataTable({
         "paging":   false,
         "info": false,
         "searching": false,

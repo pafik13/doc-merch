@@ -4,12 +4,16 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
+use JMS\Serializer\Annotation\Exclude;
 
 /**
  * Presentation
  *
  * @ORM\Table(name="presentation")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\PresentationRepository")
+ * @ExclusionPolicy("none")
  */
 class Presentation
 {
@@ -19,6 +23,7 @@ class Presentation
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Exclude
      */
     private $id;
 
@@ -33,6 +38,7 @@ class Presentation
      * @var string
      *
      * @ORM\Column(name="template", type="string", length=255)
+     * @Exclude
      */
     private $template;
 
@@ -40,12 +46,14 @@ class Presentation
      * @var \DateTime
      *
      * @ORM\Column(name="date", type="datetime")
+     * @Exclude
      */
     private $date;
 
     /**
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id",nullable=true, onDelete="SET NULL")
+     * @Exclude
      */
     private $author;
 

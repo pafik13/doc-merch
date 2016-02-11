@@ -3,12 +3,16 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
+use JMS\Serializer\Annotation\Exclude;
 /**
  * Subcategory
  *
  * @ORM\Table(name="subcategory")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\SubcategoryRepository")
+ * @ExclusionPolicy("none")
  */
 class Subcategory
 {
@@ -18,6 +22,7 @@ class Subcategory
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Exclude
      */
     private $id;
 
@@ -29,9 +34,21 @@ class Subcategory
     private $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Category")
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="subcategories")
+     * @ORM\JoinColumn(name="category_id", referencedColumnName="id",nullable=true, onDelete="SET NULL")
+     * @Exclude
      */
     private $category;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Slide", mappedBy="subcategory")
+     */
+    private $slides;
+
+    public function __construct()
+    {
+        $this->slides = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -66,17 +83,44 @@ class Subcategory
         return $this->name;
     }
 
-    public function setCategory($category)
-    {
-        $this->category = $category;
-
-        return $this;
-    }
-
-
     public function getCategory()
     {
         return $this->category;
     }
 
+    public function setCategory($category)
+    {
+        if ($this->category !== null) {
+            $this->category->removeSubcategory($this);
+        }
+
+        if ($category !== null) {
+            $category->addSubcategory($this);
+        }
+
+        $this->category = $category;
+        return $this;
+    }
+
+    public function getSlides()
+    {
+        return $this->slides;
+    }
+
+    public function addSlide(Slide $slide)
+    {
+        if(!$this->slides->contains($slide)){
+            $this->slides->add($slide);
+        }
+        return $this;
+    }
+
+    public function removeSlide(Slide $slide)
+    {
+        if ($this->slides->contains($slide)) {
+            $this->slides->removeElement($slide);
+        }
+
+        return $this;
+    }
 }

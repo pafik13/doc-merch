@@ -11,6 +11,10 @@
     <link rel="stylesheet" href="{{ asset_url }}" />
     {% endstylesheets %}
 
+    {% stylesheets 'bundles/app/css/template.css' filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+
     <link rel="stylesheet" href="/Resources/thirdparty/css/metisMenu.css" />
     <link rel="stylesheet" href="/Resources/thirdparty/css/morris.css" />
 

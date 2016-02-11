@@ -31,9 +31,8 @@ class PresentationController extends Controller
             ->getManager()
             ->getRepository('AppBundle:Presentation');
         $presentation = $presentations->find($id);
-
         return $this->render('presentations/show.html.twig', array(
-            'presentation' => $presentation
+            'presentation' => $presentation,
         ));
     }
 }

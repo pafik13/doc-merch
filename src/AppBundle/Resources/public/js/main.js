@@ -35,19 +35,19 @@ $(document).ready(function(){
         }
     });
 
-    $('#my, #other').DataTable( {
-            "paging":   false,
-            "info": false,
-            "searching": false,
-            "order": [[ 6, "asc" ]]
-        }
-    );
-    $('table').not('#my, #other').DataTable({
-        "paging":   false,
-        "info": false,
-        "searching": false,
-        "order": [[ 0, "asc" ]]
-    });
+    //$('#my, #other').DataTable( {
+    //        "paging":   false,
+    //        "info": false,
+    //        "searching": false,
+    //        "order": [[ 6, "asc" ]]
+    //    }
+    //);
+    //$('table').not('#my, #other').DataTable({
+    //    "paging":   false,
+    //    "info": false,
+    //    "searching": false,
+    //    "order": [[ 0, "asc" ]]
+    //});
     $("table tbody>tr.inactive").addClass('hidden');
     $("input#myCheckbox").on('change', function(){
         if ($(this).is(':checked'))

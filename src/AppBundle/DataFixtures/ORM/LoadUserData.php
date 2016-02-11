@@ -133,23 +133,47 @@ class LoadUserData implements FixtureInterface
         $manager->persist($subcategory3);
 
         $slide1 = new Slide();
-        $slide1->setImage("image1.jpg");
+        $slide1->setImage("/bundles/app/img/slides/slide1.png");
         $slide1->setQueue(1);
         $slide1->setSubcategory($subcategory1);
 
+        $slide2 = new Slide();
+        $slide2->setImage("/bundles/app/img/slides/slide2.png");
+        $slide2->setQueue(2);
+        $slide2->setSubcategory($subcategory1);
+
         $slide3 = new Slide();
-        $slide3->setImage("image2.jpg");
-        $slide3->setQueue(1);
+        $slide3->setImage("/bundles/app/img/slides/slide3.png");
+        $slide3->setQueue(3);
         $slide3->setSubcategory($subcategory2);
 
-        $slide2 = new Slide();
-        $slide2->setImage("image3.jpg");
-        $slide2->setQueue(1);
-        $slide2->setSubcategory($subcategory3);
+        $slide4 = new Slide();
+        $slide4->setImage("/bundles/app/img/slides/slide4.png");
+        $slide4->setQueue(4);
+        $slide4->setSubcategory($subcategory2);
+
+        $slide5 = new Slide();
+        $slide5->setImage("/bundles/app/img/slides/slide5.png");
+        $slide5->setQueue(5);
+        $slide5->setSubcategory($subcategory2);
+
+        $slide6 = new Slide();
+        $slide6->setImage("/bundles/app/img/slides/slide6.png");
+        $slide6->setQueue(6);
+        $slide6->setSubcategory($subcategory3);
+
+        $slide7 = new Slide();
+        $slide7->setImage("/bundles/app/img/slides/slide7.png");
+        $slide7->setQueue(7);
+        $slide7->setSubcategory($subcategory3);
 
         $manager->persist($slide1);
-        $manager->persist($slide2);
         $manager->persist($slide3);
+        $manager->persist($slide2);
+        $manager->persist($slide4);
+        $manager->persist($slide5);
+        $manager->persist($slide6);
+        $manager->persist($slide7);
 
         $presentation = new Presentation();
         $presentation->setName("presentation");

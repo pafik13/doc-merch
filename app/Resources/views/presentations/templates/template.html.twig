@@ -1,0 +1,21 @@
+    <div class="panel-body">
+        <div id="presentation" data-json="{{ presentation | serialize('json') }}"></div>
+        <div class="slide-container">
+            <p id="categories"></p>
+            <img id="slide" src="">
+            <p id = "subcategories"></p>
+            <a id="next" href='javascript:void(0);'>next</a>
+            <a id="prev" href='javascript:void(0);'>prev</a>
+            {#<p>#}
+                {#{% for category in presentation.getCategories() %}#}
+                    {#<a href="">{{ category.getName() }}</a>#}
+                {#{%  endfor %}#}
+            {#</p>#}
+            {#<img src="{{ asset("bundles/app/img/slides/slide1.png") }}">#}
+            {#<p>#}
+                {#{% for subcategory in current_category.getSubcategories() %}#}
+                    {#<a href="">{{ subcategory.getName() }}</a>#}
+                {#{%  endfor %}#}
+            {#</p>#}
+        </div>
+    </div>
