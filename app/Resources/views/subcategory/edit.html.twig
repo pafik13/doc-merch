@@ -1,0 +1,51 @@
+{% extends 'nav.html.twig' %}
+
+{% block title %}Редактировать подгруппу{% endblock %}
+
+{% set page = 'subcategories' %}
+
+{% block main %}
+    {% form_theme edit_form with 'bootstrap_3_layout.html.twig' %}
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header"> Редактировать подгруппу </h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">Изменение информации о подгруппе</div>
+                <div class="panel-body">
+                    {{ form(edit_form) }}
+                </div>
+            </div>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">Удаление подгруппы</div>
+                <div class="panel-body">
+                    <p>Будьте внимательны: данное действие необратимо.</p>
+                    {{ form(delete_form) }}
+                </div>
+            </div>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <a class="btn btn-default btn-lg btn-block" href="{{ path('subcategories') }}">Вернуться к списку</a>
+                </div>
+            </div>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+{% endblock %}

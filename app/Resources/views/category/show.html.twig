@@ -1,0 +1,31 @@
+{% extends 'nav.html.twig' %}
+
+{% block title %}{{ category.name }} / Информация о группе{% endblock %}
+
+{% set page = 'categories' %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header"> Информация о группе </h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">{{ category.name }}</div>
+                <div class="panel-body">
+                    <p>
+                        <strong>Название:</strong> {{ category.name }}<br>
+                    </p>
+                    <a class="btn btn-default btn-lg btn-block" href="{{ path('categories_edit', {'id': category.id}) }}">Редактировать</a>
+                    <p></p>
+                    <a class="btn btn-default btn-lg btn-block" href="{{ path('categories') }}">Вернуться к списку</a>
+                </div>
+            </div>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+{% endblock %}

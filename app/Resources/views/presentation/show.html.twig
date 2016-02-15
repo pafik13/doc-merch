@@ -24,6 +24,10 @@
                     <p><strong>Группы:</strong></p>
                     <div class="table-responsive">
                         <table class="table table-bordered">
+                            <thead><tr>
+                                <th>#</th>
+                                <th>Название</th>
+                            </tr></thead>
                             <tbody>
                             {% if presentation.categories|length > 0 %}
                                 {% for category in presentation.categories %}
@@ -49,7 +53,7 @@
                     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                                 <div class="modal-body">
-                                    {% include 'views/presentations/templates/template.html.twig' %}
+                                    {% include 'views/presentation/templates/template.html.twig' %}
                                 </div>
                         </div>
                     </div>

@@ -67,6 +67,7 @@ class Presentation
     private $categories;
 
     public function __construct(){
+        $this->date = new \DateTime();
         $this->categories = new ArrayCollection();
     }
     /**
