@@ -18,7 +18,16 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Новая презентация</div>
                 <div class="panel-body">
-                    {{ form(form) }}
+                    {{ form_start(form) }}
+                    {{ form_row(form.name) }}
+                    <p>Группы:</p>
+                    <ul class="categories" data-prototype="{{ form_widget(form.categories.vars.prototype)|e }}">
+                        {# iterate over each existing tag and render its only field: name #}
+                        {% for tag in form.categories %}
+                            <li>{{ form_row(tag,{'attr':{'readonly':'readonly'}}) }}</li>
+                        {% endfor %}
+                    </ul>
+                    {{ form_end(form) }}
                     <a class="btn btn-default btn-lg btn-block" href="{{ path('presentations') }}">Вернуться к списку</a>
                 </div>
             </div>

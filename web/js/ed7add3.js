@@ -35,19 +35,19 @@ $(document).ready(function(){
         }
     });
 
-    //$('#my, #other').DataTable( {
-    //        "paging":   false,
-    //        "info": false,
-    //        "searching": false,
-    //        "order": [[ 6, "asc" ]]
-    //    }
-    //);
-    //$('table').not('#my, #other').DataTable({
-    //    "paging":   false,
-    //    "info": false,
-    //    "searching": false,
-    //    "order": [[ 0, "asc" ]]
-    //});
+    $('#my, #other').DataTable( {
+            "paging":   false,
+            "info": false,
+            "searching": false,
+            "order": [[ 6, "asc" ]]
+        }
+    );
+    $('table').not('#my, #other').DataTable({
+        "paging":   false,
+        "info": false,
+        "searching": false,
+        "order": [[ 0, "asc" ]]
+    });
     $("table tbody>tr.inactive").addClass('hidden');
     $("input#myCheckbox").on('change', function(){
         if ($(this).is(':checked'))
@@ -62,3 +62,44 @@ $(document).ready(function(){
             $("table#other tbody>tr.inactive").addClass('hidden');
     });
 });
+
+$(document).ready(function() {
+    var $collectionHolder;
+
+    var $addTagLink = $('<a href="#" class="add_tag_link">Добавить группу</a>');
+    var $newLinkLi = $('<li></li>').append($addTagLink);
+
+    $collectionHolder = $('ul.categories');
+
+    $collectionHolder.find('li').each(function() {
+        addTagFormDeleteLink($(this));
+    });
+
+    $collectionHolder.append($newLinkLi);
+    $collectionHolder.data('index', $collectionHolder.find(':input').length);
+    $addTagLink.on('click', function(e) {
+        e.preventDefault();
+        addTagForm($collectionHolder, $newLinkLi);
+    });
+});
+function addTagForm($collectionHolder, $newLinkLi) {
+    var prototype = $collectionHolder.data('prototype');
+    var index = $collectionHolder.data('index');
+    var newForm = prototype.replace(/__name__/g, index);
+
+    $collectionHolder.data('index', index + 1);
+
+    var $newFormLi = $('<li></li>').append(newForm);
+    $newLinkLi.before($newFormLi);
+    addTagFormDeleteLink($newFormLi);
+}
+
+function addTagFormDeleteLink($tagFormLi) {
+    var $removeFormA = $('<a href="#">Удалить группу</a>');
+    $tagFormLi.append($removeFormA);
+
+    $removeFormA.on('click', function(e) {
+        e.preventDefault();
+        $tagFormLi.remove();
+    });
+}

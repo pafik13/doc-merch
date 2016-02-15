@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class PresentationType extends AbstractType
 {
@@ -23,6 +24,19 @@ class PresentationType extends AbstractType
             ->add('name', TextType::class, array('label' => 'Название'))
             ->add('template', TextType::class, array('label' => 'Шаблон'))
             ->add('author', EntityType::class, array('class'=>'AppBundle:User','choice_label'=>'username','label' => 'Создатель','placeholder'=>'Не указан', 'required' => false))
+            ->add('categories', CollectionType::class, array(
+                'entry_type' => EntityType::class,
+                'entry_options'=>array(
+                    'class'=>'AppBundle:Category',
+                    'choice_label'=>'name',
+                    'label' => false,
+                    'placeholder'=>'Не указан',
+                    'required' => false,
+                ),
+
+                'allow_add'    => true,
+                'allow_delete'=>true,
+            ))
         ;
     }
 

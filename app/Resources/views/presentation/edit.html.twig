@@ -18,7 +18,16 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Изменение информации о презентации</div>
                 <div class="panel-body">
-                    {{ form(edit_form) }}
+                    {{ form_start(edit_form) }}
+                    {{ form_row(edit_form.name) }}
+                    <p>Группы:</p>
+                    <ul class="categories" data-prototype="{{ form_widget(edit_form.categories.vars.prototype)|e }}">
+                        {# iterate over each existing tag and render its only field: name #}
+                        {% for tag in edit_form.categories %}
+                            <li>{{ form_row(tag,{'attr':{'readonly':'readonly'}}) }}</li>
+                        {% endfor %}
+                    </ul>
+                    {{ form_end(edit_form) }}
                 </div>
             </div>
         </div>

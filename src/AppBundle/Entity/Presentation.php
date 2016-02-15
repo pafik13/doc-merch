@@ -58,7 +58,7 @@ class Presentation
     private $author;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Category")
+     * @ORM\ManyToMany(targetEntity="Category", cascade={"persist"})
      * @ORM\JoinTable(name="presentation_categories",
      *      joinColumns={@ORM\JoinColumn(name="presentation_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="category_id", referencedColumnName="id")}
@@ -175,5 +175,13 @@ class Presentation
     public function getCategories()
     {
         return $this->categories;
+    }
+
+    public function addCategory(Category $category){
+        $this->categories->add($category);
+    }
+
+    public function removeCategory(Category $category){
+        $this->categories->removeElement($category);
     }
 }
