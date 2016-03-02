@@ -23,7 +23,6 @@ class Presentation
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Exclude
      */
     private $id;
 
@@ -60,8 +59,8 @@ class Presentation
     /**
      * @ORM\ManyToMany(targetEntity="Category", cascade={"persist"})
      * @ORM\JoinTable(name="presentation_categories",
-     *      joinColumns={@ORM\JoinColumn(name="presentation_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="category_id", referencedColumnName="id")}
+     *      joinColumns={@ORM\JoinColumn(name="presentation_id", referencedColumnName="id", onDelete="cascade")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="category_id", referencedColumnName="id", onDelete="cascade")}
      *      )
      */
     private $categories;

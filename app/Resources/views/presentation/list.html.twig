@@ -113,7 +113,7 @@
                                     <tr>
                                         <td>{{ loop.index }}</td>
                                         <td>{{ subcategory.getName() }}</td>
-                                        <td>{{ subcategory.getCategory().getName() }}</td>
+                                        <td>{{ subcategory.getCategory() == NULL ? '' :subcategory.getCategory().getName() }}</td>
                                         <td><a href="subcategories/{{ subcategory.id }}">Информация</a>
                                             <br><a href="subcategories/edit/{{ subcategory.id }}">Редактировать</a>
                                             <br>

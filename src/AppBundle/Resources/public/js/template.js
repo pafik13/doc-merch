@@ -31,12 +31,22 @@ $(document).ready(function(){
 
     }
 
+    function nextSubcategory(num){
+        var p = current_category.subcategories;
+        return p[($.inArray(num, p) + 1) % p.length];
+    }
+
+    function prevSubcategory(num){
+        var p = current_category.subcategories;
+        return p[($.inArray(num, p) - 1 + p.length) % p.length];
+    }
+
     function loadCategories(){
         presentation.categories.forEach(function(item){
             if(item.name === current_category.name){
-                $("#categories").append("<a class = 'active' href='javascript:void(0);'>"+item.name+"</a>");
+                $("#categories").append("<a id='"+ item.id+"' class = 'active' href='javascript:void(0);'>"+item.name+"</a>");
             } else {
-                $("#categories").append("<a href='javascript:void(0);'>"+item.name+"</a>");
+                $("#categories").append("<a id='"+ item.id+"' href='javascript:void(0);'>"+item.name+"</a>");
             }
         });
         $("#categories>a").click(function(){changeCategory($(this))});
@@ -45,9 +55,9 @@ $(document).ready(function(){
         $("#subcategories").children().remove();
         current_category.subcategories.forEach(function(item){
             if(item.name === current_subcategory.name){
-                $("#subcategories").append("<a class = 'active' href='javascript:void(0);'>"+item.name+"</a>");
+                $("#subcategories").append("<a id='"+ item.id+"' class = 'active' href='javascript:void(0);'>"+item.name+"</a>");
             } else {
-                $("#subcategories").append("<a href='javascript:void(0);'>"+item.name+"</a>");
+                $("#subcategories").append("<a id='"+ item.id+"' href='javascript:void(0);'>"+item.name+"</a>");
             }
         });
         $("#subcategories>a").click(function(){changeSubcategory($(this))});
@@ -82,14 +92,28 @@ $(document).ready(function(){
 
     $(".nav-arrow-right").click(function(){
         var id = $.inArray(current_slide, current_subcategory.slides);
-        var next = (id >= current_subcategory.slides.length-1) ? 0 : id+1;
+        if(id>=current_subcategory.slides.length-1){
+            current_subcategory = nextSubcategory(current_subcategory);
+            $("#subcategories>a").removeClass("active");
+            $('#subcategories>a#'+current_subcategory.id).addClass("active");
+            var next = 0;
+        } else {
+            var next = id+1;
+        }
         current_slide = current_subcategory.slides[next];
         $("#slide").attr({src: current_slide.image});
     });
 
     $(".nav-arrow-left").click(function(){
         var id = $.inArray(current_slide, current_subcategory.slides);
-        var next = (id <= 0) ? current_subcategory.slides.length-1 : id-1;
+        if(id <= 0){
+            current_subcategory = prevSubcategory(current_subcategory);
+            $("#subcategories>a").removeClass("active");
+            $('#subcategories>a#'+current_subcategory.id).addClass("active");
+            var next = current_subcategory.slides.length-1;
+        } else {
+            var next = id-1;
+        }
         current_slide = current_subcategory.slides[next];
         $("#slide").attr({src: current_slide.image});
     });
