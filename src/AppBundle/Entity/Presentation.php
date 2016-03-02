@@ -178,10 +178,16 @@ class Presentation
     }
 
     public function addCategory(Category $category){
-        $this->categories->add($category);
+        if(!$this->categories->contains($category)){
+            $this->categories->add($category);
+        }
+        return $this;
     }
 
     public function removeCategory(Category $category){
-        $this->categories->removeElement($category);
+        if($this->categories->contains($category)) {
+            $this->categories->removeElement($category);
+        }
+        return $this;
     }
 }
