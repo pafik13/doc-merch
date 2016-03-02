@@ -43,7 +43,7 @@ class SubcategoryController extends Controller
             $em->persist($newSubcategory);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('subcategories'));
+            return $this->redirect($this->generateUrl('presentations'));
         }
 
         return $this->render('subcategory/new.html.twig', array(
@@ -71,7 +71,7 @@ class SubcategoryController extends Controller
         if( $editForm->isValid()){
             $em->flush();
 
-            return $this->redirect($this->generateUrl('subcategories'));
+            return $this->redirect($this->generateUrl('presentations'));
         }
 
         return $this->render('subcategory/edit.html.twig', array(
@@ -97,7 +97,7 @@ class SubcategoryController extends Controller
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('subcategories'));
+        return $this->redirect($this->generateUrl('presentations'));
     }
 
     /**

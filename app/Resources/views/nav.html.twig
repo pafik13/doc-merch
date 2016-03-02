@@ -85,18 +85,7 @@
                             </li>
                         {% endif %}
                         <li>
-                            <a href="#"><i class="fa fa-table fa-fw"></i> Презентации <span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
-                                <li>
-                                    <a href={{ path('presentations') }}{% if page == 'presentations' %} class="active"{% endif %}><i class="fa fa-table fa-fw"></i> Презентации</a>
-                                </li>
-                                <li>
-                                    <a href={{ path('categories') }}{% if page == 'categories' %} class="active"{% endif %}><i class="fa fa-table fa-fw"></i> Группы</a>
-                                </li>
-                                <li>
-                                    <a href={{ path('subcategories') }}{% if page == 'subcategories' %} class="active"{% endif %}><i class="fa fa-table fa-fw"></i> Подгруппы</a>
-                                </li>
-                            </ul>
+                            <a href={{ path('presentations') }}{% if page == 'presentations' %} class="active"{% endif %}><i class="fa fa-table fa-fw"></i> Презентации</a>
                         </li>
                     </ul>
                 </div>

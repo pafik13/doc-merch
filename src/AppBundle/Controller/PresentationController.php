@@ -17,11 +17,19 @@ class PresentationController extends Controller
      */
     public function listAction()
     {
-        $items = $this->getDoctrine()->getManager()
+        $presentations = $this->getDoctrine()->getManager()
             ->getRepository('AppBundle:Presentation')->findAll();
 
+        $categories = $this->getDoctrine()->getManager()
+            ->getRepository('AppBundle:Category')->findAll();
+
+        $subcategories = $this->getDoctrine()->getManager()
+            ->getRepository('AppBundle:Subcategory')->findAll();
+
         return $this->render('presentation/list.html.twig', array(
-            'presentations' => $items,
+            'presentations' => $presentations,
+            'categories'=>$categories,
+            'subcategories'=>$subcategories
         ));
     }
 

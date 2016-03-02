@@ -43,7 +43,7 @@ class CategoryController extends Controller
             $em->persist($newCategory);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('categories'));
+            return $this->redirect($this->generateUrl('presentations'));
         }
 
         return $this->render('category/new.html.twig', array(
@@ -71,7 +71,7 @@ class CategoryController extends Controller
         if( $editForm->isValid()){
             $em->flush();
 
-            return $this->redirect($this->generateUrl('categories'));
+            return $this->redirect($this->generateUrl('presentations'));
         }
 
         return $this->render('category/edit.html.twig', array(
@@ -97,7 +97,7 @@ class CategoryController extends Controller
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('categories'));
+        return $this->redirect($this->generateUrl('presentations'));
     }
 
     /**
