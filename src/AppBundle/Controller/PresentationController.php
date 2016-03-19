@@ -2,12 +2,16 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Category;
 use AppBundle\Entity\Presentation;
+use AppBundle\Entity\Subcategory;
 use AppBundle\Form\PresentationType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\VarDumper\VarDumper;
 
 class PresentationController extends Controller
 {
@@ -31,6 +35,73 @@ class PresentationController extends Controller
             'categories'=>$categories,
             'subcategories'=>$subcategories
         ));
+    }
+
+    /**
+     * @Route("/ajax", name="presentations_ajax")
+     * @Method({"GET","POST"})
+     * @param Request $request
+     * @return Response
+     */
+    public function getAjaxAction(Request $request){
+        $data = $request->request->get('data','null');
+        $id = $request->request->get('id','null');
+
+        $em = $this->getDoctrine()->getManager();
+
+        //$testData = '{"id":2,"name":"testtest","categories":[{"id":3,"name":"Группа 1","subcategories":[{"id":5,"name":"Подгруппа 2","slides":[{"image":"/bundles/app/img/slides/slide3.png","queue":3},{"image":"/bundles/app/img/slides/slide4.png","queue":4},{"image":"/bundles/app/img/slides/slide5.png","queue":5}]},{"id":4,"name":"Подгруппа 1","slides":[{"image":"/bundles/app/img/slides/slide2.png","queue":2},{"image":"/bundles/app/img/slides/slide1.png","queue":1}]}]},{"id":4,"name":"Группа 2","subcategories":[{"id":6,"name":"Подгруппа 3","slides":[{"image":"/bundles/app/img/slides/slide7.png","queue":7},{"image":"/bundles/app/img/slides/slide6.png","queue":6}]}]}]}';
+        //$testData = '{"id":9,"name":"presentation","categories":[{"id":18,"name":"Группа 2","subcategories":[{"id":27,"name":"Подгруппа 3","slides":[{"image":"/bundles/app/img/slides/slide6.png","queue":6},{"image":"/bundles/app/img/slides/slide7.png","queue":7}]}]}]}';
+        //$testId = 14;
+
+        $presentation = $em->getRepository('AppBundle:Presentation')->find($id);
+        $serializer = $this->get('jms_serializer');
+        $editedPresentation = $serializer->deserialize($data, 'AppBundle\Entity\Presentation', 'json');
+
+
+        foreach($presentation->getCategories() as $category){
+            $editedCategory = $editedPresentation->findCategoryById($category->getId());
+            if(!$editedCategory){
+                $presentation->removeCategory($category);
+            }
+            else {
+                foreach($category->getSubcategories() as $subcategory){
+                    $editedSubcategory = $editedCategory->findSubcategoryById($subcategory->getId());
+                    if(!$editedSubcategory){
+                        $category->removeSubcategory($subcategory);
+                    }
+                }
+            }
+        }
+
+        foreach($editedPresentation->getCategories() as $newCategory){
+            if(!$presentation->findCategoryById($newCategory->getId())){
+                $category = new Category($newCategory->getName());
+
+                foreach($newCategory->getSubcategories() as $newSubcategory){
+                    $subcategory = new Subcategory($newSubcategory->getName(),$category);
+                    $em->persist($subcategory);
+                    $category->addSubcategory($subcategory);
+                }
+                $em->persist($category);
+                $presentation->addCategory($category);
+            } else {
+                $editedCategory = $presentation->findCategoryById($newCategory->getId());
+                foreach($newCategory->getSubcategories() as $newSubcategory){
+                    if(!$editedCategory->findSubcategoryById($newSubcategory->getId())){
+                        $subcategory = new Subcategory($newSubcategory->getName(),$editedCategory);
+                        $em->persist($subcategory);
+                        $editedCategory->addSubcategory($subcategory);
+                    }
+                }
+            }
+        }
+
+        $em->flush();
+        $em->close();
+        $em = $this->getDoctrine()->getManager();
+
+        $presentation = $em->getRepository('AppBundle:Presentation')->find($id);
+        return new Response($serializer->serialize($presentation, 'json'));
     }
 
     /**
@@ -69,9 +140,17 @@ class PresentationController extends Controller
         $presentations = $this->getDoctrine()
             ->getManager()
             ->getRepository('AppBundle:Presentation');
+        $categories = $this->getDoctrine()->getManager()
+            ->getRepository('AppBundle:Category')->findAll();
+
+        $subcategories = $this->getDoctrine()->getManager()
+            ->getRepository('AppBundle:Subcategory')->findAll();
+
         $presentation = $presentations->find($id);
         return $this->render('presentation/show.html.twig', array(
             'presentation' => $presentation,
+            'categories'=>$categories,
+            'subcategories'=>$subcategories
         ));
     }
 
@@ -167,4 +246,6 @@ class PresentationController extends Controller
             ->getForm()
             ;
     }
+
+
 }

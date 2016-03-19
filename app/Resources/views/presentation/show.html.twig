@@ -42,23 +42,8 @@
                             </tbody>
                         </table>
                     </div>
+                    {% include 'views/presentation/templates/template.html.twig' %}
 
-
-
-                    <!-- Button trigger modal -->
-                    <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-                        Включить просмотр
-                    </button>
-                    <!-- Modal -->
-                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                                <div class="modal-body">
-                                    {% include 'views/presentation/templates/template.html.twig' %}
-                                </div>
-                        </div>
-                    </div>
-
-                    {#<a class="btn btn-default btn-lg btn-block" href="{{ path('presentations_edit', {'id': presentation.id}) }}">Редактировать</a>#}
                     <p></p>
                     <a class="btn btn-default btn-lg btn-block" href="{{ path('presentations') }}">Вернуться к списку</a>
                 </div>

@@ -28,7 +28,7 @@ class Subcategory
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255, unique=true)
+     * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
 
@@ -40,12 +40,14 @@ class Subcategory
     private $category;
 
     /**
-     * @ORM\OneToMany(targetEntity="Slide", mappedBy="subcategory")
+     * @ORM\OneToMany(targetEntity="Slide", mappedBy="subcategory", orphanRemoval=true)
      */
     private $slides;
 
-    public function __construct()
+    public function __construct($name=null, Category $category=null)
     {
+        $this->name=$name;
+        $this->setCategory($category);
         $this->slides = new ArrayCollection();
     }
 

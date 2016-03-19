@@ -69,6 +69,8 @@ class Presentation
         $this->date = new \DateTime();
         $this->categories = new ArrayCollection();
     }
+
+
     /**
      * Get id
      *
@@ -174,6 +176,15 @@ class Presentation
     public function getCategories()
     {
         return $this->categories;
+    }
+
+    public function findCategoryById($id){
+        foreach($this->categories as $category){
+            if($category->getId()==$id){
+                return $category;
+            }
+        }
+        return false;
     }
 
     public function addCategory(Category $category){

@@ -29,17 +29,18 @@ class Category
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255, unique=true)
+     * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="Subcategory", mappedBy="category")
+     * @ORM\OneToMany(targetEntity="Subcategory", mappedBy="category", orphanRemoval=true)
      */
     private $subcategories;
 
-    public function __construct()
+    public function __construct($name=null)
     {
+        $this->name = $name;
         $this->subcategories = new ArrayCollection();
     }
     
@@ -96,5 +97,14 @@ class Category
         }
 
         return $this;
+    }
+
+    public function findSubcategoryById($id){
+        foreach($this->subcategories as $subcategory){
+            if($subcategory->getId()==$id){
+                return $subcategory;
+            }
+        }
+        return false;
     }
 }

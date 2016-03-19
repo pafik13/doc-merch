@@ -1,28 +1,71 @@
-    <div class="panel-body">
-        <div class="slide-container">
-            <button class="nav-arrow nav-arrow-left"><i class="fa fa-arrow-left fa-6"></i></button>
-            <button class="nav-arrow nav-arrow-right"><i class="fa fa-arrow-right fa-6"></i></button>
-            <div class="">
+<!-- Button trigger modal -->
+<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#slide-modal">
+    Включить просмотр
+</button>
 
-                    <div class="navigation" id="categories"></div>
-                    <img id="slide" src="">
-                    <div class="navigation" id = "subcategories"></div>
+<!-- Modal -->
+<div class="modal fade" id="slide-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="slide-container">
+                    <button class="nav-arrow nav-arrow-left"><i class="fa fa-arrow-left fa-6"></i></button>
+                    <button class="nav-arrow nav-arrow-right"><i class="fa fa-arrow-right fa-6"></i></button>
+                    <div class="">
+                        <img id="slide" src="">
 
+                        <label type="button" id="top-hotspot" class="btn btn-xs btn-primary top-centered" data-toggle="collapse" data-target="#top-panel"><i class="fa fa-arrow-down"></i></label>
+                        <div id="top-side-buttons" class="btn-group-vertical top-right" role="group" aria-label="Управление верхней панелью">
+                            <label type="button" id="tsb-eye-btn" class="btn btn-primary btn-xs active"><i class="fa fa-eye"></i></label>
+                            <label type="button" id="tsb-add-btn" class="btn btn-success btn-xs"><i class="fa fa-plus-square-o"></i></label>
+                            <label type="button" id="tsb-del-btn" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></label>
+                        </div>
+                        <div id="top-panel" class="top-panel collapse in" aria-expanded="true">
+                            <div id="top-panel-btns" class="btn-group btn-group-justified" role="group" data-toggle="buttons" aria-label="...">
+                            </div>
+                        </div>
+                        <div id="bottom-panel" class="bottom-panel collapse in" aria-expanded="true">
+                            <div id="bot-panel-btns" class="btn-group btn-group-justified" role="group" data-toggle="buttons" aria-label="...">
+                            </div>
+                        </div>
+                        <div id="bottom-side-buttons" class="btn-group-vertical bottom-right" role="group" aria-label="...">
+                            <button class="btn btn-primary btn-xs button-nofocuse" data-toggle="collapse" data-target="#bottom-panel"><i class="fa fa-eye"></i></button>
+                            <button id="bsb-add-btn" class="btn btn-success btn-xs button-nofocuse"><i class="fa fa-plus-square-o "></i></button>
+                            <button id="bsb-del-btn" class="btn btn-danger btn-xs button-nofocuse"><i class="fa fa-trash"></i></button>
+                        </div>
 
-                    {#<p>#}
-                    {#{% for category in presentation.getCategories() %}#}
-                    {#<a href="">{{ category.getName() }}</a>#}
-                    {#{%  endfor %}#}
-                    {#</p>#}
-                    {#<img src="{{ asset("bundles/app/img/slides/slide1.png") }}">#}
-                    {#<p>#}
-                    {#{% for subcategory in current_category.getSubcategories() %}#}
-                    {#<a href="">{{ subcategory.getName() }}</a>#}
-                    {#{%  endfor %}#}
-                    {#</p>#}
-
+                    </div>
+                </div>
+                <div id="presentation" data-json="{{ presentation | serialize('json') }}"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                <button class="btn btn-primary" id="save-pres-btn">Сохранить</button>
             </div>
         </div>
-        <div id="presentation" data-json="{{ presentation | serialize('json') }}"></div>
-
+        <!-- /.modal-content -->
     </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<!-- Modal -->
+<div class="modal fade" id="new-category-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <label for="new-category-input">Введите название</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="new-category-input">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                <button class="btn btn-primary" id="save-category-btn">Ок</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
