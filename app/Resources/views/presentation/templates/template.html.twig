@@ -16,9 +16,10 @@
 
                         <label type="button" id="top-hotspot" class="btn btn-xs btn-primary top-centered" data-toggle="collapse" data-target="#top-panel"><i class="fa fa-arrow-down"></i></label>
                         <div id="top-side-buttons" class="btn-group-vertical top-right" role="group" aria-label="Управление верхней панелью">
-                            <label type="button" id="tsb-eye-btn" class="btn btn-primary btn-xs active"><i class="fa fa-eye"></i></label>
-                            <label type="button" id="tsb-add-btn" class="btn btn-success btn-xs"><i class="fa fa-plus-square-o"></i></label>
-                            <label type="button" id="tsb-del-btn" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></label>
+                            <button id="tsb-eye-btn" class="btn btn-primary btn-xs active"><i class="fa fa-eye"></i></button>
+                            <button id="tsb-add-btn" class="btn btn-success btn-xs"><i class="fa fa-plus-square-o"></i></button>
+                            <button id="tsb-edit-btn" class="btn btn-info btn-xs"><i class="fa fa-pencil-square-o"></i></button>
+                            <button id="tsb-del-btn" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
                         </div>
                         <div id="top-panel" class="top-panel collapse in" aria-expanded="true">
                             <div id="top-panel-btns" class="btn-group btn-group-justified" role="group" data-toggle="buttons" aria-label="...">
@@ -31,6 +32,7 @@
                         <div id="bottom-side-buttons" class="btn-group-vertical bottom-right" role="group" aria-label="...">
                             <button class="btn btn-primary btn-xs button-nofocuse" data-toggle="collapse" data-target="#bottom-panel"><i class="fa fa-eye"></i></button>
                             <button id="bsb-add-btn" class="btn btn-success btn-xs button-nofocuse"><i class="fa fa-plus-square-o "></i></button>
+                            <button id="bsb-edit-btn" class="btn btn-info btn-xs"><i class="fa fa-pencil-square-o"></i></button>
                             <button id="bsb-del-btn" class="btn btn-danger btn-xs button-nofocuse"><i class="fa fa-trash"></i></button>
                         </div>
 
@@ -50,14 +52,12 @@
 <!-- /.modal -->
 
 <!-- Modal -->
-<div class="modal fade" id="new-category-modal">
+<div class="modal fade" id="edit-category-modal">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body">
-                <label for="new-category-input">Введите название</label>
-                <div class="input-group">
-                    <input type="text" class="form-control" id="new-category-input">
-                </div>
+                <label for="category-input">Введите название</label>
+                <input type="text" class="form-control" id="category-input">
             </div>
             <div class="modal-footer">
                 <button class="btn btn-default" data-dismiss="modal">Закрыть</button>

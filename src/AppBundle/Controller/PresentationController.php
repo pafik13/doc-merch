@@ -62,12 +62,21 @@ class PresentationController extends Controller
             $editedCategory = $editedPresentation->findCategoryById($category->getId());
             if(!$editedCategory){
                 $presentation->removeCategory($category);
+                $em->remove($category);
+                $em->flush();
             }
             else {
+                if($editedCategory->getName()!=$category->getName()){
+                    $category->setName($editedCategory->getName());
+                }
                 foreach($category->getSubcategories() as $subcategory){
                     $editedSubcategory = $editedCategory->findSubcategoryById($subcategory->getId());
                     if(!$editedSubcategory){
                         $category->removeSubcategory($subcategory);
+                    } else {
+                        if($editedSubcategory->getName()!=$subcategory->getName()){
+                            $subcategory->setName($editedSubcategory->getName());
+                        }
                     }
                 }
             }

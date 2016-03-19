@@ -8,7 +8,7 @@ $(document).ready(function(){
     var current_slide = first(current_subcategory.slides);
 
     var slideModal = $("#slide-modal");
-    var newCategoryModal = $("#new-category-modal");
+    var editCategoryModal = $("#edit-category-modal");
     var topPanel = $('#top-panel-btns');
     var botPanel = $('#bot-panel-btns');
 
@@ -138,7 +138,7 @@ $(document).ready(function(){
     }
 
 
-    $("#slide").attr({src: current_slide.image});
+    //$("#slide").attr({src: current_slide.image});
 
     $(".nav-arrow-right").click(function(){
         var id = $.inArray(current_slide, current_subcategory.slides);
@@ -169,8 +169,8 @@ $(document).ready(function(){
     });
 
     $('#tsb-add-btn').click(function(){
-        newCategoryModal.modal('show');
-        newCategoryModal.find('input').attr('data-type','category');
+        editCategoryModal.modal('show');
+        editCategoryModal.find('input').attr({'data-type':'category','data-action':'add'});
     });
 
     $('#tsb-del-btn').click(function(){
@@ -183,6 +183,12 @@ $(document).ready(function(){
         loadSlide();
     });
 
+    $('#tsb-edit-btn').click(function(){
+        editCategoryModal.modal('show');
+        editCategoryModal.find('input').attr({'data-type':'category','data-action':'edit'});
+        editCategoryModal.find('input').val(current_category.name);
+    });
+
     $('#bsb-del-btn').click(function(){
         var index =
         current_category.subcategories.splice(current_category.subcategories.indexOf(current_subcategory),1);
@@ -192,20 +198,35 @@ $(document).ready(function(){
     });
 
     $('#bsb-add-btn').click(function(){
-        newCategoryModal.modal('show');
-        newCategoryModal.find('input').attr('data-type','subcategory');
+        editCategoryModal.modal('show');
+        editCategoryModal.find('input').attr({'data-type':'subcategory','data-action':'add'});
+    });
+
+    $('#bsb-edit-btn').click(function(){
+        editCategoryModal.modal('show');
+        editCategoryModal.find('input').attr({'data-type':'subcategory','data-action':'edit'});
+        editCategoryModal.find('input').val(current_subcategory.name);
     });
 
     $('#save-category-btn').click(function(){
-        newCategoryModal.modal("hide");
-        var newCategory = $('#new-category-input').val();
-        if($('#new-category-input').attr('data-type')=='category'){
-            tempPresentation.categories.push({'name':newCategory, 'subcategories':[{'name':'Подгруппа', 'slides':[]}]});
-            loadCategories();
-        } else{
-            current_category.subcategories.push({'name':newCategory, 'slides':[]});
-            loadSubcategories();
+        var input = $('#category-input');
+
+        if(input.attr('data-action') == 'edit'){
+            if(input.attr('data-type') == 'category'){
+                current_category.name = input.val();
+            } else {
+                current_subcategory.name = input.val();
+            }
+        } else {
+            if(input.attr('data-type')=='category'){
+                tempPresentation.categories.push({'name':input.val(), 'subcategories':[{'name':'Подгруппа', 'slides':[]}]});
+            } else {
+                current_category.subcategories.push({'name':input.val(), 'slides':[]});
+            }
         }
+        editCategoryModal.modal("hide");
+        loadCategories();
+        loadSubcategories();
     });
 
     $('#save-pres-btn').click(function(){
@@ -227,6 +248,10 @@ $(document).ready(function(){
             }
         });
 
+    });
+
+    editCategoryModal.on('show.bs.modal',function(){
+       $('#new-category-input').val('');
     });
 
     slideModal.on('show.bs.modal', function(){
