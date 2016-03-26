@@ -5,43 +5,44 @@
 
 <!-- Modal -->
 <div class="modal fade" id="slide-modal">
-    <div class="modal-dialog">
+    <div class="inline-block-modal modal-dialog">
         <div class="modal-content">
             <div class="modal-body">
                 <div class="slide-container">
-                    <button class="nav-arrow nav-arrow-left"><i class="fa fa-arrow-left fa-6"></i></button>
-                    <button class="nav-arrow nav-arrow-right"><i class="fa fa-arrow-right fa-6"></i></button>
-                    <div class="">
-                        <img id="slide" src="">
-
-                        <label type="button" id="top-hotspot" class="btn btn-xs btn-primary top-centered" data-toggle="collapse" data-target="#top-panel"><i class="fa fa-arrow-down"></i></label>
-                        <div id="top-side-buttons" class="btn-group-vertical top-right" role="group" aria-label="Управление верхней панелью">
-                            <button id="tsb-eye-btn" class="btn btn-primary btn-xs active"><i class="fa fa-eye"></i></button>
-                            <button id="tsb-add-btn" class="btn btn-success btn-xs"><i class="fa fa-plus-square-o"></i></button>
-                            <button id="tsb-edit-btn" class="btn btn-info btn-xs"><i class="fa fa-pencil-square-o"></i></button>
-                            <button id="tsb-del-btn" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
+                    <label for="file-upload" class="nav-arrow nav-add">
+                        <i class="fa fa-plus-circle"></i>
+                    </label>
+                    <input id="file-upload" type="file" multiple="multiple"/>
+                    <label type="button" class="nav-arrow nav-delete"><i class="fa fa-minus-circle"></i> </label>
+                    <button class="nav-arrow nav-arrow-left"><i class="fa fa-chevron-left"></i></button>
+                    <button class="nav-arrow nav-arrow-right"><i class="fa fa-chevron-right"></i></button>
+                    <img id="slide" src="">
+                    <div class="upload hidden"><p>test</p></div>
+                    <div id="top-side-buttons" class="btn-group-vertical top-right" role="group" aria-label="Управление верхней панелью">
+                        <button id="tsb-eye-btn" class="btn btn-primary btn-xs active"><i class="fa fa-eye"></i></button>
+                        <button id="tsb-add-btn" class="btn btn-success btn-xs"><i class="fa fa-plus-square-o"></i></button>
+                        <button id="tsb-edit-btn" class="btn btn-info btn-xs"><i class="fa fa-pencil-square-o"></i></button>
+                        <button id="tsb-del-btn" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
+                    </div>
+                    <div id="top-panel" class="top-panel collapse in" aria-expanded="true">
+                        <div id="top-panel-btns" class="btn-group btn-group-justified" role="group" data-toggle="buttons" aria-label="...">
                         </div>
-                        <div id="top-panel" class="top-panel collapse in" aria-expanded="true">
-                            <div id="top-panel-btns" class="btn-group btn-group-justified" role="group" data-toggle="buttons" aria-label="...">
-                            </div>
+                    </div>
+                    <div id="bottom-panel" class="bottom-panel collapse in" aria-expanded="true">
+                        <div id="bot-panel-btns" class="btn-group btn-group-justified" role="group" data-toggle="buttons" aria-label="...">
                         </div>
-                        <div id="bottom-panel" class="bottom-panel collapse in" aria-expanded="true">
-                            <div id="bot-panel-btns" class="btn-group btn-group-justified" role="group" data-toggle="buttons" aria-label="...">
-                            </div>
-                        </div>
-                        <div id="bottom-side-buttons" class="btn-group-vertical bottom-right" role="group" aria-label="...">
-                            <button class="btn btn-primary btn-xs button-nofocuse" data-toggle="collapse" data-target="#bottom-panel"><i class="fa fa-eye"></i></button>
-                            <button id="bsb-add-btn" class="btn btn-success btn-xs button-nofocuse"><i class="fa fa-plus-square-o "></i></button>
-                            <button id="bsb-edit-btn" class="btn btn-info btn-xs"><i class="fa fa-pencil-square-o"></i></button>
-                            <button id="bsb-del-btn" class="btn btn-danger btn-xs button-nofocuse"><i class="fa fa-trash"></i></button>
-                        </div>
-
+                    </div>
+                    <div id="bottom-side-buttons" class="btn-group-vertical bottom-right" role="group" aria-label="...">
+                        <button id="bsb-eye-btn" class="btn btn-primary btn-xs active"><i class="fa fa-eye"></i></button>
+                        <button id="bsb-add-btn" class="btn btn-success btn-xs button-nofocuse"><i class="fa fa-plus-square-o "></i></button>
+                        <button id="bsb-edit-btn" class="btn btn-info btn-xs"><i class="fa fa-pencil-square-o"></i></button>
+                        <button id="bsb-del-btn" class="btn btn-danger btn-xs button-nofocuse"><i class="fa fa-trash"></i></button>
                     </div>
                 </div>
                 <div id="presentation" data-json="{{ presentation | serialize('json') }}"></div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                <button class="btn btn-default" id="close-btn" data-dismiss="modal">Закрыть</button>
                 <button class="btn btn-primary" id="save-pres-btn">Сохранить</button>
             </div>
         </div>

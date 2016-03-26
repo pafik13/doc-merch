@@ -132,48 +132,21 @@ class LoadUserData implements FixtureInterface
         $manager->persist($subcategory2);
         $manager->persist($subcategory3);
 
-        $slide1 = new Slide();
-        $slide1->setImage("/bundles/app/img/slides/slide1.png");
-        $slide1->setQueue(1);
-        $slide1->setSubcategory($subcategory1);
-
-        $slide2 = new Slide();
-        $slide2->setImage("/bundles/app/img/slides/slide2.png");
-        $slide2->setQueue(2);
-        $slide2->setSubcategory($subcategory1);
-
-        $slide3 = new Slide();
-        $slide3->setImage("/bundles/app/img/slides/slide3.png");
-        $slide3->setQueue(3);
-        $slide3->setSubcategory($subcategory2);
-
-        $slide4 = new Slide();
-        $slide4->setImage("/bundles/app/img/slides/slide4.png");
-        $slide4->setQueue(4);
-        $slide4->setSubcategory($subcategory2);
-
-        $slide5 = new Slide();
-        $slide5->setImage("/bundles/app/img/slides/slide5.png");
-        $slide5->setQueue(5);
-        $slide5->setSubcategory($subcategory2);
-
-        $slide6 = new Slide();
-        $slide6->setImage("/bundles/app/img/slides/slide6.png");
-        $slide6->setQueue(6);
-        $slide6->setSubcategory($subcategory3);
-
-        $slide7 = new Slide();
-        $slide7->setImage("/bundles/app/img/slides/slide7.png");
-        $slide7->setQueue(7);
-        $slide7->setSubcategory($subcategory3);
-
-        $manager->persist($slide1);
-        $manager->persist($slide3);
-        $manager->persist($slide2);
-        $manager->persist($slide4);
-        $manager->persist($slide5);
-        $manager->persist($slide6);
-        $manager->persist($slide7);
+//        $slide1 = new Slide('slide1',"/bundles/app/img/slides/slide1.png", $subcategory1,1);
+//        $slide2 = new Slide('slide2',"/bundles/app/img/slides/slide2.png", $subcategory1,2);
+//        $slide3 = new Slide('slide3',"/bundles/app/img/slides/slide3.png", $subcategory2,3);
+//        $slide4 = new Slide('slide4',"/bundles/app/img/slides/slide4.png", $subcategory2,4);
+//        $slide5 = new Slide('slide5',"/bundles/app/img/slides/slide5.png", $subcategory2,5);
+//        $slide6 = new Slide('slide6',"/bundles/app/img/slides/slide6.png", $subcategory3,6);
+//        $slide7 = new Slide('slide7',"/bundles/app/img/slides/slide7.png", $subcategory3,7);
+//
+//        $manager->persist($slide1);
+//        $manager->persist($slide3);
+//        $manager->persist($slide2);
+//        $manager->persist($slide4);
+//        $manager->persist($slide5);
+//        $manager->persist($slide6);
+//        $manager->persist($slide7);
 
         $presentation = new Presentation();
         $presentation->setName("presentation");

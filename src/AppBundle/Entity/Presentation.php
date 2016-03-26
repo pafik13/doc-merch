@@ -70,7 +70,6 @@ class Presentation
         $this->categories = new ArrayCollection();
     }
 
-
     /**
      * Get id
      *

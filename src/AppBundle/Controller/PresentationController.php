@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Category;
 use AppBundle\Entity\Presentation;
+use AppBundle\Entity\Slide;
 use AppBundle\Entity\Subcategory;
 use AppBundle\Form\PresentationType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -49,17 +50,15 @@ class PresentationController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        //$testData = '{"id":2,"name":"testtest","categories":[{"id":3,"name":"Группа 1","subcategories":[{"id":5,"name":"Подгруппа 2","slides":[{"image":"/bundles/app/img/slides/slide3.png","queue":3},{"image":"/bundles/app/img/slides/slide4.png","queue":4},{"image":"/bundles/app/img/slides/slide5.png","queue":5}]},{"id":4,"name":"Подгруппа 1","slides":[{"image":"/bundles/app/img/slides/slide2.png","queue":2},{"image":"/bundles/app/img/slides/slide1.png","queue":1}]}]},{"id":4,"name":"Группа 2","subcategories":[{"id":6,"name":"Подгруппа 3","slides":[{"image":"/bundles/app/img/slides/slide7.png","queue":7},{"image":"/bundles/app/img/slides/slide6.png","queue":6}]}]}]}';
-        //$testData = '{"id":9,"name":"presentation","categories":[{"id":18,"name":"Группа 2","subcategories":[{"id":27,"name":"Подгруппа 3","slides":[{"image":"/bundles/app/img/slides/slide6.png","queue":6},{"image":"/bundles/app/img/slides/slide7.png","queue":7}]}]}]}';
-        //$testId = 14;
-
         $presentation = $em->getRepository('AppBundle:Presentation')->find($id);
+        $slides = $em->getRepository('AppBundle:Slide');
         $serializer = $this->get('jms_serializer');
-        $editedPresentation = $serializer->deserialize($data, 'AppBundle\Entity\Presentation', 'json');
+        $newPresentation = $serializer->deserialize($data, 'AppBundle\Entity\Presentation', 'json');
 
+        //remove/edit
 
         foreach($presentation->getCategories() as $category){
-            $editedCategory = $editedPresentation->findCategoryById($category->getId());
+            $editedCategory = $newPresentation->findCategoryById($category->getId());
             if(!$editedCategory){
                 $presentation->removeCategory($category);
                 $em->remove($category);
@@ -77,12 +76,20 @@ class PresentationController extends Controller
                         if($editedSubcategory->getName()!=$subcategory->getName()){
                             $subcategory->setName($editedSubcategory->getName());
                         }
+                        foreach($subcategory->getSlides() as $slide){
+                            $editedSlide = $editedSubcategory->findSlideById($slide->getId());
+                            if(!$editedSlide){
+                                $subcategory->removeSlide($slide);
+                            }
+                        }
                     }
                 }
             }
         }
 
-        foreach($editedPresentation->getCategories() as $newCategory){
+       //add
+
+        foreach($newPresentation->getCategories() as $newCategory){
             if(!$presentation->findCategoryById($newCategory->getId())){
                 $category = new Category($newCategory->getName());
 
@@ -100,6 +107,18 @@ class PresentationController extends Controller
                         $subcategory = new Subcategory($newSubcategory->getName(),$editedCategory);
                         $em->persist($subcategory);
                         $editedCategory->addSubcategory($subcategory);
+                    }
+                    else {
+                        $editedSubcategory = $editedCategory->findSubcategoryById($newSubcategory->getId());
+                        foreach($newSubcategory->getSlides() as $newSlide){
+                            if(!$editedSubcategory->findSlideById($newSlide->getId())){
+                                $slide = $slides->findOneByName($newSlide->getName());
+                                $slide->setNumber($newSlide->getNumber());
+                                $slide->setSubcategory($editedSubcategory);
+
+                                $editedSubcategory->addSlide($slide);
+                            }
+                        }
                     }
                 }
             }
@@ -162,8 +181,6 @@ class PresentationController extends Controller
             'subcategories'=>$subcategories
         ));
     }
-
-
 
     /**
      * @Route("/presentations/edit/{id}", name="presentations_edit")
@@ -256,5 +273,23 @@ class PresentationController extends Controller
             ;
     }
 
+    /**
+     * @Route("/upload", name="upload")
+     */
+    public function uploadAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $slides = $em->getRepository('AppBundle:Slide');
+        $files = $request->files;
 
+        foreach($files->all() as $file){
+            $slide = new Slide($file->getClientOriginalName());
+            $slide->setFile($file);
+            $slide->upload();
+
+            $em->persist($slide);
+            $em->flush();
+        }
+
+        return new Response('<img src="'.$slide->getWebPath().'">');
+    }
 }

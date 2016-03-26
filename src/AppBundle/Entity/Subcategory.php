@@ -124,4 +124,13 @@ class Subcategory
 
         return $this;
     }
+
+    public function findSlideById($id){
+        foreach($this->slides as $slide){
+            if($slide->getId()==$id){
+                return $slide;
+            }
+        }
+        return false;
+    }
 }

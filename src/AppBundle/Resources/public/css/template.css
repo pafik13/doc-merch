@@ -26,14 +26,73 @@
 .nav-arrow {
     position: absolute;
     top: 45%;
-    font-size: 5em;
+    font-size: 6em;
+    color: white;
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    overflow: hidden;
+    outline:none;
+    opacity: 0;
+
+    transition: opacity;
+    transition-timing-function: ease-out;
+    transition-duration: 250ms;
+    transition-delay: 1s;
+
+    -ms-transition: opacity;
+    -ms-transition-timing-function: ease-out;
+    -ms-transition-duration: 250ms;
+    -ms-transition-delay: 1s;
+
+    -moz-transition: opacity;
+    -moz-transition-timing-function: ease-out;
+    -moz-transition-duration: 250ms;
+    -moz-transition-delay: 1s;
+
+    -webkit-transition: opacity;
+    -webkit-transition-timing-function: ease-out;
+    -webkit-transition-duration: 250ms;
+    -webkit-transition-delay: 1s;
+}
+
+.nav-arrow:hover{
+    opacity: 0.8;
+    transition: opacity;
+    transition-timing-function: ease-out;
+    transition-duration: 250ms;
+
+    -ms-transition:opacity;
+    -ms-transition-timing-function: ease-out;
+    -ms-transition-duration: 250ms;
+
+    -moz-transition:opacity;
+    -moz-transition-timing-function: ease-out;
+    -moz-transition-duration: 250ms;
+
+    -webkit-transition: opacity;
+    -webkit-transition-timing-function: ease-out;
+    -webkit-transition-duration: 250ms;
 }
 .nav-arrow-left {
-    left: -2.5em;
+    left: 0;
 }
 
 .nav-arrow-right {
-    right:-2.5em;
+    right:0;
+}
+
+.nav-add {
+    right: 45%;
+    top: 15%;
+}
+
+input[type="file"] {
+    display: none;
+}
+.nav-delete {
+    right: 45%;
+    top: 60%;
 }
 .test {
     display: inline;
@@ -47,21 +106,14 @@
     text-align: center;
 }
 
-#slide-modal .modal-dialog{
+.inline-block-modal {
     display: inline-block;
     width:auto;
-    height: auto;
 }
 
 #slide-modal .modal-body{
     padding: 0px;
 }
-
-
-
-
-
-
 
 .wrapper {
     position: relative;
@@ -128,5 +180,16 @@
 .btn-transparent:active, .btn-transparent:hover {
     background:rgba(255,255,255,0.5);
     color: #fff
+}
+
+.upload {
+    background: grey;
+    max-width: 700px;
+    height: 600px;
+}
+
+.upload p {
+    text-align: center;
+    padding: 54px;
 }
 

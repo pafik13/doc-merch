@@ -3,15 +3,12 @@
 {% block stylesheets %}
     {{ parent() }}
 
-    {% stylesheets 'bundles/app/css/main.css' filter='cssrewrite' %}
-    <link rel="stylesheet" href="{{ asset_url }}" />
-    {% endstylesheets %}
-
-    {% stylesheets 'bundles/app/css/timeline.css' filter='cssrewrite' %}
-    <link rel="stylesheet" href="{{ asset_url }}" />
-    {% endstylesheets %}
-
-    {% stylesheets 'bundles/app/css/template.css' filter='cssrewrite' %}
+    {% stylesheets
+        'bundles/app/css/main.css' filter='cssrewrite'
+        'bundles/app/css/timeline.css'
+        'bundles/app/css/template.css'
+        filter='cssrewrite'
+    %}
     <link rel="stylesheet" href="{{ asset_url }}" />
     {% endstylesheets %}
 
