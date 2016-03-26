@@ -263,6 +263,10 @@ $(document).ready(function(){
             $("#tsb-add-btn").attr('disabled', true);
             $("#tsb-del-btn").attr('disabled', true);
             $("#tsb-edit-btn").attr('disabled', true);
+            $("#bottom-panel").collapse("hide");
+            $("#bsb-add-btn").attr('disabled', true);
+            $("#bsb-del-btn").attr('disabled', true);
+            $("#bsb-edit-btn").attr('disabled', true);
             $("#tsb-eye-btn").removeClass("active");
         } else {
             $("#top-panel").collapse("show");
@@ -270,23 +274,11 @@ $(document).ready(function(){
             $("#tsb-add-btn").removeAttr('disabled');
             $("#tsb-del-btn").removeAttr('disabled');
             $("#tsb-edit-btn").removeAttr('disabled');
-            $("#tsb-eye-btn").addClass("active");
-        }
-    });
-
-    $("#bsb-eye-btn").click(function(){
-        if ($("#bsb-eye-btn").hasClass("active")){
-            $("#bottom-panel").collapse("hide");
-            $("#bsb-add-btn").attr('disabled', true);
-            $("#bsb-del-btn").attr('disabled', true);
-            $("#bsb-edit-btn").attr('disabled', true);
-            $("#bsb-eye-btn").removeClass("active");
-        } else {
             $("#bottom-panel").collapse("show");
             $("#bsb-add-btn").removeAttr('disabled');
             $("#bsb-del-btn").removeAttr('disabled');
             $("#bsb-edit-btn").removeAttr('disabled');
-            $("#bsb-eye-btn").addClass("active");
+            $("#tsb-eye-btn").addClass("active");
         }
     });
 
