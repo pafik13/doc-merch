@@ -559,7 +559,10 @@ table.dataTable thead .sorting:after {
 }
 .nav-arrow {
     position: absolute;
-    top: 45%;
+    height: 100%;
+    width: 25%;
+    top: 50%;
+    transform: translateY(-50%);
     font-size: 6em;
     color: white;
     background-color: Transparent;
@@ -609,24 +612,45 @@ table.dataTable thead .sorting:after {
     -webkit-transition-duration: 250ms;
 }
 .nav-arrow-left {
+    text-align: left;
     left: 0;
 }
 
 .nav-arrow-right {
+    text-align: right;
     right:0;
 }
 
 .nav-add {
-    right: 45%;
-    top: 15%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 6em;
+    color: white;
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    overflow: hidden;
+    outline:none;
+    opacity: 0.5;
 }
 
 input[type="file"] {
     display: none;
 }
 .nav-delete {
-    right: 45%;
-    top: 60%;
+    position: absolute;
+    font-size: 3em;
+    color: white;
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    overflow: hidden;
+    outline:none;
+    opacity: 0.5;
+    top: 35px;
+    right: 15px;
 }
 .test {
     display: inline;
