@@ -1,11 +1,11 @@
 $(document).ready(function(){
 
-    var presentation = $("#presentation").data("json");
-    var tempPresentation =  jQuery.extend(true, {}, presentation);
-
-    var current_category = tempPresentation.categories[0];
-    var current_subcategory = current_category.subcategories[0];
-    var current_slide = current_subcategory.slides[0];
+    var presentation = $("#presentation").data("json"),
+        mode = $("#presentation").data("page"),
+        tempPresentation =  jQuery.extend(true, {}, presentation),
+        current_category,
+        current_subcategory,
+        current_slide;
 
     var slide = $('#slide');
     var slideModal = $("#slide-modal");
@@ -14,6 +14,11 @@ $(document).ready(function(){
     var botPanel = $('#bot-panel-btns');
 
     var files;
+    var filenames;
+
+    function randString () {
+        return Math.random().toString(36).substr(2); // remove `0.`
+    }
 
     function sortSlides(){
         current_subcategory.slides.sort(function (a, b) {
@@ -35,7 +40,7 @@ $(document).ready(function(){
             category.subcategories.forEach(function(subcategory){
                 subcategory.slides.forEach(function(slide){
                     var image = new Image();
-                    image.src = slide.path;
+                    image.src = slide.web_path;
                 });
             });
         });
@@ -52,7 +57,7 @@ $(document).ready(function(){
     function loadCategories(){
         topPanel.empty();
         tempPresentation.categories.forEach(function(item){
-            if(item.name === current_category.name){
+            if(current_category == undefined || item.name === current_category.name){
                 topPanel.append("<a class = 'btn btn-primary active' href='javascript:void(0);'>"+item.name+"</a>"
                 );
             } else {
@@ -102,7 +107,7 @@ $(document).ready(function(){
     }
 
     function loadSlide(){
-        if(current_subcategory.slides.length == 0 || current_slide === null ){
+        if(current_category == undefined || current_subcategory.slides.length == 0 || current_slide === null ){
             $('.nav-add').removeClass('hidden');
             $('.nav-delete').addClass('hidden');
             current_slide = null;
@@ -110,13 +115,14 @@ $(document).ready(function(){
         }else {
             $('.nav-add').addClass('hidden');
             $('.nav-delete').removeClass('hidden');
-            $("#slide").attr({src: current_slide.path});
+            $("#slide").attr({src: current_slide.web_path});
         }
     }
 
     $(".nav-arrow-right").click(function(){
         var id = $.inArray(current_slide, current_subcategory.slides);
-        if (current_slide === null){
+
+        if (current_slide === null || (id>=current_subcategory.slides.length-1 && mode == 'presentation_show')){
             current_subcategory = nextItem(current_subcategory,current_category.subcategories);
             botPanel.find('a').removeClass("active");
             botPanel.find('a').filter(function() {
@@ -185,13 +191,8 @@ $(document).ready(function(){
     });
 
     $('#bsb-del-btn').click(function(){
-        var index =
         current_category.subcategories.splice(current_category.subcategories.indexOf(current_subcategory),1);
-        current_subcatego    //function first(array){
-    //    for(var i in array){
-    //        return array[i];
-    //    }
-    //}ry = prevItem(current_subcategory,current_category.subcategories);
+        current_subcategory = prevItem(current_subcategory,current_category.subcategories);
         loadSubcategories();
         loadSlide();
     });
@@ -220,6 +221,8 @@ $(document).ready(function(){
         } else {
             if(input.attr('data-type')=='category'){
                 tempPresentation.categories.push({'name':input.val(), 'subcategories':[{'name':'Подгруппа', 'slides':[]}]});
+                current_category = $.grep(tempPresentation.categories, function(e){ return e.name == input.val(); })[0];
+                current_subcategory = current_category.subcategories[0];
             } else {
                 current_category.subcategories.push({'name':input.val(), 'slides':[]});
             }
@@ -231,16 +234,7 @@ $(document).ready(function(){
 
     $('#save-pres-btn').click(function(event){
         slideModal.modal("hide");
-
-        tempPresentation.categories.forEach(function(category){
-           category.subcategories.forEach(function(subcategory){
-               subcategory.slides.forEach(function(slide){
-                   slide.path='';
-               });
-           });
-        });
-
-        uploadFiles(event);
+        presentation = jQuery.extend(true, {}, tempPresentation);
     });
 
     editCategoryModal.on('show.bs.modal',function(){
@@ -253,38 +247,47 @@ $(document).ready(function(){
         preload();
 
         current_category = tempPresentation.categories[0];
-        current_subcategory = current_category.subcategories[0];
-        current_slide = current_subcategory.slides[0];
+        if (current_category != undefined) {
+            current_subcategory = current_category.subcategories[0];
+            current_slide = current_subcategory.slides[0];
+            clearFiles();
+            sortSlides();
+            loadCategories();
+            loadSubcategories();
+        }
 
-        clearFiles();
-        sortSlides();
-        loadCategories();
-        loadSubcategories();
         loadSlide();
     });
 
     $('#file-upload').on('change', function(e) {
-        if(files === undefined){
-            files = e.target.files;
+
+        var tempLength;
+        if(files === undefined || files.length == 0){
+            tempLength = 0;
+            files = jQuery.extend(true, {}, e.target.files);
+            filenames = [];
         } else{
+            tempLength = files.length;
             files = $.merge( $.merge( [], files ), e.target.files );
         }
 
-
         if (!files || files.length == 0) return;
         //file = files[0];
-        $(e.target.files).each(function(){
+        $.each(e.target.files, function(key, value) {
             var fileReader = new FileReader();
             fileReader.readAsDataURL(this);
             var file = this;
 
             fileReader.onload = function (e) {
                 var number = current_subcategory.slides.length > 0 ? current_subcategory.slides[current_subcategory.slides.length-1].number+1 : 0;
-                current_subcategory.slides.push({'name':file.name, 'path': e.target.result, 'number':number});
+                var name = randString() +randString();
+                filenames.push(name);
+                current_subcategory.slides.push({'name':name, 'web_path': e.target.result, 'number':number});
                 current_slide = current_subcategory.slides[current_subcategory.slides.length-1];
                 loadSlide();
             };
         });
+        $('#file-upload').val('');
     });
 
     $("#tsb-eye-btn").click(function(){
@@ -316,52 +319,60 @@ $(document).ready(function(){
         var $el = $('#file-upload');
         $el.wrap('<form>').closest('form').get(0).reset();
         $el.unwrap();
-        files = undefined;
     }
 
-    function uploadPresentation(){
-        var json = JSON.stringify(tempPresentation);
-        jQuery.ajax({
-            type:"POST",
-            url: "/ajax",
-            dataType: "json",
-            data: {'data': json, 'id': tempPresentation.id},
-            success: function(data){
-                presentation = data;
-            },
-            error: function(){
-                alert('error');
-            }
-        });
-    }
+    //function uploadPresentation(){
+    //    tempPresentation.name = $('#appbundle_presentation_name').val();
+    //    tempPresentation.template = $('#appbundle_presentation_template').val();
+    //    var json = JSON.stringify(tempPresentation);
+    //
+    //    jQuery.ajax({
+    //        type:"POST",
+    //        url: "/ajax",
+    //        dataType: "json",
+    //        data: {'data': json, 'id': tempPresentation.id},
+    //        success: function(data){
+    //            presentation = data;
+    //        },
+    //        error: function(){
+    //            //alert('error');
+    //            console.log('error');
+    //        }
+    //    });
+    //}
 
     function uploadFiles(event) {
-        if(files === undefined || files.length == 0){
-            uploadPresentation();
-            return;
-        }
-        event.stopPropagation(); // Stop stuff happening
-        event.preventDefault(); // Totally stop stuff happening
+        event.stopPropagation();
+        event.preventDefault();
 
-        var data = new FormData();
-        $.each(files, function(key, value)
-        {
-            data.append(key, value);
-        });
+        var data = new FormData($('form')[0]);
+        if(files != undefined || files > 0){
+            $.each(files, function(key, value)
+            {
+                data.append(key, value);
+            });
+        }
+
+        tempPresentation.name = $('#appbundle_presentation_name').val();
+        tempPresentation.template = $('#appbundle_presentation_template').val();
+        var json = JSON.stringify(tempPresentation);
+        data.append('json',json);
+        data.append('filenames',filenames.join());
 
         $.ajax({
             url: '/upload',
             type: 'POST',
             data: data,
             cache: false,
-            dataType: 'html',
+            dataType: 'json',
             processData: false,
             contentType: false,
-            success: function(data, textStatus, jqXHR)
+            success: function(data, text, jqXHR)
             {
                 if(typeof data.error === 'undefined')
                 {
-                    uploadPresentation();
+                    window.location.pathname = data.redirect_url;
+                    //uploadPresentation();
                 }
                 else
                 {
@@ -374,6 +385,20 @@ $(document).ready(function(){
             }
         });
     }
+
+    $('#submit-form-btn').click(function(){
+        tempPresentation.categories.forEach(function(category){
+           category.subcategories.forEach(function(subcategory){
+               subcategory.slides.forEach(function(slide){
+                   slide.path='';
+                   slide.web_path='';
+                   //slide.name = randString() + randString();
+               });
+           });
+        });
+
+        uploadFiles(event);
+    });
 });
 
 

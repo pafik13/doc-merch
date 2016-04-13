@@ -10,6 +10,9 @@ use AppBundle\Form\PresentationType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\VarDumper\VarDumper;
@@ -36,100 +39,6 @@ class PresentationController extends Controller
             'categories'=>$categories,
             'subcategories'=>$subcategories
         ));
-    }
-
-    /**
-     * @Route("/ajax", name="presentations_ajax")
-     * @Method({"GET","POST"})
-     * @param Request $request
-     * @return Response
-     */
-    public function getAjaxAction(Request $request){
-        $data = $request->request->get('data','null');
-        $id = $request->request->get('id','null');
-
-        $em = $this->getDoctrine()->getManager();
-
-        $presentation = $em->getRepository('AppBundle:Presentation')->find($id);
-        $slides = $em->getRepository('AppBundle:Slide');
-        $serializer = $this->get('jms_serializer');
-        $newPresentation = $serializer->deserialize($data, 'AppBundle\Entity\Presentation', 'json');
-
-        //remove/edit
-
-        foreach($presentation->getCategories() as $category){
-            $editedCategory = $newPresentation->findCategoryById($category->getId());
-            if(!$editedCategory){
-                $presentation->removeCategory($category);
-                $em->remove($category);
-                $em->flush();
-            }
-            else {
-                if($editedCategory->getName()!=$category->getName()){
-                    $category->setName($editedCategory->getName());
-                }
-                foreach($category->getSubcategories() as $subcategory){
-                    $editedSubcategory = $editedCategory->findSubcategoryById($subcategory->getId());
-                    if(!$editedSubcategory){
-                        $category->removeSubcategory($subcategory);
-                    } else {
-                        if($editedSubcategory->getName()!=$subcategory->getName()){
-                            $subcategory->setName($editedSubcategory->getName());
-                        }
-                        foreach($subcategory->getSlides() as $slide){
-                            $editedSlide = $editedSubcategory->findSlideById($slide->getId());
-                            if(!$editedSlide){
-                                $subcategory->removeSlide($slide);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-       //add
-
-        foreach($newPresentation->getCategories() as $newCategory){
-            if(!$presentation->findCategoryById($newCategory->getId())){
-                $category = new Category($newCategory->getName());
-
-                foreach($newCategory->getSubcategories() as $newSubcategory){
-                    $subcategory = new Subcategory($newSubcategory->getName(),$category);
-                    $em->persist($subcategory);
-                    $category->addSubcategory($subcategory);
-                }
-                $em->persist($category);
-                $presentation->addCategory($category);
-            } else {
-                $editedCategory = $presentation->findCategoryById($newCategory->getId());
-                foreach($newCategory->getSubcategories() as $newSubcategory){
-                    if(!$editedCategory->findSubcategoryById($newSubcategory->getId())){
-                        $subcategory = new Subcategory($newSubcategory->getName(),$editedCategory);
-                        $em->persist($subcategory);
-                        $editedCategory->addSubcategory($subcategory);
-                    }
-                    else {
-                        $editedSubcategory = $editedCategory->findSubcategoryById($newSubcategory->getId());
-                        foreach($newSubcategory->getSlides() as $newSlide){
-                            if(!$editedSubcategory->findSlideById($newSlide->getId())){
-                                $slide = $slides->findOneByName($newSlide->getName());
-                                $slide->setNumber($newSlide->getNumber());
-                                $slide->setSubcategory($editedSubcategory);
-
-                                $editedSubcategory->addSlide($slide);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        $em->flush();
-        $em->close();
-        $em = $this->getDoctrine()->getManager();
-
-        $presentation = $em->getRepository('AppBundle:Presentation')->find($id);
-        return new Response($serializer->serialize($presentation, 'json'));
     }
 
     /**
@@ -168,17 +77,10 @@ class PresentationController extends Controller
         $presentations = $this->getDoctrine()
             ->getManager()
             ->getRepository('AppBundle:Presentation');
-        $categories = $this->getDoctrine()->getManager()
-            ->getRepository('AppBundle:Category')->findAll();
-
-        $subcategories = $this->getDoctrine()->getManager()
-            ->getRepository('AppBundle:Subcategory')->findAll();
 
         $presentation = $presentations->find($id);
         return $this->render('presentation/show.html.twig', array(
-            'presentation' => $presentation,
-            'categories'=>$categories,
-            'subcategories'=>$subcategories
+            'entity' => $presentation,
         ));
     }
 
@@ -192,16 +94,20 @@ class PresentationController extends Controller
     public function editAction(Presentation $entity, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
+        $presentations = $em->getRepository('AppBundle:Presentation');
 
         $editForm = $this->createEditForm($entity);
         $deleteForm = $this->createDeleteForm($entity);
 
         $editForm->handleRequest($request);
 
-        if( $editForm->isValid()){
-            $em->flush();
+        if( $editForm->isSubmitted() && $editForm->isValid()){
+            dump($editForm->get('save')->isClicked());
+            if ($editForm->get('save')->isClicked()){
+                $em->flush();
 
-            return $this->redirect($this->generateUrl('presentations'));
+                return $this->redirect($this->generateUrl('presentations'));
+            }
         }
 
         return $this->render('presentation/edit.html.twig', array(
@@ -235,7 +141,7 @@ class PresentationController extends Controller
     {
         $form = $this->createForm(new PresentationType(), $presentation);
 
-        $form->add('submit', 'submit', array('label' => 'Добавить группу', 'attr' => array('class' => 'btn btn-default btn-lg btn-block')));
+        $form->add('submit', 'submit', array('label' => 'Добавить презентацию', 'attr' => array('class' => 'btn btn-default btn-lg btn-block')));
 
         return $form;
     }
@@ -251,7 +157,7 @@ class PresentationController extends Controller
     {
         $form = $this->createForm(new PresentationType(), $entity);
 
-        $form->add('submit', 'submit', array('label' => 'Изменить', 'attr' => array('class' => 'btn btn-default btn-lg btn-block')));
+        //$form->add('save', SubmitType::class, array('label' => 'Изменить', 'attr' => array('class' => 'btn btn-default btn-lg btn-block')));
 
         return $form;
     }
@@ -279,17 +185,115 @@ class PresentationController extends Controller
     public function uploadAction(Request $request){
         $em = $this->getDoctrine()->getManager();
         $slides = $em->getRepository('AppBundle:Slide');
-        $files = $request->files;
+        $jsonData = $request->request->get('json');
+        $serializer = $this->get('jms_serializer');
+        $newPresentation = $serializer->deserialize($jsonData, 'AppBundle\Entity\Presentation', 'json');
+        dump($newPresentation);
+        $presentation = $em->getRepository('AppBundle:Presentation')->find($newPresentation->getId());
+        dump($presentation);
 
+        $files = $request->files;
+        $filenames = explode(',',$request->request->get('filenames'));
+        dump($filenames);
+        dump($files);
+        dump($request);
+
+        $counter = 0;
         foreach($files->all() as $file){
-            $slide = new Slide($file->getClientOriginalName());
+            dump($file);
+            $slide = new Slide($filenames[$counter]);
             $slide->setFile($file);
-            $slide->upload();
+
+            dump($slide);
 
             $em->persist($slide);
             $em->flush();
+
+            $counter++;
+        }
+                //remove/edit
+
+        $presentation->setName($newPresentation->getName());
+        $presentation->setTemplate($newPresentation->getTemplate());
+
+        dump($presentation);
+
+        foreach($presentation->getCategories() as $category){
+            $editedCategory = $newPresentation->findCategoryById($category->getId());
+            if(!$editedCategory){
+                $presentation->removeCategory($category);
+                $em->remove($category);
+                $em->flush();
+            }
+            else {
+                if($editedCategory->getName()!=$category->getName()){
+                    $category->setName($editedCategory->getName());
+                }
+                foreach($category->getSubcategories() as $subcategory){
+                    $editedSubcategory = $editedCategory->findSubcategoryById($subcategory->getId());
+                    if(!$editedSubcategory){
+                        $category->removeSubcategory($subcategory);
+                    } else {
+                        if($editedSubcategory->getName()!=$subcategory->getName()){
+                            $subcategory->setName($editedSubcategory->getName());
+                        }
+                        foreach($subcategory->getSlides() as $slide){
+                            $editedSlide = $editedSubcategory->findSlideById($slide->getId());
+                            if(!$editedSlide){
+                                $subcategory->removeSlide($slide);
+                            }
+                        }
+                    }
+                }
+            }
         }
 
-        return new Response('<img src="'.$slide->getWebPath().'">');
+        //add
+
+        foreach($newPresentation->getCategories() as $newCategory){
+            if(!$presentation->findCategoryById($newCategory->getId())){
+                $category = new Category($newCategory->getName());
+
+                foreach($newCategory->getSubcategories() as $newSubcategory){
+                    $subcategory = new Subcategory($newSubcategory->getName(),$category);
+                    $em->persist($subcategory);
+                    $category->addSubcategory($subcategory);
+                }
+                $em->persist($category);
+                $presentation->addCategory($category);
+            } else {
+                $editedCategory = $presentation->findCategoryById($newCategory->getId());
+                foreach($newCategory->getSubcategories() as $newSubcategory){
+                    if(!$editedCategory->findSubcategoryById($newSubcategory->getId())){
+                        $subcategory = new Subcategory($newSubcategory->getName(),$editedCategory);
+                        $em->persist($subcategory);
+                        $editedCategory->addSubcategory($subcategory);
+                    }
+                    else {
+                        $editedSubcategory = $editedCategory->findSubcategoryById($newSubcategory->getId());
+                        foreach($newSubcategory->getSlides() as $newSlide){
+                            if(!$editedSubcategory->findSlideById($newSlide->getId())){
+                                dump($newSlide);
+                                $slide = $slides->findOneByName($newSlide->getName());
+                                $slide->setNumber($newSlide->getNumber());
+                                $slide->setSubcategory($editedSubcategory);
+
+                                $editedSubcategory->addSlide($slide);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        dump($presentation);
+        $em->flush();
+        //$em->close();
+        //$em = $this->getDoctrine()->getManager();
+
+        //$presentation = $em->getRepository('AppBundle:Presentation')->find($id);
+        //return $this->redirect($this->generateUrl('presentations'));
+        //return new Response($serializer->serialize($presentation, 'json'));
+        return new JsonResponse(array('redirect_url'=> $this->generateUrl('presentations')));
     }
 }

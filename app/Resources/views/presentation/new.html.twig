@@ -2,7 +2,7 @@
 
 {% block title %}Добавить презентацию{% endblock %}
 
-{% set page = 'presentations' %}
+{% set page = 'presentation_new' %}
 
 {% block main %}
     {% form_theme form with 'bootstrap_3_layout.html.twig' %}
@@ -20,13 +20,6 @@
                 <div class="panel-body">
                     {{ form_start(form) }}
                     {{ form_row(form.name) }}
-                    <p>Группы:</p>
-                    <ul class="categories" data-prototype="{{ form_widget(form.categories.vars.prototype)|e }}">
-                        {# iterate over each existing tag and render its only field: name #}
-                        {% for tag in form.categories %}
-                            <li>{{ form_row(tag,{'attr':{'readonly':'readonly'}}) }}</li>
-                        {% endfor %}
-                    </ul>
                     {{ form_end(form) }}
                     <a class="btn btn-default btn-lg btn-block" href="{{ path('presentations') }}">Вернуться к списку</a>
                 </div>

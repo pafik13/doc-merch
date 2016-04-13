@@ -37,7 +37,6 @@ class Presentation
      * @var string
      *
      * @ORM\Column(name="template", type="string", length=255)
-     * @Exclude
      */
     private $template;
 

@@ -14,6 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="slide")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\SlideRepository")
+ * @ORM\HasLifecycleCallbacks
  * @ExclusionPolicy("none")
  */
 class Slide
@@ -30,12 +31,20 @@ class Slide
      * @ORM\Column(name="name", type="string", length = 255, nullable=true)
      */
     private $name;
+
     /**
      * @var string
      *
      * @ORM\Column(name="path", type="text", nullable=true)
      */
     private $path;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="webPath", type="text", nullable=true)
+     */
+    private $webPath;
 
     /**
      * @ORM\ManyToOne(targetEntity="Subcategory", inversedBy="slides")
@@ -55,6 +64,8 @@ class Slide
      * @Assert\File(maxSize="6000000")
      */
     private $file;
+
+    private $temp;
 
     public function __construct($name=null, $image = null, Subcategory $subcategory=null, $number = null)
     {
@@ -159,6 +170,14 @@ class Slide
     public function setFile(UploadedFile $file = null)
     {
         $this->file = $file;
+        // check if we have an old image path
+        if (isset($this->path) || $this->path != '') {
+            // store the old name to delete after the update
+            $this->temp = $this->path;
+            $this->path = null;
+        } else {
+            $this->path = 'initial';
+        }
     }
 
     /**
@@ -173,16 +192,16 @@ class Slide
 
     public function getAbsolutePath()
     {
-        return null === $this->name
+        return null === $this->path
             ? null
-            : $this->getUploadRootDir().'/'.$this->name;
+            : $this->getUploadRootDir().'/'.$this->path;
     }
 
     public function getWebPath()
     {
         return null === $this->name
             ? null
-            : $this->getUploadDir().'/'.$this->name;
+            : $this->getUploadDir().'/';
     }
 
     protected function getUploadRootDir()
@@ -199,27 +218,55 @@ class Slide
         return '/uploads/documents';
     }
 
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function preUpload()
+    {
+        if (null !== $this->getFile()) {
+            // do whatever you want to generate a unique name
+            $filename = $this->name;
+            $this->path = $filename;
+            $this->webPath = $this->getWebPath().$this->path;
+            dump($this);
+        }
+    }
+
+    /**
+     * @ORM\PostPersist()
+     * @ORM\PostUpdate()
+     */
     public function upload()
     {
-        // the file property can be empty if the field is not required
         if (null === $this->getFile()) {
             return;
         }
 
-        // use the original file name here but you should
-        // sanitize it at least to avoid any security issues
+        // if there is an error when moving the file, an exception will
+        // be automatically thrown by move(). This will properly prevent
+        // the entity from being persisted to the database on error
+        $this->getFile()->move($this->getUploadRootDir(), $this->path);
 
-        // move takes the target directory and then the
-        // target filename to move to
-        $this->getFile()->move(
-            $this->getUploadRootDir(),
-            $this->getFile()->getClientOriginalName()
-        );
-
-        // set the path property to the filename where you've saved the file
-        //$this->name = $this->getFile()->getClientOriginalName();
-        $this->path = $this->getWebPath();
-        // clean up the file property as you won't need it anymore
-        //$this->file = null;
+        // check if we have an old image
+        if (isset($this->temp)) {
+            // delete the old image
+            unlink($this->getUploadRootDir().'/'.$this->temp);
+            // clear the temp image path
+            $this->temp = null;
+        }
+        $this->file = null;
     }
+
+    /**
+     * @ORM\PostRemove()
+     */
+    public function removeUpload()
+    {
+        $file = $this->getAbsolutePath();
+        if ($file) {
+            unlink($file);
+        }
+    }
+
 }
