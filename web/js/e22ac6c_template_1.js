@@ -176,7 +176,11 @@ $(document).ready(function(){
                 return $(this).text() === current_subcategory.name;
             }).addClass("active");
             //botPanel.find('a:contains("'+current_subcategory.name+'")').addClass("active");
-            current_slide = null;
+            if (mode == 'presentation_show'){
+                current_slide = current_subcategory.slides[current_subcategory.slides.length-1]
+            } else {
+                current_slide = null;
+            }
         } else if (current_slide === null){
             var prev = current_subcategory.slides.length-1;
             current_slide = current_subcategory.slides[prev];
