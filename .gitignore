@@ -9,7 +9,6 @@
 /composer.phar
 /vendor/
 /web/bundles/
-/web/uploads/
 
 doc-merch.sublime-project
 doc-merch.sublime-workspace

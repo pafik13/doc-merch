@@ -101,7 +101,7 @@ $(document).ready(function(){
         }
         if(current_subcategory == undefined || current_subcategory.slides.length == 0 || current_slide == null ){
             current_slide = null;
-            $("#slide").attr({src: '/bundles/app/img/slides/placeholder.png'});
+            $("#slide").attr({src: 'http://dummyimage.com/600x400/7a7a7a/fff&text=+'});
         }else {
             $("#slide").attr({src: current_slide.web_path});
         }

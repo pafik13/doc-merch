@@ -227,17 +227,16 @@ class PresentationController extends Controller
             $em->persist($category);
             $presentation->addCategory($category);
         }
-        dump($presentation);
         $em->persist($presentation);
         $em->flush();
 
         return new JsonResponse(array('redirect_url'=> $this->generateUrl('presentations')));
     }
+
     /**
      * @Route("/upload_edited", name="upload_edited")
      */
     public function uploadEditedAction(Request $request){
-        dump($request);
         $em = $this->getDoctrine()->getManager();
 
         $jsonData = $request->request->get('json');
@@ -297,9 +296,6 @@ class PresentationController extends Controller
 
         //add
 
-        dump($newPresentation);
-        dump($presentation);
-
         foreach($newPresentation->getCategories() as $newCategory){
             if(!$presentation->findCategoryById($newCategory->getId())){
                 $category = new Category($newCategory->getName());
@@ -310,7 +306,6 @@ class PresentationController extends Controller
                         $slide = $slides->findOneByName($newSlide->getName());
                         $slide->setNumber($newSlide->getNumber());
                         $slide->setSubcategory($subcategory);
-                        dump($slide);
                         $subcategory->addSlide($slide);
                     }
                     $em->persist($subcategory);
@@ -327,7 +322,6 @@ class PresentationController extends Controller
                             $slide = $slides->findOneByName($newSlide->getName());
                             $slide->setNumber($newSlide->getNumber());
                             $slide->setSubcategory($subcategory);
-                            dump($slide);
                             $subcategory->addSlide($slide);
                         }
                         $em->persist($subcategory);
@@ -349,7 +343,6 @@ class PresentationController extends Controller
             }
         }
 
-        dump($presentation);
         $em->flush();
 
         return new JsonResponse(array('redirect_url'=> $this->generateUrl('presentations')));
