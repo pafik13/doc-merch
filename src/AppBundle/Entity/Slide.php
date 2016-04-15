@@ -229,7 +229,6 @@ class Slide
             $filename = $this->name;
             $this->path = $filename;
             $this->webPath = $this->getWebPath().$this->path;
-            dump($this);
         }
     }
 

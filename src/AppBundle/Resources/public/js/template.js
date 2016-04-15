@@ -1,11 +1,17 @@
 $(document).ready(function(){
 
-    var presentation = $("#presentation").data("json"),
+    var presentation,
         mode = $("#presentation").data("page"),
-        tempPresentation =  jQuery.extend(true, {}, presentation),
+        tempPresentation,
         current_category,
         current_subcategory,
         current_slide;
+
+    if ((presentation = $("#presentation").data("json")) === undefined ){
+        presentation = {'id':'','name':'','template':'','author':$("#presentation").data("user"), 'categories':[]};
+    }
+
+    tempPresentation = $.extend(true, {}, presentation);
 
     var slide = $('#slide');
     var slideModal = $("#slide-modal");
@@ -54,7 +60,7 @@ $(document).ready(function(){
         return array[($.inArray(num, array) - 1 + array.length) % array.length];
     }
 
-    function loadCategories(){
+    function loadTopPanel(){
         topPanel.empty();
         tempPresentation.categories.forEach(function(item){
             if(current_category == undefined || item.name === current_category.name){
@@ -68,8 +74,8 @@ $(document).ready(function(){
         topPanel.find('a').click(function(){changeCategory($(this))});
     }
 
-    function loadSubcategories(){
-        botPanel.children().remove();
+    function loadBottomPanel(){
+        botPanel.empty();
         current_category.subcategories.forEach(function(item){
             if(item.name === current_subcategory.name){
                 botPanel.append("<a class = 'btn btn-primary active' href='javascript:void(0);'>"+item.name+"</a>"
@@ -80,7 +86,38 @@ $(document).ready(function(){
             }
         });
         botPanel.find('a').click(function(){changeSubcategory($(this))});
-        current_slide = current_subcategory.slides[0];
+        if(current_subcategory != undefined){
+            current_slide = current_subcategory.slides[0];
+        } else {
+            current_slide = undefined;
+        }
+    }
+
+    function loadSlide(){
+        if(current_subcategory != undefined && current_slide == null && mode != 'presentation_show') {
+            $('.nav-add').removeClass('hidden');
+        } else {
+            $('.nav-add').addClass('hidden');
+        }
+        if(current_subcategory == undefined || current_subcategory.slides.length == 0 || current_slide == null ){
+            current_slide = null;
+            $("#slide").attr({src: '/bundles/app/img/slides/placeholder.png'});
+        }else {
+            $("#slide").attr({src: current_slide.web_path});
+        }
+    }
+
+    function loadSidePanels(){
+        if(current_category == undefined) {
+            $("#tsb-del-btn, #tsb-edit-btn").attr('disabled', true);
+            $("#bsb-add-btn, #bsb-del-btn, #bsb-edit-btn").attr('disabled', true);
+        } else if (current_subcategory == undefined){
+            $("#tsb-del-btn, #tsb-edit-btn").removeAttr('disabled');
+            $("#bsb-del-btn, #bsb-edit-btn").attr('disabled', true);
+        } else {
+            $("#tsb-add-btn, #tsb-del-btn, #tsb-edit-btn").removeAttr('disabled');
+            $("#bsb-add-btn, #bsb-del-btn, #bsb-edit-btn").removeAttr('disabled');
+        }
     }
 
     function changeCategory(item){
@@ -89,7 +126,7 @@ $(document).ready(function(){
             return e.name === name;
         })[0];
         current_subcategory = current_category.subcategories[0];
-        loadSubcategories();
+        loadBottomPanel();
         loadSlide();
         topPanel.find('a').removeClass("active");
         item.addClass("active");
@@ -106,18 +143,7 @@ $(document).ready(function(){
         item.addClass("active");
     }
 
-    function loadSlide(){
-        if(current_category == undefined || current_subcategory.slides.length == 0 || current_slide === null ){
-            $('.nav-add').removeClass('hidden');
-            $('.nav-delete').addClass('hidden');
-            current_slide = null;
-            $("#slide").attr({src: '/bundles/app/img/slides/placeholder.png'});
-        }else {
-            $('.nav-add').addClass('hidden');
-            $('.nav-delete').removeClass('hidden');
-            $("#slide").attr({src: current_slide.web_path});
-        }
-    }
+
 
     $(".nav-arrow-right").click(function(){
         var id = $.inArray(current_slide, current_subcategory.slides);
@@ -177,11 +203,12 @@ $(document).ready(function(){
     $('#tsb-del-btn').click(function(){
         tempPresentation.categories.splice(tempPresentation.categories.indexOf(current_category),1);
         current_category = prevItem(current_category, tempPresentation.categories);
-        current_subcategory = current_category.subcategories[0];
+        //current_subcategory = current_category.subcategories[0];
 
-        loadCategories();
-        loadSubcategories();
+        loadTopPanel();
+        loadBottomPanel();
         loadSlide();
+        loadSidePanels();
     });
 
     $('#tsb-edit-btn').click(function(){
@@ -193,8 +220,9 @@ $(document).ready(function(){
     $('#bsb-del-btn').click(function(){
         current_category.subcategories.splice(current_category.subcategories.indexOf(current_subcategory),1);
         current_subcategory = prevItem(current_subcategory,current_category.subcategories);
-        loadSubcategories();
+        loadBottomPanel();
         loadSlide();
+        loadSidePanels();
     });
 
     $('#bsb-add-btn').click(function(){
@@ -225,16 +253,19 @@ $(document).ready(function(){
                 current_subcategory = current_category.subcategories[0];
             } else {
                 current_category.subcategories.push({'name':input.val(), 'slides':[]});
+                current_subcategory = $.grep(current_category.subcategories, function(e){ return e.name == input.val(); })[0];
             }
         }
         editCategoryModal.modal("hide");
-        loadCategories();
-        loadSubcategories();
+        loadTopPanel();
+        loadBottomPanel();
+        loadSlide();
+        loadSidePanels();
     });
 
     $('#save-pres-btn').click(function(event){
         slideModal.modal("hide");
-        presentation = jQuery.extend(true, {}, tempPresentation);
+        presentation = $.extend(true, {}, tempPresentation);
     });
 
     editCategoryModal.on('show.bs.modal',function(){
@@ -242,8 +273,7 @@ $(document).ready(function(){
     });
 
     slideModal.on('show.bs.modal', function(){
-        tempPresentation =  jQuery.extend(true, {}, presentation);
-
+        tempPresentation =  $.extend(true, {}, presentation);
         preload();
 
         current_category = tempPresentation.categories[0];
@@ -252,11 +282,12 @@ $(document).ready(function(){
             current_slide = current_subcategory.slides[0];
             clearFiles();
             sortSlides();
-            loadCategories();
-            loadSubcategories();
+            loadTopPanel();
+            loadBottomPanel();
         }
 
         loadSlide();
+        loadSidePanels();
     });
 
     $('#file-upload').on('change', function(e) {
@@ -292,25 +323,14 @@ $(document).ready(function(){
 
     $("#tsb-eye-btn").click(function(){
         if ($("#tsb-eye-btn").hasClass("active")){
-            $("#top-panel").collapse("hide");
-            $("#tsb-add-btn").attr('disabled', true);
-            $("#tsb-del-btn").attr('disabled', true);
-            $("#tsb-edit-btn").attr('disabled', true);
-            $("#bottom-panel").collapse("hide");
-            $("#bsb-add-btn").attr('disabled', true);
-            $("#bsb-del-btn").attr('disabled', true);
-            $("#bsb-edit-btn").attr('disabled', true);
+            $("#top-panel, #bottom-panel").collapse("hide");
+            $("#tsb-add-btn, #tsb-del-btn, #tsb-edit-btn").attr('disabled', true);
+            $("#bsb-add-btn, #bsb-del-btn, #bsb-edit-btn").attr('disabled', true);
             $("#tsb-eye-btn").removeClass("active");
         } else {
-            $("#top-panel").collapse("show");
-            $("#top-hotspot").collapse("show");
-            $("#tsb-add-btn").removeAttr('disabled');
-            $("#tsb-del-btn").removeAttr('disabled');
-            $("#tsb-edit-btn").removeAttr('disabled');
-            $("#bottom-panel").collapse("show");
-            $("#bsb-add-btn").removeAttr('disabled');
-            $("#bsb-del-btn").removeAttr('disabled');
-            $("#bsb-edit-btn").removeAttr('disabled');
+            $("#top-panel, #bottom-panel").collapse("show");
+            $("#tsb-add-btn, #tsb-del-btn, #tsb-edit-btn").removeAttr('disabled');
+            $("#bsb-add-btn, #bsb-del-btn, #bsb-edit-btn").removeAttr('disabled');
             $("#tsb-eye-btn").addClass("active");
         }
     });
@@ -345,6 +365,7 @@ $(document).ready(function(){
         event.stopPropagation();
         event.preventDefault();
 
+        var url = mode == 'presentation_new' ? '/upload_new' : '/upload_edited';
         var data = new FormData($('form')[0]);
         if(files != undefined || files > 0){
             $.each(files, function(key, value)
@@ -357,10 +378,12 @@ $(document).ready(function(){
         tempPresentation.template = $('#appbundle_presentation_template').val();
         var json = JSON.stringify(tempPresentation);
         data.append('json',json);
-        data.append('filenames',filenames.join());
+        if (filenames != undefined){
+            data.append('filenames',filenames.join());
+        }
 
         $.ajax({
-            url: '/upload',
+            url: url,
             type: 'POST',
             data: data,
             cache: false,

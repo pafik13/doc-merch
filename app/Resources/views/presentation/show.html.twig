@@ -21,29 +21,7 @@
                     <p><strong>Шаблон:</strong> {{ entity.template }}</p>
                     <p><strong>Создатель:</strong> {{ entity.author.username }}</p>
                     <p><strong>Дата создания:</strong> {{ entity.date.format('Y-m-d H:i:s') }}</p>
-                    {#<p><strong>Группы:</strong></p>#}
-                    {#<div class="table-responsive">#}
-                        {#<table class="table table-bordered">#}
-                            {#<thead><tr>#}
-                                {#<th>#</th>#}
-                                {#<th>Название</th>#}
-                            {#</tr></thead>#}
-                            {#<tbody>#}
-                            {#{% if entity.categories|length > 0 %}#}
-                                {#{% for category in entity.categories %}#}
-                                    {#<tr>#}
-                                        {#<td>{{ loop.index }}</td>#}
-                                        {#<td>{{ category.getName() }}</td>#}
-                                    {#</tr>#}
-                                {#{% endfor %}#}
-                            {#{% else %}#}
-                                {#<tr><td colspan="8" style="text-align: center;">"Нет ни одной группы."</td></tr>#}
-                            {#{% endif %}#}
-                            {#</tbody>#}
-                        {#</table>#}
-                    {#</div>#}
                     {% include 'views/presentation/templates/template.html.twig' %}
-
                     <p></p>
                     <a class="btn btn-default btn-lg btn-block" href="{{ path('presentations') }}">Вернуться к списку</a>
                 </div>

@@ -20,6 +20,9 @@
                 <div class="panel-body">
                     {{ form_start(form) }}
                     {{ form_row(form.name) }}
+                    {{ form_row(form.template) }}
+                    {% include 'views/presentation/templates/template.html.twig' %}
+                    <button id= "submit-form-btn" type="button" class="btn btn-default btn-lg btn-block">Добавить презентацию</button>
                     {{ form_end(form) }}
                     <a class="btn btn-default btn-lg btn-block" href="{{ path('presentations') }}">Вернуться к списку</a>
                 </div>
@@ -28,4 +31,11 @@
         <!-- /.col-lg-12 -->
     </div>
     <!-- /.row -->
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts '@AppBundle/Resources/public/js/template.js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock %}

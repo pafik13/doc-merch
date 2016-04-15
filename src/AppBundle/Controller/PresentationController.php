@@ -63,7 +63,7 @@ class PresentationController extends Controller
         }
 
         return $this->render('presentation/new.html.twig', array(
-            'entity' => $newPresentation,
+            //'entity' => $newPresentation,
             'form'   => $form->createView(),
         ));
     }
@@ -102,7 +102,6 @@ class PresentationController extends Controller
         $editForm->handleRequest($request);
 
         if( $editForm->isSubmitted() && $editForm->isValid()){
-            dump($editForm->get('save')->isClicked());
             if ($editForm->get('save')->isClicked()){
                 $em->flush();
 
@@ -141,7 +140,7 @@ class PresentationController extends Controller
     {
         $form = $this->createForm(new PresentationType(), $presentation);
 
-        $form->add('submit', 'submit', array('label' => 'Добавить презентацию', 'attr' => array('class' => 'btn btn-default btn-lg btn-block')));
+        //$form->add('submit', 'submit', array('label' => 'Добавить презентацию', 'attr' => array('class' => 'btn btn-default btn-lg btn-block')));
 
         return $form;
     }
@@ -180,31 +179,80 @@ class PresentationController extends Controller
     }
 
     /**
-     * @Route("/upload", name="upload")
+     * @Route("/upload_new", name="upload_new")
      */
-    public function uploadAction(Request $request){
+    public function uploadNewAction(Request $request){
         $em = $this->getDoctrine()->getManager();
-        $slides = $em->getRepository('AppBundle:Slide');
-        $jsonData = $request->request->get('json');
-        $serializer = $this->get('jms_serializer');
-        $newPresentation = $serializer->deserialize($jsonData, 'AppBundle\Entity\Presentation', 'json');
-        dump($newPresentation);
-        $presentation = $em->getRepository('AppBundle:Presentation')->find($newPresentation->getId());
-        dump($presentation);
 
+        $jsonData = $request->request->get('json');
         $files = $request->files;
         $filenames = explode(',',$request->request->get('filenames'));
-        dump($filenames);
-        dump($files);
-        dump($request);
+
+        $jsonDecode = json_decode($jsonData, true);
+        $serializer = $this->get('jms_serializer');
+        $newPresentation = $serializer->deserialize($jsonData, 'AppBundle\Entity\Presentation', 'json');
+
+        $slides = $em->getRepository('AppBundle:Slide');
+        $author = $em->getRepository('AppBundle:User')->findByUsername($jsonDecode["author"])[0];
+
+        $presentation = new Presentation();
+        $presentation->setName($jsonDecode["name"]);
+        $presentation->setTemplate($jsonDecode["template"]);
+        $presentation->setAuthor($author);
 
         $counter = 0;
         foreach($files->all() as $file){
-            dump($file);
             $slide = new Slide($filenames[$counter]);
             $slide->setFile($file);
 
-            dump($slide);
+            $em->persist($slide);
+            $em->flush();
+
+            $counter++;
+        }
+
+        foreach ($newPresentation->getCategories() as $newCategory) {
+            $category = new Category($newCategory->getName());
+            foreach ($newCategory->getSubcategories() as $newSubcategory) {
+                $subcategory = new Subcategory($newSubcategory->getName(),$category);
+                foreach ($newSubcategory->getSlides() as $newSlide) {
+                    $slide = $slides->findOneByName($newSlide->getName());
+                    $slide->setNumber($newSlide->getNumber());
+                    $slide->setSubcategory($subcategory);
+                    $subcategory->addSlide($slide);
+                }
+                $em->persist($subcategory);
+                $category->addSubcategory($subcategory);
+            }
+            $em->persist($category);
+            $presentation->addCategory($category);
+        }
+        dump($presentation);
+        $em->persist($presentation);
+        $em->flush();
+
+        return new JsonResponse(array('redirect_url'=> $this->generateUrl('presentations')));
+    }
+    /**
+     * @Route("/upload_edited", name="upload_edited")
+     */
+    public function uploadEditedAction(Request $request){
+        dump($request);
+        $em = $this->getDoctrine()->getManager();
+
+        $jsonData = $request->request->get('json');
+        $files = $request->files;
+        $filenames = explode(',',$request->request->get('filenames'));
+
+        $slides = $em->getRepository('AppBundle:Slide');
+
+        $serializer = $this->get('jms_serializer');
+        $newPresentation = $serializer->deserialize($jsonData, 'AppBundle\Entity\Presentation', 'json');
+
+        $counter = 0;
+        foreach($files->all() as $file){
+            $slide = new Slide($filenames[$counter]);
+            $slide->setFile($file);
 
             $em->persist($slide);
             $em->flush();
@@ -213,10 +261,9 @@ class PresentationController extends Controller
         }
                 //remove/edit
 
+        $presentation = $em->getRepository('AppBundle:Presentation')->find($newPresentation->getId());
         $presentation->setName($newPresentation->getName());
         $presentation->setTemplate($newPresentation->getTemplate());
-
-        dump($presentation);
 
         foreach($presentation->getCategories() as $category){
             $editedCategory = $newPresentation->findCategoryById($category->getId());
@@ -250,12 +297,22 @@ class PresentationController extends Controller
 
         //add
 
+        dump($newPresentation);
+        dump($presentation);
+
         foreach($newPresentation->getCategories() as $newCategory){
             if(!$presentation->findCategoryById($newCategory->getId())){
                 $category = new Category($newCategory->getName());
 
                 foreach($newCategory->getSubcategories() as $newSubcategory){
                     $subcategory = new Subcategory($newSubcategory->getName(),$category);
+                    foreach($newSubcategory->getSlides() as $newSlide){
+                        $slide = $slides->findOneByName($newSlide->getName());
+                        $slide->setNumber($newSlide->getNumber());
+                        $slide->setSubcategory($subcategory);
+                        dump($slide);
+                        $subcategory->addSlide($slide);
+                    }
                     $em->persist($subcategory);
                     $category->addSubcategory($subcategory);
                 }
@@ -266,6 +323,13 @@ class PresentationController extends Controller
                 foreach($newCategory->getSubcategories() as $newSubcategory){
                     if(!$editedCategory->findSubcategoryById($newSubcategory->getId())){
                         $subcategory = new Subcategory($newSubcategory->getName(),$editedCategory);
+                        foreach($newSubcategory->getSlides() as $newSlide){
+                            $slide = $slides->findOneByName($newSlide->getName());
+                            $slide->setNumber($newSlide->getNumber());
+                            $slide->setSubcategory($subcategory);
+                            dump($slide);
+                            $subcategory->addSlide($slide);
+                        }
                         $em->persist($subcategory);
                         $editedCategory->addSubcategory($subcategory);
                     }
@@ -273,7 +337,6 @@ class PresentationController extends Controller
                         $editedSubcategory = $editedCategory->findSubcategoryById($newSubcategory->getId());
                         foreach($newSubcategory->getSlides() as $newSlide){
                             if(!$editedSubcategory->findSlideById($newSlide->getId())){
-                                dump($newSlide);
                                 $slide = $slides->findOneByName($newSlide->getName());
                                 $slide->setNumber($newSlide->getNumber());
                                 $slide->setSubcategory($editedSubcategory);
@@ -288,12 +351,7 @@ class PresentationController extends Controller
 
         dump($presentation);
         $em->flush();
-        //$em->close();
-        //$em = $this->getDoctrine()->getManager();
 
-        //$presentation = $em->getRepository('AppBundle:Presentation')->find($id);
-        //return $this->redirect($this->generateUrl('presentations'));
-        //return new Response($serializer->serialize($presentation, 'json'));
         return new JsonResponse(array('redirect_url'=> $this->generateUrl('presentations')));
     }
 }

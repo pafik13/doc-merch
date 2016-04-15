@@ -20,7 +20,7 @@
                     <div class="upload hidden"><p>test</p></div>
                     <div id="top-side-buttons" class="btn-group-vertical top-right" role="group" aria-label="Управление верхней панелью">
                         <button type="button" id="tsb-eye-btn" class="btn btn-primary btn-xs active"><i class="fa fa-eye"></i></button>
-                        {% if page == 'presentation_edit' %}
+                        {% if ( page == 'presentation_edit' or page == 'presentation_new') %}
                         <button type="button" id="tsb-add-btn" class="btn btn-success btn-xs"><i class="fa fa-plus-square-o"></i></button>
                         <button type="button" id="tsb-edit-btn" class="btn btn-info btn-xs"><i class="fa fa-pencil-square-o"></i></button>
                         <button type="button" id="tsb-del-btn" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
@@ -36,18 +36,23 @@
                     </div>
                     <div id="bottom-side-buttons" class="btn-group-vertical bottom-right" role="group" aria-label="...">
                         {#<button id="bsb-eye-btn" class="btn btn-primary btn-xs active"><i class="fa fa-eye"></i></button>#}
-                        {% if page == 'presentation_edit' %}
+                        {% if ( page == 'presentation_edit' or page == 'presentation_new') %}
                         <button type="button" id="bsb-add-btn" class="btn btn-success btn-xs button-nofocuse"><i class="fa fa-plus-square-o "></i></button>
                         <button type="button" id="bsb-edit-btn" class="btn btn-info btn-xs"><i class="fa fa-pencil-square-o"></i></button>
                         <button type="button" id="bsb-del-btn" class="btn btn-danger btn-xs button-nofocuse"><i class="fa fa-trash"></i></button>
                         {% endif %}
                     </div>
                 </div>
-                <div id="presentation" data-json="{{ entity | serialize('json') }}" data-page = {{ page }}></div>
+                {% if page != 'presentation_new' %}
+                    <div id="presentation" data-json="{{ entity | serialize('json') }}" data-page = "{{ page }}" data-user = "{{ app.user.username }}"></div>
+                {% else %}
+                    <div id="presentation" data-page = "{{ page }}" data-user = "{{ app.user.username }}"></div>
+                {% endif %}
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" id="close-btn" data-dismiss="modal">Закрыть</button>
-                {% if page == 'presentation_edit' %}
+                {% if ( page == 'presentation_edit' or page == 'presentation_new') %}
                 <button type="button" class="btn btn-primary" id="save-pres-btn">Сохранить</button>
                 {% endif %}
             </div>
