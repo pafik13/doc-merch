@@ -9,14 +9,15 @@
         <div class="modal-content">
             <div class="modal-body">
                 <div class="slide-container">
+                    <img id="slide" src="">
                     <label for="file-upload" class="nav-add hidden">
                         <i class="fa fa-plus-circle"></i>
                     </label>
-                    <input id="file-upload" type="file" multiple="multiple"/>
+                    <input id="file-upload" type="file" multiple="multiple" accept="image/jpeg,image/png,image/gif"/>
                     {#<label type="button" class="nav-delete"><i class="fa fa-minus-circle"></i> </label>#}
                     <button type="button" class="nav-arrow nav-arrow-left"><i class="fa fa-chevron-left"></i></button>
                     <button type="button" class="nav-arrow nav-arrow-right"><i class="fa fa-chevron-right"></i></button>
-                    <img id="slide" src="">
+
                     <div class="upload hidden"><p>test</p></div>
                     <div id="top-side-buttons" class="btn-group-vertical top-right" role="group" aria-label="Управление верхней панелью">
                         <button type="button" id="tsb-eye-btn" class="btn btn-primary btn-xs active"><i class="fa fa-eye"></i></button>

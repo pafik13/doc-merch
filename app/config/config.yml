@@ -78,3 +78,49 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+
+knp_gaufrette:
+    stream_wrapper: ~
+
+    adapters:
+        slides:
+            aws_s3:
+                service_id: 'acme.aws_s3'
+                bucket_name: %aws_bucket_name%
+                options:
+                    directory:  'images'
+                    create: false
+        slides_local:
+            local:
+                directory: %kernel.root_dir%/../web/uploads/slides
+    filesystems:
+        slides_local_fs:
+            adapter:    slides_local
+            alias:      slides_local_filesystem
+        slides_fs:
+            adapter:    slides
+            alias:      slides_filesystem
+
+vich_uploader:
+    db_driver: orm
+    storage:   gaufrette
+
+    mappings:
+        slides:
+            uri_prefix:         %aws_s3_base_url%/images
+            upload_destination: slides_fs
+            namer: app.namer
+
+            inject_on_load:     false
+            delete_on_update:   true
+            delete_on_remove:   true
+
+        slides_local:
+            uri_prefix:         /uploads/slides
+            upload_destination: slides_local_fs
+
+            namer: app.namer
+
+            inject_on_load:     false
+            delete_on_update:   true
+            delete_on_remove:   true

@@ -107,30 +107,30 @@ class LoadUserData implements FixtureInterface
         $manager->flush();
 
 
-        $category1 = new Category();
-        $category1->setName("Группа 1");
+//        $category1 = new Category();
+//        $category1->setName("Группа 1");
+//
+//        $category2 = new Category();
+//        $category2->setName("Группа 2");
+//
+//        $manager->persist($category1);
+//        $manager->persist($category2);
+//
+//        $subcategory1 = new Subcategory();
+//        $subcategory1->setName("Подгруппа 1");
+//        $subcategory1->setCategory($category1);
+//
+//        $subcategory2 = new Subcategory();
+//        $subcategory2->setName("Подгруппа 2");
+//        $subcategory2->setCategory($category1);
+//
+//        $subcategory3 = new Subcategory();
+//        $subcategory3->setName("Подгруппа 3");
+//        $subcategory3->setCategory($category2);
 
-        $category2 = new Category();
-        $category2->setName("Группа 2");
-
-        $manager->persist($category1);
-        $manager->persist($category2);
-
-        $subcategory1 = new Subcategory();
-        $subcategory1->setName("Подгруппа 1");
-        $subcategory1->setCategory($category1);
-
-        $subcategory2 = new Subcategory();
-        $subcategory2->setName("Подгруппа 2");
-        $subcategory2->setCategory($category1);
-
-        $subcategory3 = new Subcategory();
-        $subcategory3->setName("Подгруппа 3");
-        $subcategory3->setCategory($category2);
-
-        $manager->persist($subcategory1);
-        $manager->persist($subcategory2);
-        $manager->persist($subcategory3);
+//        $manager->persist($subcategory1);
+//        $manager->persist($subcategory2);
+//        $manager->persist($subcategory3);
 
 //        $slide1 = new Slide('slide1',"/bundles/app/img/slides/slide1.png", $subcategory1,1);
 //        $slide2 = new Slide('slide2',"/bundles/app/img/slides/slide2.png", $subcategory1,2);
@@ -148,15 +148,15 @@ class LoadUserData implements FixtureInterface
 //        $manager->persist($slide6);
 //        $manager->persist($slide7);
 
-        $presentation = new Presentation();
-        $presentation->setName("presentation");
-        $presentation->setAuthor($userManager2);
-        $presentation->setDate(new \DateTime());
-        $presentation->setTemplate("template");
-        $presentation->getCategories()->add($category1);
-        $presentation->getCategories()->add($category2);
+//        $presentation = new Presentation();
+//        $presentation->setName("presentation");
+//        $presentation->setAuthor($userManager2);
+//        $presentation->setDate(new \DateTime());
+//        $presentation->setTemplate("template");
+//        $presentation->getCategories()->add($category1);
+//        $presentation->getCategories()->add($category2);
 
-        $manager->persist($presentation);
+//        $manager->persist($presentation);
 
         $manager->flush();
 

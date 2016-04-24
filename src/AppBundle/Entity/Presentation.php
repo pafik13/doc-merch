@@ -56,11 +56,7 @@ class Presentation
     private $author;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Category", cascade={"persist"})
-     * @ORM\JoinTable(name="presentation_categories",
-     *      joinColumns={@ORM\JoinColumn(name="presentation_id", referencedColumnName="id", onDelete="cascade")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="category_id", referencedColumnName="id", onDelete="cascade")}
-     *      )
+     * @ORM\OneToMany(targetEntity="Category", mappedBy="presentation", orphanRemoval=true)
      */
     private $categories;
 

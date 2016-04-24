@@ -6,16 +6,18 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
 use JMS\Serializer\Annotation\Exclude;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * Slide
  *
  * @ORM\Table(name="slide")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\SlideRepository")
- * @ORM\HasLifecycleCallbacks
  * @ExclusionPolicy("none")
+ * @Vich\Uploadable
  */
 class Slide
 {
@@ -27,8 +29,11 @@ class Slide
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
     /**
-     * @ORM\Column(name="name", type="string", length = 255, nullable=true)
+     * @ORM\Column(type="string", length=255)
+     *
+     * @var string
      */
     private $name;
 
@@ -40,11 +45,11 @@ class Slide
     private $path;
 
     /**
-     * @var string
+     * @ORM\Column(type="datetime")
      *
-     * @ORM\Column(name="webPath", type="text", nullable=true)
+     * @var \DateTime
      */
-    private $webPath;
+    private $updatedAt;
 
     /**
      * @ORM\ManyToOne(targetEntity="Subcategory", inversedBy="slides")
@@ -56,16 +61,17 @@ class Slide
     /**
      * @var int
      *
-     * @ORM\Column(name="queue", type="integer", nullable=true)
+     * @ORM\Column(name="number", type="integer", nullable=true)
      */
     private $number;
 
     /**
-     * @Assert\File(maxSize="6000000")
+     *
+     * @Vich\UploadableField(mapping="slides", fileNameProperty="name")
+     *
+     * @var File
      */
     private $file;
-
-    private $temp;
 
     public function __construct($name=null, $image = null, Subcategory $subcategory=null, $number = null)
     {
@@ -74,6 +80,7 @@ class Slide
         $this->number = $number;
         $this->setSubcategory($subcategory);
     }
+
     /**
      * Get id
      *
@@ -107,12 +114,6 @@ class Slide
         return $this->path;
     }
 
-    /**
-     * Set queue
-     *
-     * @param integer $number
-     * @return Slide
-     */
     public function setNumber($number)
     {
         $this->number = $number;
@@ -163,109 +164,29 @@ class Slide
 
 
     /**
-     * Sets file.
+     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $file
      *
-     * @param UploadedFile $file
+     * @return Slide
      */
-    public function setFile(UploadedFile $file = null)
+    public function setFile(File $file = null)
     {
         $this->file = $file;
-        // check if we have an old image path
-        if (isset($this->path) || $this->path != '') {
-            // store the old name to delete after the update
-            $this->temp = $this->path;
-            $this->path = null;
-        } else {
-            $this->path = 'initial';
+
+        if ($file) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updatedAt = new \DateTime('now');
         }
+
+        return $this;
     }
 
     /**
-     * Get file.
-     *
-     * @return UploadedFile
+     * @return File
      */
     public function getFile()
     {
         return $this->file;
-    }
-
-    public function getAbsolutePath()
-    {
-        return null === $this->path
-            ? null
-            : $this->getUploadRootDir().'/'.$this->path;
-    }
-
-    public function getWebPath()
-    {
-        return null === $this->name
-            ? null
-            : $this->getUploadDir().'/';
-    }
-
-    protected function getUploadRootDir()
-    {
-        // the absolute directory path where uploaded
-        // documents should be saved
-        return __DIR__.'/../../../web/'.$this->getUploadDir();
-    }
-
-    protected function getUploadDir()
-    {
-        // get rid of the __DIR__ so it doesn't screw up
-        // when displaying uploaded doc/image in the view.
-        return '/uploads/documents';
-    }
-
-    /**
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
-     */
-    public function preUpload()
-    {
-        if (null !== $this->getFile()) {
-            // do whatever you want to generate a unique name
-            $filename = $this->name;
-            $this->path = $filename;
-            $this->webPath = $this->getWebPath().$this->path;
-        }
-    }
-
-    /**
-     * @ORM\PostPersist()
-     * @ORM\PostUpdate()
-     */
-    public function upload()
-    {
-        if (null === $this->getFile()) {
-            return;
-        }
-
-        // if there is an error when moving the file, an exception will
-        // be automatically thrown by move(). This will properly prevent
-        // the entity from being persisted to the database on error
-        $this->getFile()->move($this->getUploadRootDir(), $this->path);
-
-        // check if we have an old image
-        if (isset($this->temp)) {
-            // delete the old image
-            unlink($this->getUploadRootDir().'/'.$this->temp);
-            // clear the temp image path
-            $this->temp = null;
-        }
-        $this->file = null;
-    }
-
-    /**
-     * @ORM\PostRemove()
-     */
-    public function removeUpload()
-    {
-        $file = $this->getAbsolutePath();
-        if ($file) {
-            unlink($file);
-        }
     }
 
 }

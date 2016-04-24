@@ -38,6 +38,13 @@ class Category
      */
     private $subcategories;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Presentation", inversedBy="categories")
+     * @ORM\JoinColumn(name="presentation_id", referencedColumnName="id",nullable=true, onDelete="SET NULL")
+     * @Exclude
+     */
+    private $presentation;
+
     public function __construct($name=null)
     {
         $this->name = $name;
@@ -106,5 +113,24 @@ class Category
             }
         }
         return false;
+    }
+
+    public function getPresentation()
+    {
+        return $this->presentation;
+    }
+
+    public function setPresentation($presentation)
+    {
+        if ($this->presentation !== null) {
+            $this->presentation->removeCategory($this);
+        }
+
+        if ($presentation !== null) {
+            $presentation->addCategory($this);
+        }
+
+        $this->presentation = $presentation;
+        return $this;
     }
 }

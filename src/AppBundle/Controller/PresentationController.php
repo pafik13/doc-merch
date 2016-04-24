@@ -200,14 +200,15 @@ class PresentationController extends Controller
         $presentation->setTemplate($jsonDecode["template"]);
         $presentation->setAuthor($author);
 
+        $helper = $this->container->get('vich_uploader.templating.helper.uploader_helper');
         $counter = 0;
         foreach($files->all() as $file){
             $slide = new Slide($filenames[$counter]);
             $slide->setFile($file);
+            $slide->setPath($helper->asset($slide,'file'));
 
             $em->persist($slide);
             $em->flush();
-
             $counter++;
         }
 
@@ -224,6 +225,7 @@ class PresentationController extends Controller
                 $em->persist($subcategory);
                 $category->addSubcategory($subcategory);
             }
+            $category->setPresentation($presentation);
             $em->persist($category);
             $presentation->addCategory($category);
         }
@@ -248,10 +250,12 @@ class PresentationController extends Controller
         $serializer = $this->get('jms_serializer');
         $newPresentation = $serializer->deserialize($jsonData, 'AppBundle\Entity\Presentation', 'json');
 
+        $helper = $this->container->get('vich_uploader.templating.helper.uploader_helper');
         $counter = 0;
         foreach($files->all() as $file){
             $slide = new Slide($filenames[$counter]);
             $slide->setFile($file);
+            $slide->setPath($helper->asset($slide,'file'));
 
             $em->persist($slide);
             $em->flush();
@@ -311,6 +315,7 @@ class PresentationController extends Controller
                     $em->persist($subcategory);
                     $category->addSubcategory($subcategory);
                 }
+                $category->setPresentation($presentation);
                 $em->persist($category);
                 $presentation->addCategory($category);
             } else {
