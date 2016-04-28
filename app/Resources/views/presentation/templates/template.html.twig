@@ -9,7 +9,7 @@
         <div class="modal-content">
             <div class="modal-body">
                 <div class="slide-container">
-                    <img id="slide" src="">
+                    <img id="slide" alt = "" src="">
                     <label for="file-upload" class="nav-add hidden">
                         <i class="fa fa-plus-circle"></i>
                     </label>
@@ -19,7 +19,7 @@
                     <button type="button" class="nav-arrow nav-arrow-right"><i class="fa fa-chevron-right"></i></button>
 
                     <div class="upload hidden"><p>test</p></div>
-                    <div id="top-side-buttons" class="btn-group-vertical top-right" role="group" aria-label="Управление верхней панелью">
+                    <div id="top-side-buttons" class="btn-group-vertical role="group" aria-label="Управление верхней панелью">
                         <button type="button" id="tsb-eye-btn" class="btn btn-primary btn-xs active"><i class="fa fa-eye"></i></button>
                         {% if ( page == 'presentation_edit' or page == 'presentation_new') %}
                         <button type="button" id="tsb-add-btn" class="btn btn-success btn-xs"><i class="fa fa-plus-square-o"></i></button>
@@ -35,7 +35,7 @@
                         <div id="bot-panel-btns" class="btn-group btn-group-justified" role="group" data-toggle="buttons" aria-label="...">
                         </div>
                     </div>
-                    <div id="bottom-side-buttons" class="btn-group-vertical bottom-right" role="group" aria-label="...">
+                    <div id="bottom-side-buttons" class="btn-group-vertical" role="group" aria-label="...">
                         {#<button id="bsb-eye-btn" class="btn btn-primary btn-xs active"><i class="fa fa-eye"></i></button>#}
                         {% if ( page == 'presentation_edit' or page == 'presentation_new') %}
                         <button type="button" id="bsb-add-btn" class="btn btn-success btn-xs button-nofocuse"><i class="fa fa-plus-square-o "></i></button>

@@ -433,7 +433,7 @@ $(document).ready(function(){
         });
     }
 
-    $('#submit-form-btn').click(function(){
+    $('#submit-form-btn').click(function(event){
         tempPresentation.categories.forEach(function(category){
            category.subcategories.forEach(function(subcategory){
                subcategory.slides.forEach(function(slide){

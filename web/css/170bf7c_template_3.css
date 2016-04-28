@@ -110,6 +110,11 @@
     overflow: hidden;
     outline:none;
     opacity: 0.5;
+    cursor: pointer;
+}
+
+.nav-add:hover {
+   opacity: 1.0;
 }
 
 input[type="file"] {
@@ -213,16 +218,18 @@ input[type="file"] {
     left: 50%;
 }
 
-.top-right {
+#top-side-buttons {
     position: absolute;
-    top: 0px;
+    top: 0;
     left: 100%;
+    width: 25px;
 }
 
-.bottom-right {
+#bottom-side-buttons {
     position: absolute;
-    bottom: 0px;
+    bottom: 0;
     left: 100%;
+    width: 25px;
 }
 
 .margin-none {
