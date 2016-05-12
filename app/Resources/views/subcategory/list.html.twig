@@ -1,0 +1,55 @@
+{% extends 'nav.html.twig' %}
+
+{% block title %}Подгруппы{% endblock %}
+
+{% set page = 'subcategories' %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header"> Список подгрупп </h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">Подгруппы</div>
+                <div class="panel-body">
+                    <div class="checkbox text-right">
+                    </div>
+                    <div class="table-responsive">
+                        <table id="subcategories" class="table">
+                            <thead><tr>
+                                <th>#</th>
+                                <th>Название</th>
+                                <th>Группа</th>
+                                <th></th>
+                            </tr></thead>
+                            <tbody>
+                            {% if subcategories|length > 0 %}
+                                {% for subcategory in subcategories %}
+                                    <tr>
+                                        <td>{{ loop.index }}</td>
+                                        <td>{{ subcategory.getName() }}</td>
+                                        <td>{{ subcategory.getCategory().getName() }}</td>
+                                        <td><a href="subcategories/{{ subcategory.id }}">Информация</a>
+                                            <br><a href="subcategories/edit/{{ subcategory.id }}">Редактировать</a>
+                                            <br>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr><td colspan="8" style="text-align: center;">"В базе нет ни одной подгруппы. Вы можете добавить подгруппу, нажав на кнопку \"Добавить подгруппу\" ниже."</td></tr>
+                            {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <a class="btn btn-default btn-lg btn-block" href="subcategories/add">Добавить подгруппу</a>
+                </div>
+            </div>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+{% endblock %}

@@ -2,13 +2,18 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
+use AppBundle\Entity\Category;
 use AppBundle\Entity\Manager;
+use AppBundle\Entity\Presentation;
 use AppBundle\Entity\Presenter;
+use AppBundle\Entity\Slide;
+use AppBundle\Entity\Subcategory;
 use AppBundle\Entity\Territory;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Role;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 class LoadUserData implements FixtureInterface
 {
@@ -100,5 +105,60 @@ class LoadUserData implements FixtureInterface
         $manager->persist($userPresenter2);
 
         $manager->flush();
+
+
+//        $category1 = new Category();
+//        $category1->setName("Группа 1");
+//
+//        $category2 = new Category();
+//        $category2->setName("Группа 2");
+//
+//        $manager->persist($category1);
+//        $manager->persist($category2);
+//
+//        $subcategory1 = new Subcategory();
+//        $subcategory1->setName("Подгруппа 1");
+//        $subcategory1->setCategory($category1);
+//
+//        $subcategory2 = new Subcategory();
+//        $subcategory2->setName("Подгруппа 2");
+//        $subcategory2->setCategory($category1);
+//
+//        $subcategory3 = new Subcategory();
+//        $subcategory3->setName("Подгруппа 3");
+//        $subcategory3->setCategory($category2);
+
+//        $manager->persist($subcategory1);
+//        $manager->persist($subcategory2);
+//        $manager->persist($subcategory3);
+
+//        $slide1 = new Slide('slide1',"/bundles/app/img/slides/slide1.png", $subcategory1,1);
+//        $slide2 = new Slide('slide2',"/bundles/app/img/slides/slide2.png", $subcategory1,2);
+//        $slide3 = new Slide('slide3',"/bundles/app/img/slides/slide3.png", $subcategory2,3);
+//        $slide4 = new Slide('slide4',"/bundles/app/img/slides/slide4.png", $subcategory2,4);
+//        $slide5 = new Slide('slide5',"/bundles/app/img/slides/slide5.png", $subcategory2,5);
+//        $slide6 = new Slide('slide6',"/bundles/app/img/slides/slide6.png", $subcategory3,6);
+//        $slide7 = new Slide('slide7',"/bundles/app/img/slides/slide7.png", $subcategory3,7);
+//
+//        $manager->persist($slide1);
+//        $manager->persist($slide3);
+//        $manager->persist($slide2);
+//        $manager->persist($slide4);
+//        $manager->persist($slide5);
+//        $manager->persist($slide6);
+//        $manager->persist($slide7);
+
+//        $presentation = new Presentation();
+//        $presentation->setName("presentation");
+//        $presentation->setAuthor($userManager2);
+//        $presentation->setDate(new \DateTime());
+//        $presentation->setTemplate("template");
+//        $presentation->getCategories()->add($category1);
+//        $presentation->getCategories()->add($category2);
+
+//        $manager->persist($presentation);
+
+        $manager->flush();
+
     }
 }

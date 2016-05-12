@@ -1,0 +1,41 @@
+{% extends 'nav.html.twig' %}
+
+{% block title %}Добавить презентацию{% endblock %}
+
+{% set page = 'presentation_new' %}
+
+{% block main %}
+    {% form_theme form with 'bootstrap_3_layout.html.twig' %}
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header"> Добавление новой презентации </h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">Новая презентация</div>
+                <div class="panel-body">
+                    {{ form_start(form) }}
+                    {{ form_row(form.name) }}
+                    {{ form_row(form.template) }}
+                    {% include '/presentation/templates/template.html.twig' %}
+                    <button id= "submit-form-btn" type="button" class="btn btn-default btn-lg btn-block">Добавить презентацию</button>
+                    {{ form_end(form) }}
+                    <a class="btn btn-default btn-lg btn-block" href="{{ path('presentations') }}">Вернуться к списку</a>
+                </div>
+            </div>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts '@AppBundle/Resources/public/js/template.js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}

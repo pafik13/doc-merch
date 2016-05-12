@@ -3,11 +3,12 @@
 {% block stylesheets %}
     {{ parent() }}
 
-    {% stylesheets 'bundles/app/css/main.css' filter='cssrewrite' %}
-    <link rel="stylesheet" href="{{ asset_url }}" />
-    {% endstylesheets %}
-
-    {% stylesheets 'bundles/app/css/timeline.css' filter='cssrewrite' %}
+    {% stylesheets
+        'bundles/app/css/main.css' filter='cssrewrite'
+        'bundles/app/css/timeline.css'
+        'bundles/app/css/template.css'
+        filter='cssrewrite'
+    %}
     <link rel="stylesheet" href="{{ asset_url }}" />
     {% endstylesheets %}
 
@@ -80,6 +81,9 @@
                                 <a href={{ path('managers') }}{% if page == 'managers' %} class="active"{% endif %}><i class="fa fa-table fa-fw"></i> Менеджеры</a>
                             </li>
                         {% endif %}
+                        <li>
+                            <a href={{ path('presentations') }}{% if page == 'presentations' %} class="active"{% endif %}><i class="fa fa-table fa-fw"></i> Презентации</a>
+                        </li>
                     </ul>
                 </div>
                 <!-- /.sidebar-collapse -->

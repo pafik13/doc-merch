@@ -1,0 +1,85 @@
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#slide-modal">
+    Включить просмотр
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="slide-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <img id="slide" alt = "" src="">
+                <label for="file-upload" class="nav-add hidden">
+                    <i class="fa fa-plus-circle"></i>
+                </label>
+                <input id="file-upload" type="file" multiple="multiple" accept="image/jpeg,image/png,image/gif"/>
+                {#<label type="button" class="nav-delete"><i class="fa fa-minus-circle"></i> </label>#}
+                <button type="button" class="nav-arrow nav-arrow-left"><i class="fa fa-chevron-left"></i></button>
+                <button type="button" class="nav-arrow nav-arrow-right"><i class="fa fa-chevron-right"></i></button>
+
+                <div class="upload hidden"><p>test</p></div>
+
+                <div id="top-panel" class="top-panel collapse in" aria-expanded="true">
+                    <div id="top-panel-btns" class="btn-group btn-group-justified" role="group" data-toggle="buttons" aria-label="...">
+                    </div>
+                </div>
+                <div id="bottom-panel" class="bottom-panel collapse in" aria-expanded="true">
+                    <div id="bot-panel-btns" class="btn-group btn-group-justified" role="group" data-toggle="buttons" aria-label="...">
+                    </div>
+                </div>
+
+            {% if page != 'presentation_new' %}
+                <div id="presentation" data-json="{{ entity | serialize('json') }}" data-page = "{{ page }}" data-user = "{{ app.user.username }}"></div>
+            {% else %}
+                <div id="presentation" data-page = "{{ page }}" data-user = "{{ app.user.username }}"></div>
+            {% endif %}
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" id="close-pres-btn" data-dismiss="modal">Закрыть</button>
+                {% if ( page == 'presentation_edit' or page == 'presentation_new') %}
+                <button type="button" class="btn btn-primary" id="save-pres-btn">Сохранить</button>
+                {% endif %}
+            </div>
+            <div id="top-side-buttons" class="btn-group-vertical" role="group" aria-label="Управление верхней панелью">
+                <button type="button" id="tsb-eye-btn" class="btn btn-primary btn-xs active"><i class="fa fa-eye"></i></button>
+                {% if ( page == 'presentation_edit' or page == 'presentation_new') %}
+                    <button type="button" id="tsb-add-btn" class="btn btn-success btn-xs"><i class="fa fa-plus-square-o"></i></button>
+                    <button type="button" id="tsb-edit-btn" class="btn btn-info btn-xs"><i class="fa fa-pencil-square-o"></i></button>
+                    <button type="button" id="tsb-del-btn" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
+                {% endif %}
+            </div>
+            <div id="bottom-side-buttons" class="btn-group-vertical" role="group" aria-label="...">
+                {#<button id="bsb-eye-btn" class="btn btn-primary btn-xs active"><i class="fa fa-eye"></i></button>#}
+                {% if ( page == 'presentation_edit' or page == 'presentation_new') %}
+                    <button type="button" id="bsb-add-btn" class="btn btn-success btn-xs button-nofocuse"><i class="fa fa-plus-square-o "></i></button>
+                    <button type="button" id="bsb-edit-btn" class="btn btn-info btn-xs"><i class="fa fa-pencil-square-o"></i></button>
+                    <button type="button" id="bsb-del-btn" class="btn btn-danger btn-xs button-nofocuse"><i class="fa fa-trash"></i></button>
+                {% endif %}
+            </div>
+        </div>
+        <!-- /.modal-content -->
+
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<!-- Modal -->
+<div class="modal fade" id="edit-category-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <label for="category-input">Введите название</label>
+                <input type="text" class="form-control" id="category-input">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                <button type="button" class="btn btn-primary" id="save-category-btn">Ок</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

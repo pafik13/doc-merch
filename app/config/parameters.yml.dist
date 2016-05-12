@@ -18,3 +18,11 @@ parameters:
 
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeIt
+
+    # You probably don't want to use "latest" in a production environment...
+    aws_sdk_version: latest
+    aws_access_key_id: AKIAIMQ6LVEZ7BMQUPSA
+    aws_secret_access_key: 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
+    aws_s3_region: eu-central-1
+    aws_bucket_name: sleepy-tundra-1626-slides
+    aws_s3_base_url: 'http://sleepy-tundra-1626-slides.s3-website.eu-central-1.amazonaws.com'
