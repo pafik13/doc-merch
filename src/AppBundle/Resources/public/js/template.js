@@ -62,34 +62,42 @@ $(document).ready(function(){
 
     function loadTopPanel(){
         topPanel.empty();
-        tempPresentation.categories.forEach(function(item){
-            if(current_category == undefined || item.name === current_category.name){
-                topPanel.append("<a class = 'btn btn-primary active' href='javascript:void(0);'>"+item.name+"</a>"
-                );
-            } else {
-                topPanel.append("<a class = 'btn btn-primary' href='javascript:void(0);'>"+item.name+"</a>"
-                );
-            }
-        });
-        topPanel.find('a').click(function(){changeCategory($(this))});
+        if(tempPresentation.categories.length != 0) {
+            tempPresentation.categories.forEach(function (item) {
+                if (current_category == undefined || item.name === current_category.name) {
+                    topPanel.append("<a class = 'btn btn-primary active' href='javascript:void(0);'>" + item.name + "</a>"
+                    );
+                } else {
+                    topPanel.append("<a class = 'btn btn-primary' href='javascript:void(0);'>" + item.name + "</a>"
+                    );
+                }
+            });
+            topPanel.find('a').click(function () {
+                changeCategory($(this))
+            });
+        }
     }
 
     function loadBottomPanel(){
         botPanel.empty();
-        current_category.subcategories.forEach(function(item){
-            if(item.name === current_subcategory.name){
-                botPanel.append("<a class = 'btn btn-primary active' href='javascript:void(0);'>"+item.name+"</a>"
-                );
+        if(tempPresentation.categories.length != 0) {
+            current_category.subcategories.forEach(function (item) {
+                if (item.name === current_subcategory.name) {
+                    botPanel.append("<a class = 'btn btn-primary active' href='javascript:void(0);'>" + item.name + "</a>"
+                    );
+                } else {
+                    botPanel.append("<a class = 'btn btn-primary' href='javascript:void(0);'>" + item.name + "</a>"
+                    );
+                }
+            });
+            botPanel.find('a').click(function () {
+                changeSubcategory($(this))
+            });
+            if (current_subcategory != undefined) {
+                current_slide = current_subcategory.slides[0];
             } else {
-                botPanel.append("<a class = 'btn btn-primary' href='javascript:void(0);'>"+item.name+"</a>"
-                );
+                current_slide = undefined;
             }
-        });
-        botPanel.find('a').click(function(){changeSubcategory($(this))});
-        if(current_subcategory != undefined){
-            current_slide = current_subcategory.slides[0];
-        } else {
-            current_slide = undefined;
         }
     }
 
@@ -292,6 +300,10 @@ $(document).ready(function(){
         presentation = $.extend(true, {}, tempPresentation);
     });
 
+    $('#close-pres-btn').click(function(){
+        files = undefined;
+    });
+
     editCategoryModal.on('show.bs.modal',function(){
        $('#new-category-input').val('');
     });
@@ -304,12 +316,17 @@ $(document).ready(function(){
         if (current_category != undefined) {
             current_subcategory = current_category.subcategories[0];
             current_slide = current_subcategory.slides[0];
-            clearFiles();
             sortSlides();
-            loadTopPanel();
-            loadBottomPanel();
+        } else {
+            current_category = undefined;
+            current_subcategory = undefined;
+            current_slide = undefined;
+            files = undefined;
         }
 
+        clearFiles();
+        loadTopPanel();
+        loadBottomPanel();
         loadSlide();
         loadSidePanels();
     });
@@ -398,9 +415,9 @@ $(document).ready(function(){
             });
         }
 
-        tempPresentation.name = $('#appbundle_presentation_name').val();
-        tempPresentation.template = $('#appbundle_presentation_template').val();
-        var json = JSON.stringify(tempPresentation);
+        presentation.name = $('#appbundle_presentation_name').val();
+        presentation.template = $('#appbundle_presentation_template').val();
+        var json = JSON.stringify(presentation);
         data.append('json',json);
         if (filenames != undefined){
             data.append('filenames',filenames.join());
