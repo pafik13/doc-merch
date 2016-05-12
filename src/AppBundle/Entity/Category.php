@@ -35,6 +35,7 @@ class Category
 
     /**
      * @ORM\OneToMany(targetEntity="Subcategory", mappedBy="category", orphanRemoval=true)
+     * @ORM\OrderBy({"name" = "ASC"})
      */
     private $subcategories;
 

@@ -191,7 +191,6 @@ class PresentationController extends Controller
         $jsonDecode = json_decode($jsonData, true);
         $serializer = $this->get('jms_serializer');
         $newPresentation = $serializer->deserialize($jsonData, 'AppBundle\Entity\Presentation', 'json');
-
         $slides = $em->getRepository('AppBundle:Slide');
         $author = $em->getRepository('AppBundle:User')->findByUsername($jsonDecode["author"])[0];
 

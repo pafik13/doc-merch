@@ -57,6 +57,7 @@ class Presentation
 
     /**
      * @ORM\OneToMany(targetEntity="Category", mappedBy="presentation", orphanRemoval=true)
+     * @ORM\OrderBy({"name" = "ASC"})
      */
     private $categories;
 
